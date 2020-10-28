@@ -1,0 +1,62 @@
+
+
+<p *ngIf="!escenarioDetalles"><em>Loading...</em></p>
+<div class="container-sm">
+  <p class="custom-title mt-3 mb-3" id="tableLabel">Escenario detalle 4 navigation test</p>
+  <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{errorText}}</strong>
+  </div>
+
+  <div class="row">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button mdbBtn type="button" color="info" size="md" mdbWavesEffect (click)="ambParametre = !ambParametre">
+        <div *ngIf="ambParametre"><mdb-icon fas icon="list"></mdb-icon> CANVIAR A LLISTA</div>
+        <div *ngIf="!ambParametre"><mdb-icon fas icon="id-card"></mdb-icon> CANVIAR A DETALL</div>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 mx-auto">
+      <div class="md-form">
+        <input type="text"
+               [(ngModel)]="searchText"
+               class="form-control"
+               id="search"
+               mdbInput />
+        <label for="search">Search</label>
+      </div>
+    </div>
+  </div>
+  <table mdbTable #tableEl="mdbTable" class='table table-striped' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="escenarioDetalles">
+    <thead class="black white-text">
+      <tr>
+        <th [mdbTableSort]="escenarioDetalles" sortBy="fecha" scope="col">Fecha<mdb-icon fas icon="sort"></mdb-icon></th>
+        <th [mdbTableSort]="escenarioDetalles" sortBy="codtipoint" scope="col">Código<mdb-icon fas icon="sort"></mdb-icon></th>
+        <th [mdbTableSort]="escenarioDetalles" sortBy="escenario" scope="col">Escenario<mdb-icon fas icon="sort"></mdb-icon></th>
+        <th [mdbTableSort]="escenarioDetalles" sortBy="pctinteres" scope="col">Porcentaje interés<mdb-icon fas icon="sort"></mdb-icon></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let escenarioDetalle of escenarioDetalles; let i=index">
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" contenteditable="false" data- scope="row">{{escenarioDetalle.fecha}}</td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && ambParametre" contenteditable="false" data- scope="row"><a [routerLink]="['/tipoint/',escenarioDetalle.codtipoint]">{{escenarioDetalle.codtipoint}}</a></td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex && !ambParametre" contenteditable="false" data- scope="row"><a [routerLink]="['/tipoint']">{{escenarioDetalle.codtipoint}}</a></td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" contenteditable="false" data- scope="row">{{escenarioDetalle.escenario}}</td>
+        <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" contenteditable="false" data- scope="row">{{escenarioDetalle.pctinteres}}</td>
+      </tr>
+    </tbody>
+    <tfoot class="grey lighten-5 w-100">
+      <tr>
+        <td colspan="4">
+          <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="escenarioDetalles"></mdb-table-pagination>
+        </td>
+      </tr>
+    </tfoot>
+
+  </table>
+</div>

@@ -1,0 +1,101 @@
+<div class="container-lg-12">
+  <div class="mt-4 mb-5">
+    <p>Graficos con Filtro</p>
+  </div>
+  <!--<div class="btn-group mr-2 filter-style" role="group" aria-label="Basic example">
+    <button mdbBtn type="button" color="red" size="md" mdbWavesEffect ><mdb-icon fas icon="filter"></mdb-icon> Filtro</button>
+  </div>-->
+  <div class="row">
+    <ng-template #dateSelectionToolTip><div>De {{FechaDesde | date:'dd/MM/yyyy' }} a {{FechaHasta | date:'dd/MM/yyyy' }}</div></ng-template>
+    <mdb-icon far icon="clock" class="mr-1" (click)="toggleDateSelection()" [mdbTooltip]="dateSelectionToolTip"></mdb-icon>
+
+    <ng-container>
+
+      <mat-form-field>
+        <mat-select [(ngModel)]="selectedDateType">
+          <mat-option value="O">Fecha Operación</mat-option>
+          <mat-option value="V">Intervalo Fecha</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="desdePicker" placeholder="Desde" [(ngModel)]="FechaDesde" format='dd/MM/yyyy'>
+        <mat-datepicker-toggle matSuffix [for]="desdePicker"></mat-datepicker-toggle>
+        <mat-datepicker #desdePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="hastaPicker" placeholder="Hasta" [(ngModel)]="FechaHasta" format='dd/MM/yyyy'>
+        <mat-datepicker-toggle matSuffix [for]="hastaPicker"></mat-datepicker-toggle>
+        <mat-datepicker #hastaPicker></mat-datepicker>
+      </mat-form-field>
+
+
+
+      <button mdbBtn type="button" floating="true" size="sm" gradient="blue" mdbWavesEffect (click)="doDateSelection()">Done</button>
+      <mdb-icon fas icon="filter" class="ml-2" mdbTooltip="Filter" (click)="filterClick()"></mdb-icon>
+
+
+    </ng-container>
+
+  </div>
+  <!--Inicio Mdb Cards -->
+  <div class="row">
+    <mdb-card narrow="true">
+
+      
+      <div class="col-md-12" style="min-width:600px">
+        <canvas mdbChart
+                [chartType]="chartTypeLine"
+                [datasets]="chartDatasetsLine"
+                [labels]="chartLabelsLine"
+                [colors]="chartColorsLine"
+                [options]="chartOptionsLine"
+                [legend]="true"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+
+      <mdb-card-body>
+        <h4 class="card-title">
+          <strong>Contratos Saldos Line</strong>
+        </h4>
+      </mdb-card-body>
+      <mdb-card-text>
+        Gráfico que muestra el intervalo de Saldos para una cuenta dada
+      </mdb-card-text>
+    </mdb-card>
+
+    <mdb-card narrow="true">
+      <div class="col-md-12" style="min-width:600px">
+        <canvas mdbChart
+                [chartType]="chartTypeBar"
+                [datasets]="chartDatasetsBar"
+                [labels]="chartLabelsBar"
+                [colors]="chartColorsBars"
+                [options]="chartOptionsBar"
+                [legend]="true"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+
+      <mdb-card-body>
+        <h4 class="card-title">
+          <strong>Contratos Saldos (Bar Columns)</strong>
+        </h4>
+      </mdb-card-body>
+      <mdb-card-text>
+        Gráfico que muestra el intervalo de Saldos para una cuenta dada (Barras)
+      </mdb-card-text>
+    </mdb-card>
+
+  </div>
+  <!-- Fin MDB cards-->
+
+
+
+</div>
+
+

@@ -1,0 +1,67 @@
+body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  background: rgba(204,204,204,0.90);
+  align-items: center;
+  justify-content: center;
+  font-family: "montserrat",sans-serif;
+}
+
+/*CSS del cercle rotatiu*/
+.loading {
+  width: 200px;
+  height: 200px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border-top: 10px solid #57b964;
+  position:relative;
+  animation: a1 2s linear infinite;
+}
+
+  .loading::before, .loading::after {
+    content: '';
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    left: 0;
+    top: -10px;
+    box-sizing: border-box;
+    border-radius: 50%;
+  }
+
+  .loading::before {
+    border-top: 10px solid #52b7bd;
+    transform: rotate(120deg);
+    opacity: 1;
+  }
+
+  .loading::after {
+    border-top: 10px solid #4653ab;
+    transform: rotate(240deg);
+  }
+
+  .loading span {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    color: black;
+    text-align: center;
+    line-height: 200px;
+    animation: a2 2s linear infinite;
+  }
+
+@keyframes a1 {
+to {
+  transform: rotate(360deg);
+}
+}
+
+@keyframes a2 {
+to {
+  transform: rotate(-360deg);
+}
+}
+

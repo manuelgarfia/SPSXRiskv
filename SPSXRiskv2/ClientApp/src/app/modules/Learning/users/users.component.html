@@ -1,0 +1,43 @@
+<div class="container-sm">
+  <p class="mt-3 mb-3 titleStyles">Usuarios</p>
+
+  <!-- Grid Start-->
+  <div class="row">
+    <div class="col">
+      <table mdbTable #tableEl="mdbTable" class='table table-striped mt-3' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="usersList">
+        <thead class="black white-text">
+          <tr>
+            <th [mdbTableSort]="usersList" sortBy="cabid" scope="col" hidden="hidden">Cabid<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="usersList" sortBy="usuari" scope="col">Usuario<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="usersList" sortBy="usuariZoom" scope="col">Zoom Usuario<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="usersList" sortBy="nombre" scope="col">Nombre<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="usersList" sortBy="idioma" scope="col">Idioma<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="usersList" sortBy="activado" scope="col">Activado<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol *ngFor="let user of usersList; let i = index">
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" hidden="hidden">{{ user.cabid }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ user.usuari }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ user.usuariZoom }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ user.nombre }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ user.idioma }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">
+              <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=user.activo></mdb-checkbox>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="4">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="usersList"></mdb-table-pagination>
+            </td>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+  <!-- Grid End-->
+
+</div>

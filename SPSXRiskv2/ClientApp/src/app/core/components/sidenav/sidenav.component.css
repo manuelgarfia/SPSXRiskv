@@ -1,0 +1,168 @@
+/* NAVBAR */
+
+
+/*SIDENAV*/
+.sideNav-bg {
+  /*background-image: url(/assets/images/pic8.jpg);*/
+  background-color: #4B515D;
+}
+
+.panel {
+  font-family: 'Segoe UI';
+}
+
+  .panel:hover {
+    background-color: #7FE4EA !important;
+    transition: 1s;
+  }
+
+.panel-color-text{
+      color:white !important;
+}
+
+.accordion-bck {
+  background: #4B515D !important;
+}
+
+.accordion-list {
+  background: rgba(189,195,195,0.75) !important;
+}
+
+.accordion-option:hover {
+    background-color: #E5E7EF !important;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+} 
+
+/*END SIDENAV*/
+
+
+mat-expansion-panel-header {
+  background-color: cornflowerblue !important;
+  opacity: 1;
+}
+mat-panel-title {
+  color: white; 
+}
+
+.list .mat-list .mat-list-item .mat-multi-line .mat-list-item-content {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.example-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-is-mobile .example-toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+}
+
+.example-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+.example-is-mobile .example-sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+/*
+mat-sidenav {
+     width: 15%;
+}
+    */
+.icono{
+    margin-right:10px;
+}
+
+.expandedMenuPosition{
+    margin-left:226px;
+    width:200px;
+    position:relative;
+}
+
+.sideNavCustom {
+  color: white;
+  font-size: 18px;
+  font-family: 'Segoe UI';
+}
+
+  .sideNavCustom:hover {
+    background-color: #E5E7EF !important;
+    cursor:pointer;
+    color: black;
+    width: 90%;
+    border-radius: 5px;
+  }
+
+
+.menuBox {
+  height: auto;
+  width: 350px;
+  color: white;
+  background-color: #424242;
+  position: absolute;
+  border: black 2px;
+  z-index: 10001;
+  border-radius: 10px;
+}
+
+.menuBox2 {
+  height: auto;
+  width: auto;
+  margin-left: 350px;
+  color: white;
+  background-color: #616161;
+  position: absolute;
+  border: black 2px;
+  z-index: 10001;
+  border-radius: 10px;
+}
+
+.menuBoxTitle {
+  font-size: 18px;
+  font-family: 'Segoe UI';
+  text-decoration: underline;
+  margin-left: 20px;
+}
+
+.secondMenus{
+    color:white;
+    cursor: pointer;
+}
+
+  .secondMenus:hover {
+    background-color: #E5E7EF !important;
+    color: black;
+    width: 90%;
+    border-radius: 5px;
+  }
+
+
+.contentPosition{
+    z-index: 1;
+}
+
+

@@ -1,0 +1,501 @@
+<div class="container-fluid">
+
+  <div class="mt-4 mb-4">
+    <mdb-breadcrumb class="mt-4 mb-4">
+      <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="blue-text" [routerLink]="['/xrskmovimientofisico']">Movimiento Físico</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="active">Cuentas de Crédito</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
+  </div>
+
+ 
+
+  <!--Start Button Section-->
+  <div class="mb-3 bottomLine">
+    <button mdbBtn type="button" class="btn customButton" size="sm" mdbWavesEffect (click)="onChangeClick()"> 2ª vista</button>
+
+    <button type="button" class="btn customButton" size="sm" [mdbTooltip]="PreferencesOn" (click)="filterClick()" mdbBtn>Filtrar<i class="fas fa-filter cyan-text pl-1 ml-1"></i></button>
+    <ng-template #PreferencesOn>
+      <p> Filtrando por:</p>
+      <!--<div *ngFor="let detail of tooltipPreferences">
+      <p>- {{detail.entity}}: {{detail.values}}</p>
+    </div>-->
+    </ng-template>
+
+  </div>
+  <!-- End Button Section-->
+
+
+  <div [hidden]="secondView">
+    <div class="row">
+      <div class="col-md-6">
+        <mdb-card class="mt-3">
+          <mdb-card-body>
+            <mdb-card-text>
+              <div class="central-container">
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Compañia:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.empresa" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Tipo Línea:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.tipolinea" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Entidad:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.banco" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Oficina:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.oficina" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Código:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.codigo" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Oficina alt.:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.oficinaalt" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Núm. Cuenta:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.numcuenta" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>IBAN:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.iban" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Cta. Ctble.:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.ctactble" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Descripción:</mat-label>
+                      <input matInput class="descripcion-inputs" placeholder="" [(ngModel)]="polizas.descripcion" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mdb-card-text>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+
+      <div class="col-md-6">
+        <mdb-card class="mt-3">
+          <mdb-card-body>
+            <mdb-card-text>
+              <div class="central-container">
+                <div class="row" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Clave País:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.clavepais" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Cod. Divisa:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.divisa" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Divisa CSB:</mat-label>
+                      <input matInput placeholder=""  [(ngModel)]="polizas.divisaCSB" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Signo saldo últ. extracto:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.signosaldoultextr" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Saldo últ. extracto:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.saldoultimoextr" [ngModelOptions]="{standalone: true}" >
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Límite Divisa:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.limitedivisa" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Límite mon. nac.:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.limitemn" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mdb-card-text>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md">
+        <button mdbBtn color="white" class="waves-light" type="button" (click)="test.toggle()" mdbWavesEffect>Contratos Renovación<mdb-icon fas icon="angle-down" class="ml-3"></mdb-icon></button>
+
+        <div mdbCollapse [isCollapsed]="true" #test="bs-collapse">
+          <p>
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica,
+            craft beer labore wes anderson cred nesciunt sapiente ea proident.
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <!--Graphic-->
+    <div class="row mt-4">
+      <div class="col-md">
+
+        <div style="display: block" *ngIf="chartDatasets">
+          <canvas mdbChart
+                  [chartType]="chartType"
+                  [datasets]="chartDatasets"
+                  [labels]="chartLabels"
+                  [colors]="chartColors"
+                  [options]="chartOptions"
+                  [legend]="true"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)" height="60" 
+                  >
+          </canvas>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="!secondView">
+    <div class="row">
+      <div class="col-md-6">
+        <mdb-card class="mt-3">
+          <mdb-card-body>
+            <mdb-card-text>
+              <div class="central-container">
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Compañia:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.empresa" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Tipo Línea:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.tipolinea" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Entidad:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.banco" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Oficina:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.oficina" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Código:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.codigo" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Oficina alt.:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.oficinaalt" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Núm. Cuenta:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.numcuenta" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="header-inputs">
+                      <mat-label>IBAN:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.iban" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="header-inputs">
+                      <mat-label>Cta. Ctble.:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.ctactble" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field>
+                      <mat-label>Descripción:</mat-label>
+                      <input matInput class="descripcion-inputs" placeholder="" [(ngModel)]="polizas.descripcion" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mdb-card-text>
+          </mdb-card-body>
+        </mdb-card>
+
+        <mdb-card class="mt-3">
+          <mdb-card-body>
+            <mdb-card-text>
+              <div class="central-container">
+                <div class="row" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="scnd-inputs">
+                      <mat-label>Clave País:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.clavepais" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="scnd-inputs">
+                      <mat-label>Cod. Divisa:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.divisa" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="scnd-inputs">
+                      <mat-label>Divisa CSB:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.divisaCSB" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="scnd-inputs">
+                      <mat-label>Signo saldo últ. extracto:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.signosaldoultextr" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="scnd-inputs">
+                      <mat-label>Saldo últ. extracto:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.saldoultimoextr" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3" style="margin-left:20px">
+                  <div>
+                    <mat-form-field class="scnd-inputs">
+                      <mat-label>Límite Divisa:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.limitedivisa" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-4">
+                    <mat-form-field class="scnd-inputs">
+                      <mat-label>Límite mon. nac.:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="polizas.limitedivisa" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mdb-card-text>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+
+      <div class="col-md-6">
+        <mdb-card class="mt-3">
+          <mdb-card-body>
+            <mdb-card-text>
+              <div class="row">
+                <div class="col-md" style="display:flex">
+                  <mat-form-field>
+                    <mat-label>Fecha Desde</mat-label>
+                    <input class="date-align" matInput [matDatepicker]="Desde" [(ngModel)]="dateDesde">
+                    <mat-datepicker-toggle matSuffix [for]="Desde"></mat-datepicker-toggle>
+                    <mat-datepicker #Desde></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field class="ml-3">
+                    <mat-label>Fecha Hasta</mat-label>
+                    <input class="date-align" matInput [matDatepicker]="Hasta" [(ngModel)]="dateHasta">
+                    <mat-datepicker-toggle matSuffix [for]="Hasta"></mat-datepicker-toggle>
+                    <mat-datepicker #Hasta></mat-datepicker>
+                  </mat-form-field>
+
+                  <button type="submit" mdbBtn color="info" size="sm" outline="true" class="customLoad" (click)="getXRSKContratosByCompanyDateRange()" mdbWavesEffect>Cargar</button>
+
+                </div>
+              </div>
+              <div style="display: block">
+                <canvas mdbChart
+                        [chartType]="chartType"
+                        [datasets]="chartDatasets"
+                        [labels]="chartLabels"
+                        [colors]="chartColors"
+                        [options]="chartOptions"
+                        [legend]="true"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)" height="100">
+                </canvas>
+              </div>
+            </mdb-card-text>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md">
+        <button mdbBtn color="white" class="waves-light" type="button" (click)="test2.toggle()" mdbWavesEffect>Contratos Renovación<mdb-icon fas icon="angle-down" class="ml-3"></mdb-icon></button>
+
+        <div mdbCollapse [isCollapsed]="true" #test2="bs-collapse" class="mb-4">
+          <mat-tab-group class="tab-border">
+            <mat-tab label="Datos Principales">
+              <div class="tabs-container">
+
+                <!-- 1a Columna-->
+                <div class="row mt-3">
+                  <div class="col-md">
+                    <div>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="polizasFechIni" placeholder="Fecha Ini. Refer. Liq.">
+                        <mat-datepicker-toggle matSuffix [for]="polizasFechIni"></mat-datepicker-toggle>
+                        <mat-datepicker #polizasFechIni></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="polizasFechIniRev" placeholder="Fecha Ini. Refer. Rev.">
+                        <mat-datepicker-toggle matSuffix [for]="polizasFechIniRev"></mat-datepicker-toggle>
+                        <mat-datepicker #polizasFechIniRev></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Límite Concedido:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Límite Excedido:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Multiplicador Pasivo:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+
+                  </div>
+                  <!-- 2a Columna-->
+                  <div class="col-md">
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Tipo Per. Liquidación:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Tipo Per. Revisión:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Dif. Tramo Concedido:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Dif. Tramo Excedido:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Números:</mat-label>
+                        <input matInput placeholder="">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="col-md">
+
+                  </div>
+
+                </div>
+              </div>
+
+
+            </mat-tab>
+            <mat-tab label="Activos"> Content 2 </mat-tab>
+            <mat-tab label="Avisos"> Content 3 </mat-tab>
+            <mat-tab label="Comisiones no disponibilidad"> Content 3 </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</div>

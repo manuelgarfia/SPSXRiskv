@@ -1,0 +1,182 @@
+<div class="container-fluid bckground" *ngIf="condiciones_bancarias" >
+
+  <app-modalgrid (propagar)="getpropagado($event)"></app-modalgrid>
+
+  <div class="row">
+
+    <div class="col-2"></div>
+
+    <div class="col-8 justify-content-center">
+      <form [formGroup]="validatingForm" class="mb-5 justify-content-center">
+
+        <div class="title">
+          <p>{{title_name}}</p>
+        </div>
+
+        <!-- Alert Message Start-->
+        <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+          <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>{{errorText}}</strong>
+        </div>
+        <!-- Alert Message End-->
+
+        <!--1a COLUMNA-->
+        <div class="row">
+          <div class="col-3">
+            <mat-form-field *ngIf="agr_list">
+              <mat-label>Grupo de Condiciones</mat-label>
+              <mat-select formControlName="acogrupo" [(ngModel)]="condiciones_bancarias.conCodACO" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let item of agr_list; let i = index" [value]="item.acoGrupo">{{item.acoCod}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Fecha Desde</mat-label>
+              <input class="date-align" formControlName="fechadesde" matInput [matDatepicker]="myDatepicker" [(ngModel)]="condiciones_bancarias.conFechaDesde">
+              <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+              <mat-label>Contrapartida</mat-label>
+              <input matInput placeholder="" formControlName="contrapartida" [(ngModel)]="condiciones_bancarias.conCodCPT">
+              <mdb-error *ngIf="cpt_input.invalid && (cpt_input.dirty || cpt_input.touched)">Input invalid</mdb-error>
+              <mdb-success *ngIf="cpt_input.valid && (cpt_input.dirty || cpt_input.touched)">Input valid</mdb-success>
+              <mat-icon matSuffix (click)="get_cpt()">search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+              <mat-label>Cuenta</mat-label>
+              <input matInput placeholder="" formControlName="cuenta" [(ngModel)]="condiciones_bancarias.conCodCTA">
+              <mdb-error *ngIf="cuenta_input.invalid && (cuenta_input.dirty || cuenta_input.touched)">Input invalid</mdb-error>
+              <mdb-success *ngIf="cuenta_input.valid && (cuenta_input.dirty || cuenta_input.touched)">Input valid</mdb-success>
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Tipo Efecto</mat-label>
+              <input matInput placeholder="" [(ngModel)]="condiciones_bancarias.conTipoEfecto" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+
+            <mdb-checkbox [inline]="true" [default]="true" [(ngModel)]="condiciones_bancarias.conMovGastos" [ngModelOptions]="{standalone: true}">Gastos Mov. Aparte</mdb-checkbox>
+          </div>
+
+          <!--2a COLUMNA-->
+          <div class="col-3">
+            <!-- Autocomplete Compañias -->
+            <app-drop-down [itemsList]="itemsList"
+                           [AutocompleteLabel]="labelAutocomplete"
+                           [(itemValue)]="itemValue">
+             </app-drop-down>
+
+            <!--<app-drop-down [itemsList]="itemsList"
+                           [AutocompleteLabel]="labelAutocomplete"
+                           [editValue]="companyValue"
+                           (emitCIA)="receiveCIA($event)">
+            </app-drop-down>-->
+
+            <mat-form-field>
+              <mat-label>Fecha Hasta</mat-label>
+              <input class="date-align" matInput [matDatepicker]="myDatepicker2">
+              <mat-datepicker-toggle matSuffix [for]="myDatepicker2"></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker2></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Contador CPT</mat-label>
+              <input matInput placeholder="">
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Importe Mínimo</mat-label>
+              <input matInput placeholder="" [(ngModel)]="condiciones_bancarias.conImpMin" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Contrapartida IVA</mat-label>
+              <input matInput placeholder="" formControlName="ivaCPT" [(ngModel)]="condiciones_bancarias.conCodIVACPT">
+              <mdb-error *ngIf="cptIVA_input.invalid && (cptIVA_input.dirty || cptIVA_input.touched)">Input invalid</mdb-error>
+              <mdb-success *ngIf="cptIVA_input.valid && (cptIVA_input.dirty || cptIVA_input.touched)">Input valid</mdb-success>
+            </mat-form-field>
+
+            <mdb-checkbox [inline]="true" [default]="true">Gastos en la Divisa CPT</mdb-checkbox>
+
+          </div>
+
+          <!-- 3a COLUMNA-->
+          <div class="col-3">
+            <mat-form-field class="example-form">
+              <mat-label>Entidad</mat-label>
+              <input matInput placeholder="" formControlName="entidad" [(ngModel)]="condiciones_bancarias.conCodENT">
+              <mdb-error *ngIf="entidad_input.invalid && (entidad_input.dirty || entidad_input.touched)">Input invalid</mdb-error>
+              <mdb-success *ngIf="entidad_input.valid && (entidad_input.dirty || entidad_input.touched)">Input valid</mdb-success>
+              <mat-icon matSuffix (click)="get_entidades()">search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Operación Gastos</mat-label>
+              <input matInput placeholder="" formControlName="operacionGastos" [(ngModel)]="condiciones_bancarias.conCodGastosOPE">
+              <mdb-error *ngIf="gastos_input.invalid && (gastos_input.dirty || gastos_input.touched)">Input invalid</mdb-error>
+              <mdb-success *ngIf="gastos_input.valid && (gastos_input.dirty || gastos_input.touched)">Input valid</mdb-success>
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Importe Máximo</mat-label>
+              <input matInput placeholder="" [(ngModel)]="condiciones_bancarias.conImpMax" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Porcentaje IVA</mat-label>
+              <input matInput placeholder="" [(ngModel)]="condiciones_bancarias.conPorcentajeIVA" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+
+            <mdb-checkbox [inline]="true" [default]="true" [(ngModel)]="costeXefecto" [ngModelOptions]="{standalone: true}">Coste por Efecto</mdb-checkbox>
+          </div>
+
+          <!--4a COLUMNA-->
+          <div class="col-3">
+            <mat-form-field class="example-form">
+              <mat-label>Operación</mat-label>
+              <input matInput placeholder="" formControlName="operacion" [(ngModel)]="condiciones_bancarias.conCodOPE">
+              <mdb-error *ngIf="operacion_input.invalid && (operacion_input.dirty || operacion_input.touched)">Input invalid</mdb-error>
+              <mdb-success *ngIf="operacion_input.valid && (operacion_input.dirty || operacion_input.touched)">Input valid</mdb-success>
+              <mat-icon matSuffix (click)="get_operaciones()">search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Porcentaje</mat-label>
+              <input matInput placeholder="" [(ngModel)]="condiciones_bancarias.conPorcentaje" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+
+            <mat-form-field class="example-form">
+              <mat-label>Importe Fijo</mat-label>
+              <input matInput placeholder="" [(ngModel)]="condiciones_bancarias.conFijo" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+
+            <mdb-checkbox [inline]="true" [default]="true">IVA Mov. Aparte</mdb-checkbox>
+
+          </div>
+        </div>
+
+        <!--Add Button-->
+        <div class="row justify-content-md-center mt-4">
+
+          <button type="button" mdbBtn color="info" class="col-md-auto" mdbWavesEffect (click)="openDialog('add')">{{button_name}}</button>
+          <button mdbBtn type="button" class="col-md-auto btn-blue-grey" (click)="openDialog('Cancelar')" mdbWavesEffect>Cancelar</button>
+
+        </div>
+        <!--End Add Button-->
+
+      </form>
+
+    </div>
+
+    <div class="col-2"></div>
+
+  </div>
+
+</div>
+
+
+

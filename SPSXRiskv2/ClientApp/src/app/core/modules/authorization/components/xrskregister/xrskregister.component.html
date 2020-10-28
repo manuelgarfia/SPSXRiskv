@@ -1,0 +1,42 @@
+<div class="register-card">
+  <mat-card>
+    <mat-card-content>
+      <form *ngIf="!success" #f="ngForm" (ngSubmit)="onSubmit()">
+        <mat-card-header>
+          <img mat-card-sm-image src="https://www.oysconsultores.com/wp-content/uploads/2017/07/LOGO_OyS-1-e1500229451389.png" alt="Photo of a Shiba Inu">
+          <p></p>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-group">
+            <label for="name" class="sr-only">Código</label>
+            <input type="text" id="username" name="username" [(ngModel)]="userRegistration.username" class="form-control" placeholder="Tu código de usuario" required autoFocus>
+          </div>
+          <div class="form-group">
+            <label for="name" class="sr-only">Nombre</label>
+            <input type="text" id="name" name="name" [(ngModel)]="userRegistration.name" class="form-control" placeholder="Tu nombre" required autoFocus>
+          </div>
+          <div class="form-group">
+            <label for="email" class="sr-only">Email</label>
+            <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="userRegistration.email" class="form-control" placeholder="Email address" email required>
+            <small [hidden]="email.valid || (email.pristine && !submitted)" class="text-danger">Por favor, entra un email válido</small>
+          </div>
+          <div class="form-group">
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" [(ngModel)]="userRegistration.password" class="form-control" placeholder="Password" aria-describedby="passwordHelp" required>
+            <small id="passwordHelp" class="form-text text-muted">Min. 6 characters with at least one non alphanumeric character</small>
+          </div>
+          <mat-card-actions>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!f.form.valid">Registrar</button>
+          </mat-card-actions>
+          <mat-error *ngIf="error" class="alert alert-danger">{{ error }}</mat-error>
+        </mat-card-content>
+      </form>
+      <div *ngIf="success" class="alert alert-success" role="alert">
+        <h4 class="alert-heading">¡Bien hecho!</h4>
+        <p>Felicidades, te has registrado correctamente.</p>
+        <hr/>
+        <p><a routerLink="/login">Por favor login</a> para entrar en XRisk</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

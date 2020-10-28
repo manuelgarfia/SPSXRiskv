@@ -1,0 +1,47 @@
+.customButton {
+  background-color: rgba(0, 0, 0, 0.00);
+  box-shadow: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.bottomLine {
+  border-bottom: 1px solid #878282
+}
+
+.chart-size{
+    width:90%;
+    height: 50%;
+}
+
+.header-inputs {
+  width: 150px;
+  height: 15px;
+}
+
+.scnd-inputs {
+  width: 150px;
+  height: 15px;
+}
+
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab-border {
+  border: 2px solid #D9DBDE;
+  border-radius: 25px;
+}
+
+.descripcion-inputs{
+    width: 300px;
+}
+
+/*Cargar Button*/
+.customLoad{
+    height:30px;
+    align-items:center;
+    margin:auto;
+}

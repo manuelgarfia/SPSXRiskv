@@ -1,0 +1,82 @@
+<!--Loader-->
+  <app-loading-modal *ngIf="loaded" class="section-position loader-position"></app-loading-modal>
+<!--End Loader-->
+
+<div id="log" class="bg section-position">
+  <div class="login-card">
+    <mdb-card>
+      <mdb-card-body>
+
+        <div class="row">
+          <mdb-card-title class="col justify-content-center mt-2">
+            <p class="custom-title">Iniciar Sesión</p>
+          </mdb-card-title>
+          <img class="img-fluid col-2" src="/assets/images/logooys.png" alt="Card image cap" />
+        </div>
+
+        <mdb-card-text class="mt-3 buttons-font">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+            <input mdbInput type="text" class="form-control" style="background: rgba(204,204,204,0.25)" placeholder="Usuario" formControlName="username">
+            <div *ngIf="submitted && f.username.errors">
+              <mat-error *ngIf="f.username.errors.required">El campo Usuario es obligatorio</mat-error>
+            </div>
+
+            <input mdbInput type="password" class="form-control mt-3" style="background: rgba(204,204,204,0.25)" placeholder="Contraseña" formControlName="password">
+            <div *ngIf="submitted && f.password.errors">
+              <mat-error *ngIf="f.username.errors.required">El campo Contraseña es obligatorio</mat-error>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+              <button mdbBtn type="submit" color="black" outline="true" mdbWavesEffect (click)="onLoginClick()">Login</button>
+              <button mdbBtn type="button" color="black" outline="true" mdbWavesEffect [routerLink]="['/register']">Registrarse</button>
+            </div>
+
+          </form>
+        </mdb-card-text>
+
+      </mdb-card-body>
+    </mdb-card>
+  </div>
+</div>
+
+
+<!--<div class="bg">
+  <div class="login-card">
+    <mat-card>
+      <mat-progress-bar [color]="color" [mode]="mode" [value]="value" [bufferValue]="bufferValue" [style.display]="showSpinner ? 'block' : 'none'"></mat-progress-bar>
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-card-header>
+            <img mat-card-sm-image src="https://www.oysconsultores.com/wp-content/uploads/2017/07/LOGO_OyS-1-e1500229451389.png" alt="Photo of a Shiba Inu">
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput placeholder="Username" formControlName="username">
+              <div *ngIf="submitted && f.username.errors">
+                <mat-error *ngIf="f.username.errors.required">Username is required</mat-error>
+              </div>
+            </mat-form-field>
+            <p></p>
+            <mat-form-field>
+              <input matInput placeholder="Password" formControlName="password" type="password">
+              <div *ngIf="submitted && f.password.errors">
+                <mat-error *ngIf="f.username.errors.required">Password is required</mat-error>
+              </div>
+            </mat-form-field>
+            <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+            <mat-error *ngIf="error" class="alert alert-danger">{{ error }}</mat-error>
+          </mat-card-content>
+          <mat-card-actions>
+            <!--<button mat-raised-button type="submit" color="primary">Login</button>
+            <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="['/register']">Registrarse</a>-->
+<!--</mat-card-actions>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <button mdbBtn type="button" color="success" outline="true" mdbWavesEffect>Success</button>
+
+</div>-->

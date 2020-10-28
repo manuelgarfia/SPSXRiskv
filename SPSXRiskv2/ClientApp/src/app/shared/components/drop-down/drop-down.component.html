@@ -1,0 +1,13 @@
+
+<mat-form-field>
+  <mat-label>{{label}}</mat-label>
+  <mat-select [(value)]="itemValue">
+    <mat-select-search [formControl]="filterControl"></mat-select-search>
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item.code" (click)="emitValue(item.code)">{{item.code}}, {{item.description}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+
+
+

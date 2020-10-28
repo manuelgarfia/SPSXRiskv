@@ -1,0 +1,117 @@
+
+  <div class="container-fluid">
+
+    <div class="col"></div>
+
+    <div class="col">
+      <div class="ml-4 custom-title mt-4 mb-5">
+        <p id="tableLabel">Escenario detalle</p>
+      </div>
+
+
+      <p *ngIf="!escenarioDetalles"><em>Loading...</em></p>
+        <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+          <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>{{errorText}}</strong>
+        </div>
+        <div class="row bottomStyles ml-4">
+            <button type="button" class="btn customButton" size="sm" mdbBtn (click)="refresh()">Refrescar<i class="fas fa-sync-alt cyan-text pl-1 ml-1"></i></button>
+            <button type="button" class="btn customButton" size="sm" (click)="add()" mdbBtn>Añadir<i class="fas fa-plus cyan-text pl-1 ml-1"></i></button>
+        </div>
+
+        <div class="row">
+          <div class="search-box ml-4">
+            <div class="md-form">
+              <input type="text"
+                     [(ngModel)]="searchText"
+                     class="form-control"
+                     id="search"
+                     mdbInput />
+              <label for="search">Search</label>
+            </div>
+          </div>
+        </div>
+        <!-- Progress Bar Start-->
+        <div #Progress class="'row">
+
+          <mat-progress-bar class="example-margin"
+                            [color]="color"
+                            [mode]="mode"
+                            [value]="value"
+                            [bufferValue]="bufferValue">
+          </mat-progress-bar>
+          <!--
+        <mat-spinner></mat-spinner>
+          -->
+        </div>
+        <!-- Progress Bar End-->
+
+        <div *ngIf="loading">
+          <div class="glyphicon glyphicon-hourglass"></div> CARGANDO...
+        </div>
+
+        <table mdbTable #tableEl="mdbTable" class='table table-striped' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="escenarioDetalles">
+          <thead class="black white-text">
+            <tr>
+              <th [mdbTableSort]="escenarioDetalles" sortBy="fecha" scope="col">Fecha<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="escenarioDetalles" sortBy="codtipoint" scope="col">Código<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="escenarioDetalles" sortBy="escenario" scope="col"><mdb-icon fas icon="leaf" class="mr-2 blue-text" aria-hidden="true"></mdb-icon>Escenario<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="escenarioDetalles" sortBy="pctinteres" scope="col">Porcentaje interés<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr mdbTableCol *ngFor="let escenarioDetalle of escenarioDetalles; let i=index" (click)="onRowClick(i)">
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" data- scope="row">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="escenarioDetalle.fecha" (dateChange)="changeValue(i, 'fecha', escenarioDetalle.fecha)" (focus)="onFocus(i)" (blur)="updateList(i, 'fecha', escenarioDetalle.fecha)">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker> </mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mat-form-field>
+                  <mat-select *ngIf="tipos" [(ngModel)]="escenarioDetalle.codtipoint" (selectionChange)="changeValue(i, 'codtipoint', escenarioDetalle.codtipoint)" (focus)="onFocus(i)" (blur)="updateList(i, 'codtipoint', escenarioDetalle.codtipoint)">
+                    <mat-option *ngFor="let tipo of tipos" [value]="tipo.codigo">{{tipo.descripcion}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mat-form-field>
+                  <mat-select *ngIf="escenarios" [(ngModel)]="escenarioDetalle.escenario" (selectionChange)="changeValue(i, 'escenario', escenarioDetalle.escenario)" (focus)="onFocus(i)" (blur)="updateList(i, 'escenario', escenarioDetalle.escenario)">
+                    <mat-option *ngFor="let escenario of escenarios" [value]="escenario.codigo">{{escenario.descripcion}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mat-form-field class="number">
+                  <input matInput [(ngModel)]="escenarioDetalle.pctinteres" (change)="changeValue(i, 'pctinteres', escenarioDetalle.pctinteres)" (focus)="onFocus(i)" (blur)="updateList(i, 'pctinteres', escenarioDetalle.pctinteres)">
+                </mat-form-field>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <div class="btn-group mr-2" role="group">
+                  <button type="button" mdbBtn color="danger" rounded="true" size="sm" class="my-0" (click)="openDialog('remove', i)"><mdb-icon far icon="trash-alt"></mdb-icon>&nbsp;Eliminar</button>
+                </div>
+                <span class="table-remove">
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot class="grey lighten-5 w-100">
+            <tr>
+              <td colspan="4">
+                <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="escenarioDetalles"></mdb-table-pagination>
+              </td>
+            </tr>
+          </tfoot>
+
+        </table>
+    </div>
+
+    <div class="col"></div>
+
+  </div>
+
+

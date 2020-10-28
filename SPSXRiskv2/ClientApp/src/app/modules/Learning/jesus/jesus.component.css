@@ -1,0 +1,18 @@
+.number {
+  text-align: right;
+}
+
+.search-box{
+    width: 200px;
+}
+
+.customButton {
+  background-color: rgba(0, 0, 0, 0.00);
+  box-shadow: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.bottomStyles {
+  border-bottom: 1px solid #878282
+}

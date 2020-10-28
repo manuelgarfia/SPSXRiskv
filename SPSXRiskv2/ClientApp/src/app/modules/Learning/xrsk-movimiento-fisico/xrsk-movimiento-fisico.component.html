@@ -1,0 +1,599 @@
+<p></p>
+<p *ngIf="!movimientos"><em>Loading...</em></p>
+<div class="container-fluid">
+
+  <div class="mt-4 mb-4">
+    <mdb-breadcrumb class="mt-4 mb-4">
+      <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="active">Movimientos Físicos</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
+  </div>
+
+  <!-- Start Table template-->
+  <!-- Alert Message Start-->
+  <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{errorText}}</strong>
+  </div>
+ 
+  <!-- END PRINCIPAL DIV-->
+
+  <div [hidden]="!editMode">
+
+    <div class="main-container" [hidden]="!editMode">
+
+      <!-- Header-->
+      <div class="container-header">
+        <div class="row justify-content-md-center mt-3 mb-1" width="100%">
+          <div class="col-md">
+            <mat-form-field class="example-form text-right">
+              <mat-label>Compañía:</mat-label>
+              <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodCIA" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+            </mat-form-field>
+          </div>
+          <div class="ml-2 col-md">
+            <mat-form-field class="example-form text-right">
+              <mat-label>Nº Movimiento:</mat-label>
+              <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfRefXRisk" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+            </mat-form-field>
+          </div>
+          <div class="ml-2 col-md">
+            <mat-form-field class="example-form text-right">
+              <mat-label>Contrato:</mat-label>
+              <input matInput placeholder="" (click)="goToPolizas()" [(ngModel)]="movFisicoEdit.mvfCodCTA" [ngModelOptions]="{standalone: true}" class="linkPolizas">
+            </mat-form-field>
+          </div>
+          <div class="ml-2 col-md">
+            <mat-form-field class="example-form text-right">
+              <mat-label>Divisa:</mat-label>
+              <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodDIV" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+            </mat-form-field>
+          </div>
+          <div class="ml-2 col-md">
+            <mat-form-field class="example-form text-right">
+              <mat-label>Importe Neto:</mat-label>
+              <input type="text" matInput [ngModel]="movFisicoEdit.mvfImNetDiv | number: '1.2-2'"  (blur)="movFisicoEdit.mvfImNetDiv=$event.target.value" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <!-- End Header-->
+      <!-- Tabs -->
+      <div>
+        <div class="row container-fluid">
+          <div class="col-md tab-border mt-3">
+
+            <form [formGroup]="validatingForm" (ngSubmit)="formEditSubmit()">
+              <mat-tab-group class="full-width">
+
+                <mat-tab label="General">
+                  <div class="container-sm mt-3">
+
+                    <!-- 1a Row-->
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="mvfFechOperacPicker" placeholder="Fecha Operación" [(ngModel)]="movFisicoEdit.mvfFechOperac" format='dd/MM/yyyy' [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-datepicker-toggle matSuffix [for]="mvfFechOperacPicker"></mat-datepicker-toggle>
+                          <mat-datepicker #mvfFechOperacPicker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="mvfFechValor" placeholder="Fecha Valor" [(ngModel)]="movFisicoEdit.mvfFechValor" format='dd/MM/yyyy' [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-datepicker-toggle matSuffix [for]="mvfFechValor"></mat-datepicker-toggle>
+                          <mat-datepicker #mvfFechValor></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field>
+                          <mat-label>Grado de Certeza</mat-label>
+                          <mat-select [(ngModel)]="movFisicoEdit.mvfGradCert" [ngModelOptions]="{standalone: true}" [disabled]="viewMode">
+                            <mat-option *ngFor="let grado of gradoCerteza;" [value]="grado">{{grado}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+
+                    <!-- 2a row-->
+                    <div class="row">
+
+                      <div class="col-md-4">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Operación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodOPE" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-icon matSuffix class="cursor ml-2" (click)="getOperacion()" [hidden]="viewMode">search</mat-icon>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-form-field>
+                          <mat-label>Contrapartida</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodCPT" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-icon matSuffix class="cursor ml-2" (click)="getContrapartida()" [hidden]="viewMode">search</mat-icon>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-form-field>
+                          <mat-label>Referencia</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfRef1SisExt" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+
+                    <!-- 3a row-->
+                    <div class="row">
+
+                      <div class="col-md-4">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Importe Operación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfImBrPtas" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-form-field>
+                          <mat-label>Cambio Operación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCamBrImpu" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Divisa Operación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodCPTDIV" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+
+                    <!-- 4a row -->
+                    <div class="row">
+
+                      <div class="col-md-4">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Importe Moneda Grupo</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfImpNetDivMN" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <!-- Autocomplete Compañias -->
+                        <!--<app-drop-down [itemsList]="selectorCompanyias.detail" [(itemValue)]="movFisicoEdit.mvfCodCIA" AutocompleteLabel="Comp." (emitCIA)="receiveCIA($event)"></app-drop-down>-->
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Cambio Mon. Oper-Grupo</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCamNetCptMn" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+
+                    <!-- 5a row-->
+                    <div class="row">
+                      <div class="col-md-4">
+                        <mat-form-field class="example-form text-left descripcion-input">
+                          <mat-label>Descripción</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfDescripcion" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                  </div>
+                </mat-tab>
+
+                <mat-tab label="Conciliación/Contabilización">
+                  <div class="container-sm mt-3">
+
+                    <div class="row">
+
+                      <div class="col-md">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Tipo Conciliación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfConciliado" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Referencia Conciliación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfRefConc" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="mvfFechConc" placeholder="Fecha Conciliación" format='dd/MM/yyyy' [(ngModel)]="movFisicoEdit.mvfFechConc" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-datepicker-toggle matSuffix [for]="mvfFechConc"></mat-datepicker-toggle>
+                          <mat-datepicker #mvfFechConc></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="mvfFechaContable" placeholder="Fecha Contable" format='dd/MM/yyyy' [(ngModel)]="movFisicoEdit.mvfFechCont" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-datepicker-toggle matSuffix [for]="mvfFechaContable"></mat-datepicker-toggle>
+                          <mat-datepicker #mvfFechaContable></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="col-md">
+                      <mat-form-field class="example-form text-right">
+                        <mat-label>Referencia Contabilización</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfRefCont" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                      </mat-form-field>
+                    </div>
+                    <!--<div class="col">
+                  <mat-form-field class="example-form text-right">
+                    <mat-label>Referencia Contabilización</mat-label>
+                    <input matInput placeholder="">
+                  </mat-form-field>
+                </div>-->
+                  </div>
+
+                </mat-tab>
+
+                <mat-tab label="Datos Financieros">
+
+                  <div class="container-sm mt-3">
+
+                    <div class="row justify-content-md-center">
+
+                      <div class="col-md">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Codigo Interés</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodTIntRef" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Agrupación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfAgrOpe" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Interés</mat-label>
+                          <input matInput placeholder="">
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+
+                    <div class="row justify-content-md-center">
+                      <div class="col-md">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Spread</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfSpread" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="mvfFechaVencimiento" placeholder="Fecha Contable" format='dd/MM/yyyy' [(ngModel)]="movFisicoEdit.mvfFechVto" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-datepicker-toggle matSuffix [for]="mvfFechaVencimiento"></mat-datepicker-toggle>
+                          <mat-datepicker #mvfFechaVencimiento></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md">
+                      </div>
+
+                    </div>
+
+                  </div>
+                </mat-tab>
+
+                <mat-tab label="Otros">
+                  <div class="container-sm mt-3">
+                    <!-- 1a row-->
+                    <div class="row">
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Agrupación Operaciones</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodAOP" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Tipo Operación</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfTipoOPE" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Tipo de Línea</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodTLI" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Agrupación Contrapartidas</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodACP" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <!-- 2a row-->
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Grupo Flujo</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodGFL" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Flujo</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodFLU" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Agrupación Contrapartida</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodACP" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="mvfFechaEntrada" placeholder="Fecha Contable" format='dd/MM/yyyy' [(ngModel)]="movFisicoEdit.mvfFechImp" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-datepicker-toggle matSuffix [for]="mvfFechaEntrada"></mat-datepicker-toggle>
+                          <mat-datepicker #mvfFechaEntrada></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <!-- 3a row-->
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Sistema Origen</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfSisOrig" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Código Referencia</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodIrcREF" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="mvfFechaEstimada" placeholder="Fecha Contable" format='dd/MM/yyyy' [(ngModel)]="movFisicoEdit.mvfFechEstimada" [ngModelOptions]="{standalone: true}" [disabled]="viewMode" class="dis-input">
+                          <mat-datepicker-toggle matSuffix [for]="mvfFechaEstimada"></mat-datepicker-toggle>
+                          <mat-datepicker #mvfFechaEstimada></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="example-form text-right">
+                          <mat-label>Código Usuario</mat-label>
+                          <input matInput placeholder="" [(ngModel)]="movFisicoEdit.mvfCodUSR" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                  </div>
+                </mat-tab>
+
+              </mat-tab-group>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Tabs -->
+      <!-- Desglose -->
+      <div *ngIf="!esEfectos">
+        <div>
+          <p class="desglose-title mt-3 mb-2 ml-3">Desglose</p>
+        </div>
+
+        <div class="table-responsive mb-3">
+          <table mdbTable class="table pointer" small="true" hover="true" *ngIf="desglose">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id</th>
+                <th scope="col">Contrapartida</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Divisa</th>
+                <th scope="col">Importe</th>
+                <th scope="col">Operación</th>
+                <th scope="col">Imp. Operación</th>
+                <th scope="col">Imp. Moneda Grupo</th>
+                <th scope="col">Cuenta Contable</th>
+                <th scope="col">Analítica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="cursor" *ngFor="let item of desglose" (click)="onRowDesglose(item)">
+                <th scope="row">1</th>
+                <td>{{item.DCPContador}}</td>
+                <td>{{item.DCPCodCPT}}</td>
+                <td>{{item.DCPDescripcionCPT}}</td>
+                <td>{{item.DCPDivisa}}</td>
+                <td class="text-right">{{item.importe | number: '1.2-2'}}</td>
+                <td>{{item.DCPDivisaCpt}}</td>
+                <td class="text-right">{{item.importeOperacion | number: '1.2-2'}}</td>
+                <td class="text-right">{{item.importeMonGrupo | number: '1.2-2'}}</td>
+                <td class="text-right">{{item.DCPCuentaContableCPT}}</td>
+                <td>{{item.analitica}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- End Desglose -->
+      <!-- Efectos (Webinar) -->
+      <div *ngIf="esEfectos">
+        <div>
+          <p class="desglose-title mt-3 mb-2 ml-3">Efectos</p>
+        </div>
+
+        <div class="table-responsive mb-3">
+          <table mdbTable class="table pointer" small="true" hover="true" *ngIf="desglose">
+            <thead>
+              <tr>
+                <th scope="col">Factura</th>
+                <th scope="col">FechaVto</th>
+                <th scope="col">Importe</th>
+                <th scope="col">Divisa</th>
+                <th scope="col">Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="cursor" *ngFor="let efecto of efectos">
+                <td>{{efecto.Factura}}</td>
+                <td>{{efecto.FechaVto | date:'dd/MM/yyyy'}}</td>
+                <td class="text-right">{{efecto.Importe | number: '1.2-2'}}</td>
+                <td>{{efecto.Moneda}}</td>
+                <td>{{efecto.notas}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- End efectos -->
+
+      <div class="text-right">
+        <!--<button mdbBtn type="submit" color="black" outline="true" mdbWavesEffect>Login</button>-->
+        <button type="submit" mdbBtn size="sm" color="info" outline="true" mdbWavesEffect><mdb-icon far icon="save" size="lg" class="mr-2"></mdb-icon>Guardar</button>
+        <button type="button" mdbBtn size="sm" color="info" outline="true" (click)="cancelSubmitClick()" mdbWavesEffect>Cancelar</button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <div [hidden]="editMode">
+    <!--Start Button Section-->
+    <div class="mb-3 bottomStyles">
+      <button type="button" class="btn customButton" size="sm" mdbBtn>Añadir<i class="fas fa-plus cyan-text pl-1 ml-1"></i></button>
+
+      <button type="button" class="btn customButton" size="sm" [mdbTooltip]="PreferencesOn" *ngIf="tooltipPreferences" (click)="filterClick()" mdbBtn>Filtrar<i class="fas fa-filter cyan-text pl-1 ml-1"></i></button>
+      <ng-template #PreferencesOn>
+        <p> Filtrando por:</p>
+        <div *ngFor="let detail of tooltipPreferences">
+          <p>- {{detail.entity}}: {{detail.values}}</p>
+        </div>
+      </ng-template>
+
+
+      <button type="button" class="btn customButton" size="sm" mdbBtn (click)=select.open() *ngIf="selectOptions">Exportar<i class="fas fa-file-export cyan-text pl-1 ml-1"></i></button>
+      <mat-select #select class="mat-select-arrow">
+        <mat-option *ngFor="let option of selectOptions" (click)="exportAsXLSX(option)">{{option}}</mat-option>
+      </mat-select>
+    </div>
+    <!-- End Button Section -->
+
+    <div class="table-container">
+      <table mdbTable #tableEl="mdbTable" mdbTableScroll scrollX="true" maxWidth="1300" class='table table-striped mb-0 w-auto text-nowrap' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="movimientos">
+        <thead class="black white-text">
+          <tr>
+            <th></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodCIA" scope="col">Compañía<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfRefXRisk" scope="col">Referencia XRISK<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="MVFImBrDivisa" scope="col">Importe Divisa<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodGEN" scope="col">mvfCodGEN<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodENT" scope="col">Entidad<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodCTA" scope="col">Contrato<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfGradCert" scope="col">Certeza<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfConciliado" scope="col">Estado<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfFechOperac" scope="col">F.Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfImpNetDivMN" scope="col">Importe Mon-Grupo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCamBrImpu" scope="col">Cambio Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCamNetCptMn" scope="col">Cambio Mon. Oper-Grupo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfImBrPtas" scope="col">Importe Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodCPTDIV" scope="col">Divisa Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfFechConc" scope="col">Fecha Conciliación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfRefConc" scope="col">Referencia Conciliación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfFechCont" scope="col">Fecha Contabilicación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodTIntRef" scope="col">Código Interés<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfFechVto" scope="col">Fecha Vencimiento<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfSpread" scope="col">Spread<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfTipInt" scope="col">Interés<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodAOP" scope="col">Código Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodGFL" scope="col">Grupo Flujo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodFLU" scope="col">Flujo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodACP" scope="col">Agrupación Contr.<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfFechImp" scope="col">Fecha Entrada<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfSisOrig" scope="col">Sistema Origen<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodIrcREF" scope="col">Código Referencia<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfFechEstimada" scope="col">Fecha Estimada<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="movimientos" sortBy="mvfCodUSR" scope="col">Código Usuario<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol [class.selectedRow]="rowIsSelected(movimiento)" *ngFor="let movimiento of movimientos; let i = index">
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><mdb-icon fas icon="arrow-right" class="cursor ml-1 mr-2" (click)="view(movimiento)"></mdb-icon><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor" (click)="edit(movimiento)"></mdb-icon><mdb-icon fas icon="trash-alt" class="green-text mr-2 cursor"></mdb-icon></td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodCIA }} {{ movimiento.ciaDescripcion }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfRefXRisk }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" class="text-right">{{ movimiento.mvfImBrDivisa|number:'1.2-2'}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodGEN }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodENT }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodCTA }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfGradCert }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfConciliado }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfFechOperac | date:'dd/MM/yyyy' }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" class="text-right">{{ movimiento.mvfImpNetDivMN}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCamBrImpu}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCamNetCptMn}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfImBrPtas}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodCPTDIV}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfFechConc | date:'dd/MM/yyyy'}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfRefConc}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfFechCont | date:'dd/MM/yyyy'}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodTIntRef}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfFechVto | date:'dd/MM/yyyy'}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfSpread}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfTipInt}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodAOP}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodGFL}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodFLU}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodACP}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfFechImp | date:'dd/MM/yyyy'}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfSisOrig}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodIrcREF}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfFechEstimada | date:'dd/MM/yyyy' }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodUSR}}</td>
+          </tr>
+        </tbody>
+        <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="4">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="movimientos" class="mb-0"></mdb-table-pagination>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+    </div>
+          
+    
+  </div>
+
+
+</div>

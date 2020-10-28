@@ -1,0 +1,37 @@
+<h1 id="tableLabel">Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!forecasts"><em>Loading...</em></p>
+<div class="container" *ngIf="forecasts">
+  <div class="row">
+    <div class="col-md-12 mx-auto">
+      <div class="md-form">
+        <input type="text"
+               [(ngModel)]="searchText"
+               class="form-control"
+               id="search"
+               mdbInput />
+        <label for="search">Search</label>
+      </div>
+    </div>
+  </div>
+  <table mdbTable   #tableEl="mdbTable" class='table table-striped' aria-labelledby="tableLabel" *ngIf="forecasts">
+    <thead class="black white-text">
+      <tr>
+        <th>Date</th>
+        <th>Temp. (C)</th>
+        <th>Temp. (F)</th>
+        <th>Summary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let forecast of forecasts">
+        <td scope="row">{{ forecast.date }}</td>
+        <td>{{ forecast.temperatureC }}</td>
+        <td>{{ forecast.temperatureF }}</td>
+        <td>{{ forecast.summary }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

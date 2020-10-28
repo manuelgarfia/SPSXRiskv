@@ -1,0 +1,126 @@
+<div class="modal-content">
+  <div class="modal-header winter-neva-gradient">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    </button>
+    <div class="row mt-0 mb-0">
+      <p class="modal-title w-100 size-font-filter mt-3 col filterTitle" id="myModalLabel"><i class="fas fa-filter"></i> {{heading}}</p>
+    </div>
+
+    <div>
+      <i class="fas fa-ellipsis-v cursorOn mt-3" (click)="select.open()"></i>
+        <mat-select #select class="mat-select-arrow">
+          <mat-option *ngFor="let preference of deletePreferencesOptions" (click)="ActionPreferences(preference.number)">{{preference.description}}</mat-option>
+        </mat-select>
+    </div>
+    
+  </div>
+
+  <div class="modal-body">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let panel of items">
+        <mat-expansion-panel-header (click)="selectPanel(panel.type, panel.subtype)">
+          {{panel.title}}
+        </mat-expansion-panel-header>
+
+        <ng-container *ngIf="panel.type !='items'">
+
+          <ng-container #inputs *ngIf="panel.type === 'number'">
+
+            <mat-form-field>
+              <mat-label>Selecciona una opción</mat-label>
+              <mat-select *ngIf="importOptions" [(ngModel)]="panel.subtype">
+                <mat-option *ngFor="let option of importOptions" [value]="option.simbolo" (click)="optionClick(panel.type, option.descripcion)">{{option.descripcion}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="row">
+              <mat-form-field class="example-form-field ml-2" style="width:150px" *ngIf="firstInput">
+                <mat-label>{{label}}</mat-label>
+                <input matInput type="text" class="text-right" [(ngModel)]="panel.decValue">
+              </mat-form-field>
+
+              <mat-form-field class="example-form-field ml-4" style="width:150px" *ngIf="secondInput">
+                <mat-label>{{secondLabel}}</mat-label>
+                <input matInput type="text" [(ngModel)]="panel.importMax">
+              </mat-form-field>
+
+            </div>
+          </ng-container>
+
+          <ng-container #strings *ngIf="panel.type === 'string'">
+
+            <mat-form-field>
+              <mat-label>Selecciona una opción</mat-label>
+              <mat-select *ngIf="descriptionOptions" [(ngModel)]="panel.subtype">
+                <mat-option *ngFor="let option of descriptionOptions" [value]="option.simbolo" (click)="optionClick(panel.type, option.descripcion)">{{option.descripcion}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="row">
+              <!--Input per la descripció-->
+              <mat-form-field class="example-form-field ml-4" style="width:150px" *ngIf="descriptionBool">
+                <mat-label>{{label}}</mat-label>
+                <input matInput type="text" [(ngModel)]="panel.charValue">
+              </mat-form-field>
+
+            </div>
+
+          </ng-container>
+
+          <ng-container #dateRange *ngIf="panel.type === 'date'">
+
+            <mat-form-field>
+              <mat-label>Selecciona una opción</mat-label>
+              <mat-select *ngIf="dateOptions" [(ngModel)]="panel.subtype">
+                <mat-option *ngFor="let option of dateOptions" [value]="option.simbolo" (click)="optionClick(panel.type, option.descripcion)">{{option.descripcion}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="full-width-field" *ngIf="firstInput">
+              <input matInput [matDatepicker]="desdePicker" placeholder="{{label}}" [(ngModel)]="panel.from" format='dd/MM/yyyy'>
+              <mat-datepicker-toggle matSuffix [for]="desdePicker"></mat-datepicker-toggle>
+              <mat-datepicker #desdePicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="full-width-field" *ngIf="secondInput">
+              <input matInput [matDatepicker]="hastaPicker" placeholder="Hasta" [(ngModel)]="panel.to" format='dd/MM/yyyy'>
+              <mat-datepicker-toggle matSuffix [for]="hastaPicker"></mat-datepicker-toggle>
+              <mat-datepicker #hastaPicker></mat-datepicker>
+            </mat-form-field>
+          </ng-container>
+
+        </ng-container>
+
+        <ng-container *ngIf="panel.type==='items' && panel.subtype === null">
+          <!-- Card -->
+          <mdb-card>
+            <mdb-card-body>
+              <div class="flex-row">
+                <!-- Search -->
+                <div class="row md-form m-0 ml-4 mt-1" style="width: 200px">
+                  <input type="text" [(ngModel)]="itemFilter" [ngModelOptions]="{standalone: true}" name="itemFilter" class="form-control" mdbInput />
+                  <label for="search">Buscar</label>
+                </div>
+                <!--End Search-->
+                <mdb-checkbox [default]="true" class="ml-2" (change)="SelectAll($event, panel.entity)">Seleccionar todos</mdb-checkbox>
+              </div>
+            </mdb-card-body>
+          </mdb-card>
+          <!-- End Card -->
+
+          <form *ngFor="let element of (panel.content | filter: itemFilter)">
+            <mdb-checkbox [default]="true" [checked]="isChecked" [(ngModel)]="element.checked" [ngModelOptions]="{standalone: true}" class="ml-2">{{element.code}}, {{element.description}}</mdb-checkbox>
+          </form>
+
+
+        </ng-container>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mdbBtn class="waves-light ml-4 btn-mdb-color" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Cancelar</button>
+    <button type="button" mdbBtn color="info" class="relative waves-light mr-auto ml-2" (click)="aceptar()" mdbWavesEffect>Aceptar</button>
+  </div>
+</div>
+

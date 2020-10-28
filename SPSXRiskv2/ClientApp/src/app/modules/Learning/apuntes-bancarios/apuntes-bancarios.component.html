@@ -1,0 +1,381 @@
+<!-- Apunte Bancario -->
+<app-progress-information *ngIf="loaded" class="section-position loader-position"></app-progress-information>
+
+<div id="apunBanc" class="container-fluid section-position">
+
+    <div class="mt-4 mb-4">
+      <mdb-breadcrumb class="mt-4 mb-4">
+        <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+        <mdb-breadcrumb-item class="active">Apuntes Bancarios</mdb-breadcrumb-item>
+      </mdb-breadcrumb>
+    </div>
+
+    <p class="custom-title bottomLine ml-3" >Apuntes Bancarios</p>
+
+    <div [hidden]="!editMode">
+
+      <div class="row">
+
+        <div class="col-md-3">
+          <mdb-card class="mt-3">
+            <mdb-card-body>
+              <mdb-card-text>
+                <div class="central-container">
+                  <div class="row" style="margin-left:20px">
+                    <div>
+                      <mat-form-field class="header-inputs">
+                        <mat-label>Compañia:</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCCodCIA" [ngModelOptions]="{standalone: true}">
+                      </mat-form-field>
+                    </div>
+                    <div class="ml-4">
+                      <mat-form-field class="header-inputs">
+                        <mat-label>Referencia:</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCNumerador" [ngModelOptions]="{standalone: true}">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+        <div class="col-md-4">
+          <mdb-card class="mt-3">
+            <mdb-card-body>
+              <mdb-card-text>
+                <div class="central-container">
+                  <div class="row" style="margin-left:20px">
+                    <div>
+                      <mat-form-field class="header-inputs">
+                        <mat-label>Contrato:</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCCodCTA" [ngModelOptions]="{standalone: true}">
+                      </mat-form-field>
+                    </div>
+                    <div class="ml-4">
+                      <mat-form-field class="input-custom">
+                        <mat-label>Num. Cuenta:</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="apunteBancario.numcuenta" [ngModelOptions]="{standalone: true}">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+        <div class="col-md-5">
+          <mdb-card class="mt-3">
+            <mdb-card-body>
+              <mdb-card-text>
+                <div class="central-container">
+                  <div class="row" style="margin-left:20px">
+                    <div>
+                      <mat-form-field class="header-inputs">
+                        <mat-label>Operación:</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCConCom" [ngModelOptions]="{standalone: true}">
+                      </mat-form-field>
+                    </div>
+                    <div class="ml-4">
+                      <mat-form-field class="header-inputs mb-2">
+                        <input matInput [matDatepicker]="apunBancFechVal" placeholder="Fecha Operación" [(ngModel)]="apunteBancario.ABCFechVal" format='dd/MM/yyyy' [ngModelOptions]="{standalone: true}">
+                        <mat-datepicker-toggle matSuffix [for]="apunBancFechVal"></mat-datepicker-toggle>
+                        <mat-datepicker #apunBancFechVal></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div>
+                      <mat-form-field class="header-inputs ml-4">
+                        <input matInput [matDatepicker]="apunBancFechValor" placeholder="Fecha Valor" [(ngModel)]="apunteBancario.ABCFechVal" format='dd/MM/yyyy' [ngModelOptions]="{standalone: true}">
+                        <mat-datepicker-toggle matSuffix [for]="apunBancFechValor"></mat-datepicker-toggle>
+                        <mat-datepicker #apunBancFechValor></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="ml-4">
+                      <mat-form-field class="header-inputs">
+                        <mat-label>Importe Divisa:</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCImporte" [ngModelOptions]="{standalone: true}">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <mdb-card class="mt-3">
+            <mdb-card-body>
+              <mdb-card-text>
+                <div class="row justify-content-center" style="margin-left:20px">
+                  <div class="ml-4 col-md-12" style="display:flex">
+
+                    <div id="contenedor">
+                      <mat-form-field class="complementos-input">
+                        <mat-label>Complementos:</mat-label>
+                        <input id="texto" matInput placeholder="" [(ngModel)]="apunteBancario.complementos" [ngModelOptions]="{standalone: true}">
+                      </mat-form-field>
+                    </div>
+
+                    <div class="ml-4">
+                      <button type="submit" mdbBtn color="info" size="sm" outline="true" (click)="verDetalle()" mdbWavesEffect>Ver detalle</button>
+                    </div>
+                  </div>
+                </div>
+              </mdb-card-text>
+
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+      </div>
+
+      <div class="tab-border mt-3" [hidden]="seeDetail">
+        <mat-tab-group class="mt-3" mat-align-tabs="center">
+          <mat-tab label="General">
+
+            <div class="tabs-container">
+
+              <!-- 1a Row-->
+              <div class="row mt-3">
+                <div class="col-md">
+
+                  <div>
+                    <mat-form-field class="example-form text-right">
+                      <mat-label>Documento:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCDocumento" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right">
+                      <mat-label>Referencia 1:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCRef1" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right">
+                      <mat-label>Referencia 2:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCRef2" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+                <div class="col-md">
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.1:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple1" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.3:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple3" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.5:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple5" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.7:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple7" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.9:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple9" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+                <div class="col-md">
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.2:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple2" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.4:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple4" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.6:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple6" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.8:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple8" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right comple-input">
+                      <mat-label>Comple.10:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCComple10" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </mat-tab>
+
+
+          <mat-tab label="Otros">
+
+            <div class="tab2-container">
+              <div class="row justify-content-center">
+                <div class="col-md others-container mt-3 ml-4">
+
+                  <div class="mt-3 ml-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="apunBancFechOper" placeholder="Fecha Operación" [(ngModel)]="apunteBancario.ABCFechConcil" format='dd/MM/yyyy' [ngModelOptions]="{standalone: true}">
+                      <mat-datepicker-toggle matSuffix [for]="apunBancFechOper"></mat-datepicker-toggle>
+                      <mat-datepicker #apunBancFechOper></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field class="example-form text-right mt-3 ml-3">
+                      <mat-label>Tipo Conciliación:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCTipConcil" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="mt-3 ml-3">
+                    <mat-form-field class="example-form text-right ml-2">
+                      <mat-label>Referencia Conciliación:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCRefConcil" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-md others-container ml-4">
+
+                  <div class="ml-3">
+                    <mat-form-field class="mt-2">
+                      <input matInput [matDatepicker]="apunBancFechOper" placeholder="Fecha Entrada:" [(ngModel)]="apunteBancario.ABCFechIntro" format='dd/MM/yyyy' [ngModelOptions]="{standalone: true}">
+                      <mat-datepicker-toggle matSuffix [for]="apunBancFechOper"></mat-datepicker-toggle>
+                      <mat-datepicker #apunBancFechOper></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="ml-3 mt-3">
+                    <mat-form-field class="example-form text-right">
+                      <mat-label>Fichero:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCFichEnt" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="ml-3 mt-3">
+                    <mat-form-field class="example-form text-right">
+                      <mat-label>Usuario:</mat-label>
+                      <input matInput placeholder="" [(ngModel)]="apunteBancario.ABCCodUSR" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+      </div>
+
+
+      <div class="text-right">
+        <button type="submit" mdbBtn color="info" size="sm" outline="true" (click)="generarMovimiento()" mdbWavesEffect>Asignar</button>
+        <button type="submit" mdbBtn color="info" size="sm" outline="true" mdbWavesEffect><mdb-icon far icon="save" size="lg" class="mr-2"></mdb-icon>Guardar</button>
+        <button type="button" mdbBtn color="info" size="sm" outline="true" (click)="cancelSubmitClick()" mdbWavesEffect>Cancelar</button>
+      </div>
+
+    </div>
+
+    <!-- End Apunte Bancario -->
+    <!-- Grid ApunBanc -->
+
+    <div [hidden]="editMode">
+
+      <div class="table-container mt-5">
+            <table mdbTable #tableEl="mdbTable" mdbTableScroll scrollX="true" small="true" maxWidth="1300" class='table table-striped mb-0 w-auto text-nowrap pointer' hover="true" aria-labelledby="tableLabel" *ngIf="apunBanc">
+              <thead class="black white-text">
+                <tr>
+                  <th></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcCodCIA" scope="col">Compañía<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcNumerador" scope="col">Referencia<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcCodCTA" scope="col">Contrato<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcOficina" scope="col">Oficina<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcCuenta" scope="col">Cuenta<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcFechOper" scope="col">Fecha Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcFechVal" scope="col">Fecha Valor<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcConCom" scope="col">CC<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcConPro" scope="col">CP<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcSigno" scope="col">Signo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcImporte" scope="col">Importe<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="complementos" scope="col">Complementos<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr mdbTableCol *ngFor="let apunte of apunBanc; let i = index" (click)="edit(apunte)">
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor" (click)="edit(apunte)"></mdb-icon><mdb-icon fas icon="trash-alt" class="green-text mr-2 cursor"></mdb-icon></td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCCodCIA }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCNumerador }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCCodCTA }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCOficina }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCCuenta }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCFechOper | date:'dd/MM/yyyy' }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCFechVal | date:'dd/MM/yyyy' }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.conComun }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCConPro }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCSigno }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.ABCImporte | number }}</td>
+                  <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ apunte.complementos }}</td>
+                </tr>
+              </tbody>
+              <tfoot class="grey lighten-5 w-100">
+                <tr>
+                  <td colspan="4">
+                    <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="apunBanc" class="mb-0"></mdb-table-pagination>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+      </div>
+      <div class="mt-3 mr-5 text-center">
+        <button type="submit" mdbBtn color="elegant" size="sm" outline="true" (click)="showProgressInformation()" mdbWavesEffect>Proceso</button>
+      </div>
+      
+
+    </div>
+    <!-- end Grid ApunBanc -->
+  </div>
+

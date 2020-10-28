@@ -1,0 +1,93 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*Global title*/
+.custom-title {
+  font-family: 'Segoe UI';
+  font-size: 30px;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+.container {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.container-fluid{
+    height: 100%;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+html, body {
+  height: 100%;
+}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/*LOADING CSS*/
+.loading {
+  width: 200px;
+  height: 200px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border-top: 10px solid #57b964;
+  position: relative;
+  animation: a1 2s linear infinite;
+}
+
+.loading::before, .loading::after {
+  content: '';
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 0;
+  top: -10px;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+
+.loading::before {
+  border-top: 10px solid #52b7bd;
+  transform: rotate(120deg);
+  opacity: 1;
+}
+
+.loading::after {
+  border-top: 10px solid #4653ab;
+  transform: rotate(240deg);
+}
+
+.loading span {
+  position: absolute;
+  font-family: 'Courier New';
+  width: 200px;
+  height: 200px;
+  color: #000000;
+  text-align: center;
+  line-height: 200px;
+  animation: a2 2s linear infinite;
+}
+
+@keyframes a1 {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes a2 {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+/*END LOADING*/

@@ -1,0 +1,30 @@
+<div class="container-sm">
+  <div class="Title_cb mt-4 mb-5">
+    <p>Tipus d'interès</p>
+  </div>
+  <div>
+    <div *ngIf="hiHaParametre(); else Alternativa">
+      <h1>{{tipusInteresCode}}</h1>
+      <h2>{{tipusInteresSelected['descri']}}</h2>
+    </div>
+    <ng-template #Alternativa>
+      <table mdbTable #tableEl="mdbTable" class='table table-striped' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="tipusInteres">
+        <thead class="black white-text">
+          <tr>
+            <th [mdbTableSort]="tipusInteres" sortBy="codigo" scope="col">Código<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="tipusInteres" sortBy="descri" scope="col">Descripcion<mdb-icon fas icon="sort"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol *ngFor="let unTipus of tipusInteres; let i=index">
+            <td contenteditable="false" data- scope="row">{{unTipus['codigo']}}</td>
+            <td contenteditable="false" data- scope="row">{{unTipus['descri']}}</td>
+          </tr>
+        </tbody>
+        </table>
+    </ng-template>
+  </div>
+  <button mdbBtn type="button" color="info" size="md" mdbWavesEffect (click)="backClicked()">
+    <mdb-icon fas icon="backward"></mdb-icon> Tornar enrera
+  </button>
+</div>

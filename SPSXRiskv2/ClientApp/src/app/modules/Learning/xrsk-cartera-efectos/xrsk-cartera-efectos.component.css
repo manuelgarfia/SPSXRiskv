@@ -1,0 +1,32 @@
+.efectos-title {
+  font-size: 25px;
+  border-bottom: 1px solid #89c0e4
+}
+
+.header-inputs {
+  width: 100px;
+  height: 15px;
+}
+
+
+.container-header {
+  border: 2px solid #BBE2EE;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-one {
+  border: 2px solid #7BA5D2;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.header-inputs {
+  width: 170px;
+  height: 15px;
+}

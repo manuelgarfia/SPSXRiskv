@@ -1,0 +1,153 @@
+<div class="container-fluid" style="position: sticky; top: 0;">
+  <div>
+    <p></p>
+    <span class="d-block p-2 bg-primary text-white">{{title}}</span>
+    <p></p>
+  </div>
+
+  <!-- Inici botonera -->
+  <div class="flex-row mb-3">
+    <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-auto mb-3 mb-md-0" role="group" aria-label="First group">
+        <div class="ml-2">
+          <button mat-mini-fab color="primary" mdbTooltip="Asignar" (click)="Asignar()" [disabled]="!showBtnAsignar">
+            <mdb-icon fas icon="certificate"></mdb-icon>
+          </button>
+        </div>
+        <div class="ml-2">
+          <button mat-mini-fab color="primary" mdbTooltip="Relacionar" (click)="Relacionar()" [disabled]="!showBtnRelacionar">
+            <mdb-icon fas icon="archive"></mdb-icon>
+          </button>
+        </div>
+        <div class="ml-2">
+          <button mat-mini-fab color="primary" mdbTooltip="Compensar" (click)="Compensar()" [disabled]="!showBtnCompensar">
+            <mdb-icon fas icon="balance-scale"></mdb-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fi botonera -->
+
+  <div class="row" *ngIf="asignarFactura">
+    <div class="col"></div>
+    <div class="col-10-auto justify-content-center">
+      <!--1a COLUMNA-->
+      <div class="row">
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form">
+            <mat-label>Compañía</mat-label>
+            <input matInput placeholder="Compañía" [(ngModel)]="asignarFactura.ABCCodCIA" readonly="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form">
+            <mat-label>Contrato</mat-label>
+            <input matInput placeholder="Contrato" [(ngModel)]="asignarFactura.ABCCodCTA" readonly="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form text-right">
+            <mat-label>Importe</mat-label>
+            <input matInput placeholder="Importe" [(ngModel)]="asignarFactura.ABCImporteSigno" readonly="true" format="#,##0.00">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form">
+            <mat-label>Divisa</mat-label>
+            <input matInput placeholder="Divisa" [(ngModel)]="asignarFactura.CodDiv" readonly="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-auto">
+          <mat-form-field>
+            <mat-label>Fecha operación</mat-label>
+            <input class="date-align" matInput [matDatepicker]="myDatepickerO" [(ngModel)]="asignarFactura.ABCFechOper" readonly="true">
+            <mat-datepicker-toggle matSuffix [for]="myDatepickerO"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepickerO></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-auto">
+          <mat-form-field>
+            <mat-label>Fecha valor</mat-label>
+            <input class="date-align" matInput mdb [matDatepicker]="myDatepickerV" [(ngModel)]="asignarFactura.ABCFechVal" readonly="true">
+            <mat-datepicker-toggle matSuffix [for]="myDatepickerV"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepickerV></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form">
+            <mat-label>Cliente</mat-label>
+            <input matInput placeholder="Cliente" [(ngModel)]="asignarFactura.Codigo" readonly="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form">
+            <mat-label></mat-label>
+            <input matInput placeholder="" [(ngModel)]="asignarFactura.Descripcion" readonly="true">
+          </mat-form-field>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form">
+            <mat-label>Apunte</mat-label>
+            <input matInput placeholder="Apunte" [(ngModel)]="asignarFactura.ABCNumerador" readonly="true">
+          </mat-form-field>
+        </div>
+        <div class="col-sm-auto">
+          <mat-form-field class="example-form prevision-input">
+            <mat-label>Previsión</mat-label>
+            <input matInput placeholder="Previsión" [(ngModel)]="asignarFactura.MVFrefXrisk" readonly="true">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field class="example-form descripcion-input">
+            <mat-label>Complementos</mat-label>
+            <input matInput placeholder="Complementos" [(ngModel)]="asignarFactura.ABCComple" readonly="true">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"><b>Facturas</b></div>
+        <div class="col">Total: {{totalFacturas | number: '1.2-2'}}€</div>
+        <div class="col">Diferencia: {{diferenciaFacturas | number: '1.2-2'}}€</div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table mdbTable mdbTableScroll scrollY="true" maxHeight="500" stickyHeader="true" stickyHeaderBgColor="black"
+                 stickyHeaderTextColor="white" #tableEl="mdbTable" class="table table-striped" small="true" hover="true"
+                 aria-labelledby="tableLabel" *ngIf="efectos">
+            <thead class="sticky-top">
+              <tr>
+                <!--<th></th>-->
+                <th [mdbTableSort]="efectos" sortBy="Factura" scope="col">Factura<mdb-icon fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="efectos" sortBy="FechaVto" scope="col">Fecha vto.<mdb-icon fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="efectos" sortBy="Importe" scope="col" style="text-align: right">Importe<mdb-icon fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="efectos" sortBy="Moneda" scope="col">Divisa<mdb-icon fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="efectos" sortBy="notas" scope="col">Descripción<mdb-icon fas icon="sort"></mdb-icon></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr mdbTableCol [class.selectedRow]="EfectoIsSelected(efecto)" (click)="EfectoRowClick(efecto)" *ngFor="let efecto of efectos; let i=index">
+                <td contenteditable="false" data- scope="row">{{efecto.Factura}}</td>
+                <td contenteditable="false" data- scope="row">{{efecto.FechaVto | date:'dd/MM/yyyy'}}</td>
+                <td contenteditable="false" data- scope="row" align="right">{{efecto.Importe | number: '1.2-2'}}</td>
+                <td contenteditable="false" data- scope="row">{{efecto.Moneda}}</td>
+                <td contenteditable="false" data- scope="row">{{efecto.notas}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="text-right">
+        <button type="submit" mdbBtn color="info" size="sm" outline="true" (click)="goToMovFisico()" mdbWavesEffect>Ver Previsión</button>
+      </div>
+
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

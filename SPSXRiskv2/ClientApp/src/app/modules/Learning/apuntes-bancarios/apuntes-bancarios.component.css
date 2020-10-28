@@ -1,0 +1,120 @@
+.container-header {
+  border: 2px solid #BBE2EE;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.container-one {
+  border: 2px solid #7BA5D2;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*Pel tab de Otros*/
+.tab2-container {
+  width: 80%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  margin:auto;
+}
+
+.others-container {
+  border: 2px solid #BBE2EE;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-custom {
+  width: 200px;
+  height: 25px;
+}
+.header-inputs {
+  width: 100px;
+  height: 15px;
+}
+
+.date-inputs {
+  width: 150px;
+  height: 15px;
+}
+
+.table-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.cursor:hover {
+  cursor: pointer;
+}
+
+.hr-custom {
+  border-left: 2px solid #8FDE78;
+  height: 200px;
+}
+
+.numcuenta-input {
+  width: 100px;
+  height: 15px;
+}
+
+/*COMPLEMENTOS*/
+.complementos-input {
+  width: 850px;
+}
+
+#contenedor {
+  display: inline-block;
+  min-width: 100px;
+}
+
+#texto {
+  width: 100%;
+}
+
+.comple-input {
+  width: 270px;
+}
+
+.tab-border {
+  border: 2px solid #D9DBDE;
+  border-radius: 25px;
+}
+
+.bottomLine {
+  border-bottom: 1px solid #878282
+}
+
+.pointer tr {
+  cursor: pointer;
+}
+
+/* PROGRESS*/
+.loader-position {
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+}
+
+#apunBanc {
+  z-index: 1;
+}
+
+.section-position {
+  position: absolute;
+}
+

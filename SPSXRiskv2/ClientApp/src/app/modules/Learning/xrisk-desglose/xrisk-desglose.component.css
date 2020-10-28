@@ -1,0 +1,34 @@
+.input-custom{
+    width: 130px;
+}
+
+.card-body {
+  /*height: 150px;*/
+  padding: 10px;
+}
+
+.central-container{
+    display:flex;
+    justify-content:right;
+    padding:0
+}
+
+.container-fluid {
+  background-color: #FFFFFF;
+}
+
+.pointer tr {
+  cursor: pointer;
+}
+
+.container-grid{
+    width:90%;
+    justify-content:center;
+    align-items:center;
+}
+
+hr {
+  height: 1px;
+  width: 40%;
+  background-color: #A0EA7F;
+}

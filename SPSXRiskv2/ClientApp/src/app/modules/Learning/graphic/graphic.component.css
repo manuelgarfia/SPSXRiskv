@@ -1,0 +1,45 @@
+.mat-card {
+  position: fixed;
+  transition: all 1s linear;
+}
+
+.fullscreen {
+  z-index: 9999;
+  width: 90%;
+  height: 90%;
+  top: 0;
+  left: 0;
+}
+.modal-dialog-full-width {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+}
+
+.modal-content-full-width {
+  height: auto !important;
+  min-height: 100% !important;
+  border-radius: 0 !important;
+  background-color: #ececec !important
+}
+
+.modal-header-full-width {
+  border-bottom: 1px solid #9ea2a2 !important;
+}
+
+.modal-footer-full-width {
+  border-top: 1px solid #9ea2a2 !important;
+}
+
+.customButton {
+  background-color: rgba(0, 0, 0, 0.00);
+  box-shadow: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.bottomStyles {
+  border-bottom: 1px solid #878282
+}

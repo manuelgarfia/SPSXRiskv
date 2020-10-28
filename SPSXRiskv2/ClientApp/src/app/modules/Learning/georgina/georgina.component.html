@@ -1,0 +1,142 @@
+<!--Loader-->
+<app-loading-modal *ngIf="!loaded" class="section-position loader-position"></app-loading-modal>
+<!--End Loader-->
+
+<div id="table" class="container-fluid section-position">
+  <div class="row">
+    <!--1a columna-->
+    <div class="col"></div>
+    <!--2a columna CENTRAL-->
+    <div class="col">
+      <div class="title mt-4 mb-5">
+        <p>Condiciones Bancarias Vigentes</p>
+      </div>
+
+      <!--Spinner loader-->
+      <!--<app-loading-modal #loader></app-loading-modal>-->
+      <!-- Alert Message Start-->
+      <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+        <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>{{errorText}}</strong>
+      </div>
+      <!-- Alert Message End-->
+      <!--Start Button Section-->
+      <div class="mb-3 bottomStyles">
+        <button type="button" class="btn customButton" size="sm" mdbBtn [routerLink]="['/gforms']">Añadir<i class="fas fa-plus cyan-text pl-1 ml-1"></i></button>
+        <button type="button" class="btn customButton" size="sm" mdbBtn>Refrescar<i class="fas fa-sync-alt cyan-text pl-1 ml-1"></i></button>
+
+        <button type="button" class="btn customButton" size="sm" [mdbTooltip]="PreferencesOn" *ngIf="tooltipPreferences" (click)="onFilterClick()" mdbBtn>Filtrar<i class="fas fa-filter cyan-text pl-1 ml-1"></i></button>
+        <ng-template #PreferencesOn>
+          <p> Filtrando por:</p>
+          <div *ngFor="let detail of tooltipPreferences">
+            <p>- {{detail.entity}}: {{detail.values}}</p>
+          </div>
+        </ng-template>
+
+
+        <button type="button" class="btn customButton" size="sm" mdbBtn (click)=select.open() *ngIf="selectOptions">Exportar<i class="fas fa-file-export cyan-text pl-1 ml-1"></i></button>
+        <mat-select #select class="mat-select-arrow">
+          <mat-option *ngFor="let option of selectOptions" (click)="exportAsXLSX(option)">{{option}}</mat-option>
+        </mat-select>
+
+        <button *ngIf="show" type="button" class="btn customButton" size="sm" mdbBtn (click)="onDeleteClick()">Eliminar<i class="fas fa-trash cyan-text pl-1"></i></button>
+      </div>
+      <!-- End Button Section
+      <!-- Grid Start-->
+      <div class="row central-text">
+        <table mdbTable mdbTableScroll scrollX="true" small="true" maxWidth="1300" #tableEl="mdbTable" class='table table-striped table-responsive-md w-auto text-nowrap' hover="true" aria-labelledby="tableLabel" *ngIf="component_cbv">
+          <thead class="black white-text">
+            <tr>
+              <th> </th>
+              <th> </th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodACO" scope="col" hidden="hidden">Cabid<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodACO" scope="col">Condiciones<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONFechaDesde" scope="col">Fecha Desde<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONFechaHasta" scope="col">Fecha Hasta<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodCIA" scope="col">Compañía<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodCIA" scope="col">Entidad<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodCTA" scope="col">Código Cuenta<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodOPE" scope="col">Código Operación<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONIdCPT" scope="col">ID Contr.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONMovGastos" scope="col">Mov. Gastos<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodGastosOPE" scope="col">Cód. Gastos Oper.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodCPT" scope="col">Código Contrapartida<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONPorcentaje" scope="col">Porcentaje<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONImpMin" scope="col">Importe Mínimo<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONImpMax" scope="col">Importe Máximo<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONFijo" scope="col">Fijo<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCosteXefecto" scope="col">Coste por Efecto<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONTipoEfecto" scope="col">Tipo Efecto<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONInteresDto" scope="col">Interés Dto.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONPorcentajeInteresDto" scope="col">Porcent. Interés Dto<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCalculoPorDivisa" scope="col">Cálculo por Divisa<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONNuevaCPTIVA" scope="col">Nueva CPT IVA<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONCodIVACPT" scope="col">Código IVA CPT<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONPorcentajeIVA" scope="col">Porcentaje IVA<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="component_cbv" sortBy="CONDesdeImporte" scope="col">Desde Importe<mdb-icon fas icon="sort"></mdb-icon></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr mdbTableCol [class.selectedRow]="rowIsSelected(item)" (click)="onRowClick(item)" *ngFor="let item of component_cbv; let i = index">
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><mdb-checkbox [default]="true" class="p-0" (change)="ShowAndHide(item, $event)"></mdb-checkbox></td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><i class="fas fa-edit" [routerLink]="['/gforms/', edit_mode]" (click)="onEditClick(item)"></i></td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" hidden="hidden">{{ item.cabid }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ item.conCodACO }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conFechaDesde | date:'dd/MM/yyyy'}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conFechaHasta | date:'dd/MM/yyyy' }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conCodCIA }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conCodENT }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conCodCTA }}</td>
+              <!-- <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" mdbTooltip={{item.opeDescripcion}} placement="top">{{ item.conCodOPE }}</td>-->
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.opeDescripcion }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conIdCPT }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.conMovGastos></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conCodGastosOPE }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conCodCPT }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conPorcentaje }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conImpMin }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conImpMax }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conFijo }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.conCosteXefecto></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conTipoEfecto }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conInteresDto }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conPorcentajeInteresDto }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.conCalculoPorDivisa></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.conNuevaCPTIVA></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conCodIVACPT }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conPorcentajeIVA }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.conDesdeImporte }}</td>
+
+            </tr>
+          </tbody>
+          <tfoot class="grey lighten-5 w-100">
+            <tr>
+              <td colspan="4">
+                <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="component_cbv"></mdb-table-pagination>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!-- Grid End-->
+
+    </div>
+    <!-- Final de 2a columna-->
+    <!-- 3a columna-->
+    <div class="col"></div>
+
+  </div>
+</div>
+
+

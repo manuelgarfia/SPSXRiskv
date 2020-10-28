@@ -1,0 +1,46 @@
+<div class="container-sm justify-content-around">
+
+  <div class="mt-3 mb-3">
+    <h2>Ejemplos de filtro</h2>
+  </div>
+
+  <div class="ml-2 mr-2">
+    <button mat-mini-fab color="primary" placement="right" (click)="onFilterClick()">
+      <mdb-icon fas icon="filter"></mdb-icon>
+    </button>
+  </div>
+
+  <!-- Grid Start-->
+  <div class="row">
+    <div class="col">
+      <table mdbTable #tableEl="mdbTable" class='table table-striped mt-3' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="itemsList">
+        <thead class="black white-text">
+          <tr>
+            <th [mdbTableSort]="itemsList" sortBy="mvfCodCIA" scope="col">Compañía<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="itemsList" sortBy="mvfDescripcion" scope="col">Descripción<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="itemsList" sortBy="mvfFechOperac" scope="col">F.Operación<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="itemsList" sortBy="mvfRefXRisk" scope="col">Referencia XRISK<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol *ngFor="let movimiento of itemsList; let i = index">
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfCodCIA }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfDescripcion }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfFechOperac | date:'dd/MM/yyyy' }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ movimiento.mvfRefXRisk }}</td>
+          </tr>
+        </tbody>
+        <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="4">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="itemsList"></mdb-table-pagination>
+            </td>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+  <!-- Grid End-->
+
+</div>

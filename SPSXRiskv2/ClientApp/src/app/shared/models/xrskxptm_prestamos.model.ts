@@ -1,0 +1,66 @@
+/// <summary>
+/// Code generated 16/10/2020 10:05:18 by EFClassGenerator version 1.0.0.0
+/// Template last modified 14/08/2020
+/// </summary>
+
+export class XRSKxptm_prestamos {
+  amortfija: number;
+  basedias: number;
+  bonificacion: number;
+  broker: number;
+  calendario: string;
+  carencia: number;
+  centrocoste: string;
+  codser: string;
+  comapertura: number;
+  comcancpromotor: number;
+  comcanparcial: number;
+  comcantotal: number;
+  comdemora: number;
+  comestudio: number;
+  comreclamacion: number;
+  comsubrogacion: number;
+  convFechas: string;
+  correo: number;
+  ctafinanciera: string;
+  ctamovimientos: string;
+  date_created: Date;
+  date_updated: Date;
+  descripcion: string;
+  diapago: number;
+  diarevision: number;
+  diasfixingdate: number;
+  diferencial: number;
+  difsubrogacion: string;
+  docser: string;
+  empresa: string;
+  entidad: string;
+  estado: object;
+  fecha1cuota: Date;
+  fecha1liq: Date;
+  fecha1revision: Date;
+  fechacontabauto: Date;
+  fechacontrato: Date;
+  fechadispinicial: Date;
+  fechaestado: Date;
+  fechavto: Date;
+  formula: string;
+  fredondeo: number;
+  hay1liq: boolean;
+  interesini: number;
+  mesescomerciales: boolean;
+  nominal: number;
+  numpagos: number;
+  pctinteres: number;
+  pctsubvencionado: number;
+  peramo: number;
+  perliq: number;
+  perliqcarencia: number;
+  perrevision: number;
+  refcot: string;
+  tipo: string;
+  user_created: string;
+  user_updated: string;
+  cabid: number;
+  calculoCP: number;
+}

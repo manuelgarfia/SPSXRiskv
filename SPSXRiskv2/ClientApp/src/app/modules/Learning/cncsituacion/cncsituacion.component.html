@@ -1,0 +1,107 @@
+<div class="container-sm">
+
+  <div class="mt-4 mb-4">
+    <mdb-breadcrumb class="mt-4 mb-4">
+      <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="active">Situación de conciliación</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
+  </div>
+
+
+  <!-- Botó de filtre -->
+  <div class="mb-3 bottomStyles">
+    <button type="button" class="btn customButton" size="sm" [mdbTooltip]="PreferencesOn" *ngIf="tooltipPreferences" (click)="onFilterClick()" mdbBtn>Filtrar<i class="fas fa-filter cyan-text pl-1 ml-1"></i></button>
+    <ng-template #PreferencesOn>
+      <p> Filtrando por:</p>
+      <div *ngFor="let detail of tooltipPreferences">
+        <p>- {{detail.entity}}: {{detail.values}}</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Alert Message Start-->
+  <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{errorText}}</strong>
+  </div>
+  <!-- Alert Message End-->
+  <!-- Start Button Section-->
+  <!--<div class="row mb-3" size="sm">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2 p-0" role="group" aria-label="Basic example" routerLink="/gforms">
+        <button mdbBtn type="button" class="btn-light-blue" size="sm" mdbWavesEffect><i class="fas fa-plus"></i> Añadir</button>
+      </div>
+      <div class="btn-group mr-2" role="group" aria-label="Basic example">
+        <button mdbBtn type="button" color="mdb-color" size="sm" mdbWavesEffect><mdb-icon fas icon="sync"></mdb-icon></button>
+      </div>
+      <div class="btn-group mr-2" role="group" aria-label="Basic example" *ngIf="show">
+        <button mdbBtn type="button" color="info" size="sm" mdbWavesEffect (click)="onDeleteClick()"><mdb-icon far icon="trash-alt"></mdb-icon> Eliminar</button>
+      </div>
+
+    </div>
+  </div>-->
+  <!-- End Button Section-->
+  <!-- Grid Start-->
+  <div class="ml-2 mr-2">
+    <div #Progress class="row">
+      <mat-progress-bar class="example-margin"
+                        [color]="color"
+                        [mode]="mode"
+                        [value]="value"
+                        [bufferValue]="bufferValue">
+      </mat-progress-bar>
+    </div>
+    <div class="row central-text">
+      <div class="table-responsive">
+        <table mdbTable mdbTableScroll maxWidth="100%" scrollX="true" small="true" #tableEl="mdbTable" class="table table-striped text-nowrap" hover="true" aria-labelledby="tableLabel" *ngIf="componentCNC">
+          <thead class="black white-text">
+            <tr>
+              <th></th>
+              <th></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCcodcia" scope="col">Compañía<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCCodCTA" scope="col">Contrato<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="signo" scope="col">Signo<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCBancoNONum" scope="col">Banc. pdtes.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCBancoNOImporte" scope="col">Imp. banc.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCXRProvNum" scope="col">Prov. pdtes.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCXRProvImporte" scope="col">Imp. prov.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCXRContNum" scope="col">Cont. pdtes.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="componentCNC" sortBy="CNCXRContImporte" scope="col">Imp. cont.<mdb-icon fas icon="sort"></mdb-icon></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr mdbTableCol *ngFor="let item of componentCNC; let i = index">
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">
+                <a mdbBtn floating="true" size="sm" color="yellow" title="Certificar" [routerLink]="['/certificar',item.CNCCodCIA,item.CNCCodCTA]" mdbWavesEffect><mdb-icon fas icon="dot-circle"></mdb-icon></a>
+                <a mdbBtn floating="true" size="sm" color="blue" title="Conciliar" [routerLink]="['/conciliar',item.CNCCodCIA,item.CNCCodCTA]" mdbWavesEffect><mdb-icon fas icon="dot-circle"></mdb-icon></a>
+                <a mdbBtn floating="true" size="sm" color="green" title="Conciliación automática" [routerLink]="['/concilauto',item.CNCCodCIA,item.CNCCodCTA]" mdbWavesEffect><mdb-icon fas icon="dot-circle"></mdb-icon></a>
+                <a mdbBtn floating="true" size="sm" color="red" title="Incorporación automática" [routerLink]="['/incorauto',item.CNCCodCIA,item.CNCCodCTA]" mdbWavesEffect><mdb-icon fas icon="dot-circle"></mdb-icon></a>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><i class="fab fa-font-awesome-flag red-text"></i></td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ item.CNCCodCIA }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ item.CNCCodCTA }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.signo }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ item.CNCBancoNONum }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ item.CNCBancoNOImporte | number:'1.2-2' }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ item.CNCXRProvNum }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ item.CNCXRProvImporte | number:'1.2-2' }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ item.CNCXRContNum }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ item.CNCXRContImporte | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+          <tfoot class="grey lighten-5 w-100">
+            <tr>
+              <td colspan="4">
+                <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="componentCNC"></mdb-table-pagination>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <!-- Grid End-->
+  </div>
+</div>
+

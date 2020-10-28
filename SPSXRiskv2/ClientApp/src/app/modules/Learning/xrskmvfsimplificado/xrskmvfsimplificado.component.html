@@ -1,0 +1,156 @@
+<div class="container-fluid" id="main_panel_background_image">
+
+
+  <div class="row">
+    <div class="col">
+      <div class="dark-font">
+        <mdb-breadcrumb customClass="blue lighten-2">
+          <mdb-breadcrumb-item>Tesorería</mdb-breadcrumb-item>
+          <mdb-breadcrumb-item class="active">Movimientos Físicos Simplificados</mdb-breadcrumb-item>
+        </mdb-breadcrumb>
+      </div>
+    </div>
+  </div>
+
+
+
+ 
+ 
+
+  <!--STARTING TABLE/GRID-->
+  <div [hidden]="addNewRecord">
+    <div class="mb-3 bottomStyles">
+      <button type="button" class="btn customButton" size="sm"  mdbBtn  (click)="showHidePanels()">Añadir<i class="fas fa-plus cyan-text pl-1 ml-1"></i></button>                                                                                                 
+
+    </div>
+    <div class="row">
+      <div class="col">
+        <!--*ngIf="show_Hide_Panels"-->
+        <table mdbTable #tableEl="mdbTable"  class='table table-striped' mdbTableScroll scrollX="true" small="true"  hover="true" aria-labelledby="tableLabel">
+          <thead class="black white-text">
+            <tr>
+              <th> </th>
+              <th> </th>
+              <th [mdbTableSort]="movsimplificado" sortBy="cabid" scope="col" hidden="hidden">Cabid<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="movsimplificado" sortBy="mvfCodCIA" scope="col">Compañía<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="movsimplificado" sortBy="mvfCodCta" scope="col">Contrato<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="movsimplificado" sortBY="mvfFechOperac" scope="col">Fecha Operacion<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="movsimplificado" sortBy="mvfRef1SisExt" scope="col">Referencia Sis. Ext.<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="movsimplificado" sortBy="clavePrevision" scope="col">Clave Previsión<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="movsimplificado" sortBy="mvfDescripcion" scope="col">Descripción<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="movsimplificado" sortBy="mvfImporte" scope="col">Importe<mdb-icon fas icon="sort"></mdb-icon></th>
+
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr mdbTableCol *ngFor="let item of movsimplificado; let i =index">
+              <td hidden="hidden"></td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor" (click)="edit(item)"></mdb-icon><mdb-icon fas icon="trash-alt" class="red-text mr-2 cursor"></mdb-icon></td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" hidden="hidden">{{ item.cabid }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><mdb-icon fas icon="fab fa-rebel"></mdb-icon></td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{item.mvfCodCIA}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{item.mvfCodCta}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{item.mvfFechOperac | date:'dd/MM/yyyy'}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{item.mvfRef1SisExt}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{item.clavePrevision}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{item.mvfDescripcion}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{item.mvfImporte |number:'1.2-2'}}</td>
+            </tr>
+
+          </tbody>
+          <tfoot class="grey-ligth  w-100">
+            <tr>
+              <td colspan="4">
+                <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="movsimplificado"></mdb-table-pagination>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+     
+    </div> 
+     
+  </div>
+
+    <div [hidden]="!addNewRecord" class="container-sm">
+      <div class="row">
+
+          <div class="col-md mt-3 mb-1">
+
+            <div class="row">
+              <form [formGroup]="validatingForm" class="justify-content-center" style="display:flex">
+
+                <div class="col-3">
+
+                  <!--1a COLUMNA-->
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Compañia</mat-label>
+                    <!--<mat-icon matSuffix class="cursor ml-2" (click)="getCia()">search</mat-icon>-->
+                    <input matInput placeholder="" [(ngModel)]="addMovFisSimpl.mvfCodCIA" [ngModelOptions]="{standalone: true}">
+                    <mat-icon matSuffix (click)="getCia()">search</mat-icon>                   
+                  </mat-form-field>
+
+
+                  <mat-form-field class="example-form">
+                    <mat-label>Contrato</mat-label>
+                    <input matInput placeholder="" formControlName="contrato" [(ngModel)]="addMovFisSimpl.MVFCodCta">
+                    <mat-icon matSuffix (click)="getContratos()">search</mat-icon>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-form">
+                    <mat-label>MVFRef1SisExt</mat-label>
+                    <input matInput placeholder="Ref. System" [(ngModel)]="addMovFisSimpl.MVFRef1SisExt" [ngModelOptions]="{standalone: true}">
+                  </mat-form-field>
+
+                  <mat-form-field class="example-form">
+                    <mat-label>Clave Previsión</mat-label>
+                    <input matInput placeholder="Clave Precision" [(ngModel)]="addMovFisSimpl.ClavePrevision" [ngModelOptions]="{standalone: true}">
+                    <mat-icon matSuffix (click)="getClaves()">search</mat-icon>
+                  </mat-form-field>
+
+                </div>
+                <!--Añadimos columna extra -->
+                <div class="col-3"></div>
+
+                <!--2a COLUMNA-->
+                <div class="col-3">
+
+                  <mat-form-field class="example-form">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput placeholder="Descripción" [(ngModel)]="addMovFisSimpl.MVFDescripcion" [ngModelOptions]="{standalone: true}">
+                  </mat-form-field>
+                  <mat-form-field>
+
+                    <mat-label>Fecha</mat-label>
+                    <input class="date-align" formControlName="Fecha" matInput [matDatepicker]="myDatepicker" [(ngModel)]="addMovFisSimpl.MVFFechOperac">
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-form">
+                    <mat-label>Importe</mat-label>
+                    <input matInput class="right" placeholder="Importe" [(ngModel)]="addMovFisSimpl.MVFImporte" [ngModelOptions]="{standalone: true}">
+                  </mat-form-field>
+
+                  
+
+                </div>
+
+              </form>
+            </div>
+
+            <div class="row justify-content-md-center mt-4">
+              <!--Buttons-->
+              <button type="button" mdbBtn color="info" class="col-md-auto" mdbWavesEffect (click)="openDialog('add')">Aceptar  </button>
+              <button mdbBtn type="button" class="col-md-auto btn-blue-grey" (click)="openDialog('Cancelar')" mdbWavesEffect>Cancelar</button>
+            </div>
+
+
+          </div>
+
+
+      </div>
+    </div>
+
+</div>

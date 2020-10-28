@@ -1,0 +1,233 @@
+<div class="container-fluid">
+
+  <!--Header-->
+  <div class="mt-4 mb-4">
+    <mdb-breadcrumb class="mt-4 mb-4">
+      <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="blue-text" [routerLink]="['/ApuntesBancarios']">Apuntes Bancarios</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="active">Posición</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
+  </div>
+  <!-- End Header-->
+  <!-- Tabs -->
+
+  <mat-tab-group>
+    <mat-tab label="Relacionados">
+
+      <div class="row mt-3 justify-content-center grid-container">
+
+        <div class="col-md">
+
+          <table mdbTable mdbTableScroll striped="true" scrollX="true" maxWidth="1700px" w-auto small="true" class="text-nowrap w-auto" *ngIf="relacionados">
+            <thead>
+              <tr>
+                <th></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcCodCIA" scope="col">Compañía<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcNumerador" scope="col">Referencia<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcCodCTA" scope="col">Cliente<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcCodCTA" scope="col">Contrato<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcFechOper" scope="col">Fecha Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcFechVal" scope="col">Fecha Valor<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcConCom" scope="col">CC<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcConPro" scope="col">CP<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcSigno" scope="col">Signo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcImporte" scope="col">Importe<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcDocumento" scope="col">Complementos<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr mdbTableCol *ngFor="let item of relacionados; let i = index">
+                <td><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor" (click)="edit(apunte)"></mdb-icon><mdb-icon fas icon="trash-alt" class="green-text mr-2 cursor"></mdb-icon></td>
+                <td>{{ item.ABCCodCIA }}</td>
+                <td>{{ item.ABCNumerador }}</td>
+                <td>{{item.ABCComple10}}</td>
+                <td>{{ item.ABCCodCTA }}</td>
+                <td>{{ item.ABCFechOper | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.ABCFechVal | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.ABCConCom }}</td>
+                <td>{{ item.ABCConPro }}</td>
+                <td>{{ item.ABCSigno }}</td>
+                <td class="text-right">{{ item.ABCImporte }}</td>
+                <td>{{ item.complementos }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+
+        <div class="custom-title mt-4 bottomLine">
+          <p> Facturas </p>
+        </div>
+
+      <div class="facturas-container">
+        <div class="row mt-3">
+
+          <div class="col-md">
+
+            <table mdbTable striped="true" small="true" class="text-nowrap w-auto" *ngIf="facClientesRelacionados">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th [mdbTableSort]="facClientesRelacionados" sortBy="abcCodCIA" scope="col">Num. Factura<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesRelacionados" sortBy="abcNumerador" scope="col">Fecha Efecto<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesRelacionados" sortBy="abcCodCTA" scope="col">Fecha Vencimiento<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesRelacionados" sortBy="abcCodCTA" scope="col">Importe<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesRelacionados" sortBy="abcFechOper" scope="col">Moneda<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr mdbTableCol *ngFor="let item of facClientesRelacionados; let i = index">
+                  <td><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor"></mdb-icon><mdb-icon fas icon="trash-alt" class="green-text mr-2 cursor"></mdb-icon></td>
+                  <td>{{ item.Factura }}</td>
+                  <td>{{ item.FechaFactura | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.FechaVto | date:'dd/MM/yyyy' }}</td>
+                  <td class="text-right">{{ item.Importe }}</td>
+                  <td>{{ item.Moneda}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+        
+      
+    </mat-tab>
+
+
+    <mat-tab label="Pendientes">
+
+      <div class="row mt-3 justify-content-center grid-container">
+
+        <div class="col-md">
+
+          <table mdbTable mdbTableScroll scrollX ="true" maxWidth="1000px" striped="true" small="true" class="text-nowrap w-auto" *ngIf ="pendientes">
+            <thead>
+              <tr>
+                <th></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcCodCIA" scope="col">Compañía<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcNumerador" scope="col">Referencia<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcCodCTA" scope="col">Cliente<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcCodCTA" scope="col">Contrato<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcFechOper" scope="col">Fecha Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcFechVal" scope="col">Fecha Valor<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcConCom" scope="col">CC<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcConPro" scope="col">CP<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcSigno" scope="col">Signo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcImporte" scope="col">Importe<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                <th [mdbTableSort]="apunBanc" sortBy="abcDocumento" scope="col">Complementos<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr mdbTableCol *ngFor="let item of pendientes; let i = index">
+                <td><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor" (click)="edit(apunte)"></mdb-icon><mdb-icon fas icon="trash-alt" class="green-text mr-2 cursor"></mdb-icon></td>
+                <td>{{ item.ABCCodCIA }}</td>
+                <td>{{ item.ABCNumerador }}</td>
+                <td>{{item.ABCComple10}}</td>
+                <td>{{ item.ABCCodCTA }}</td>
+                <td>{{ item.ABCFechOper | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.ABCFechVal | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.ABCConCom }}</td>
+                <td>{{ item.ABCConPro }}</td>
+                <td>{{ item.ABCSigno }}</td>
+                <td class="text-right">{{ item.ABCImporte }}</td>
+                <td>{{ item.complementos }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </mat-tab>
+
+
+    <mat-tab label="Asignados">
+
+        <div class="row table-container mt-3 grid-container">
+
+          <div class="col-md">
+
+            <table mdbTable mdbTableScroll scrollX="true" maxWidth="1300px" striped="true" small="true" class="text-nowrap w-auto" *ngIf="asignados">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcCodCIA" scope="col">Compañía<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcNumerador" scope="col">Referencia<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcCodCTA" scope="col">Cliente<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcCodCTA" scope="col">Contrato<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcFechOper" scope="col">Fecha Operación<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcFechVal" scope="col">Fecha Valor<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcConCom" scope="col">CC<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcConPro" scope="col">CP<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcSigno" scope="col">Signo<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcImporte" scope="col">Importe<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="apunBanc" sortBy="abcDocumento" scope="col">Complementos<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr mdbTableCol *ngFor="let item of asignados; let i = index">
+                  <td><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor" (click)="edit(apunte)"></mdb-icon><mdb-icon fas icon="trash-alt" class="green-text mr-2 cursor"></mdb-icon></td>
+                  <td>{{ item.ABCCodCIA }}</td>
+                  <td>{{ item.ABCNumerador }}</td>
+                  <td>{{item.ABCComple10}}</td>
+                  <td>{{ item.ABCCodCTA }}</td>
+                  <td>{{ item.ABCFechOper | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.ABCFechVal | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.ABCConCom }}</td>
+                  <td>{{ item.ABCConPro }}</td>
+                  <td>{{ item.ABCSigno }}</td>
+                  <td class="text-right">{{ item.ABCImporte}}</td>
+                  <td>{{ item.complementos }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+        </div>
+
+        <div class="custom-title mt-4 bottomLine">
+          <p> Facturas </p>
+        </div>
+
+      <div class="facturas-container">
+        <div class="row mt-3">
+
+          <div class="col-md">
+
+            <table mdbTable striped="true" maxWidth="1300px" small="true" class="text-nowrap w-auto" *ngIf="facClientesAsignados">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th [mdbTableSort]="facClientesAsignados" sortBy="abcCodCIA" scope="col">Num. Factura<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesAsignados" sortBy="abcNumerador" scope="col">Fecha Efecto<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesAsignados" sortBy="abcCodCTA" scope="col">Fecha Vencimiento<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesAsignados" sortBy="abcCodCTA" scope="col">Importe<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                  <th [mdbTableSort]="facClientesAsignados" sortBy="abcFechOper" scope="col">Moneda<mdb-icon class="ml-1" fas icon="sort"></mdb-icon></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr mdbTableCol *ngFor="let item of facClientesAsignados; let i = index">
+                  <td><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor"></mdb-icon><mdb-icon fas icon="trash-alt" class="green-text mr-2 cursor"></mdb-icon></td>
+                  <td>{{ item.Factura }}</td>
+                  <td>{{ item.FechaFactura | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item.FechaVto | date:'dd/MM/yyyy' }}</td>
+                  <td class="text-right">{{ item.Importe }}</td>
+                  <td>{{ item.Moneda}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+        
+    </mat-tab>
+
+  </mat-tab-group>
+  <!-- End Tabs-->
+
+</div>

@@ -1,0 +1,91 @@
+<p></p>
+<p *ngIf="!agrupaciones"><em>Loading...</em></p>
+<div class="container-sm">
+  <div class="row">
+    <div class="col">
+      <app-object-toolbar [objectName]="objectName" (add)="openDialog('add')" (reset)="reset()" (save)="openDialog('save')" (filter)="openDialog('filter')" (refresh)="refresh()"></app-object-toolbar>
+    </div>
+  </div>
+  <!-- Alert Message Start-->
+  <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{errorText}}</strong>
+  </div>
+  <!-- Alert Message End-->
+  <!-- FormView Start-->
+  <div class="row" *ngIf="agrupacion$">
+    <div class="col-sm-6">
+      <div class="md-form">
+        <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
+        <input type="email" class="form-control" id="codigo" mdbInput [(ngModel)]="agrupacion$.acpCod"><label for="codigo">Código</label>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="md-form">
+        <input mdbInput id="descripcion" class="form-control" type="text" [(ngModel)]="agrupacion$.acpDescripcion"><label for="descripcion" class="">Descripción</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- FormView End-->
+  <!-- Search Start-->
+  <div class="row">
+    <div class="col-md-12 mx-auto">
+      <div class="md-form">
+        <input type="text"
+               [(ngModel)]="searchText"
+               class="form-control"
+               id="search"
+               mdbInput />
+        <label for="search">Search</label>
+      </div>
+    </div>
+  </div>
+  <!-- Search End-->
+  <!-- Progress Bar Start-->
+  <div #Progress class="'row">
+
+    <mat-progress-bar class="example-margin"
+                      [color]="color"
+                      [mode]="mode"
+                      [value]="value"
+                      [bufferValue]="bufferValue">
+    </mat-progress-bar>
+    <!--
+    <mat-spinner></mat-spinner>
+      -->
+  </div>
+  <!-- Progress Bar End-->
+  <!-- Grid Start-->
+  <div class="row">
+    <div class="col">
+      <table mdbTable #tableEl="mdbTable" class='table table-striped' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="agrupaciones">
+        <thead class="black white-text">
+          <tr>
+            <th></th>
+            <th [mdbTableSort]="agrupaciones" sortBy="acpCod" scope="col"><mdb-icon fas icon="leaf" class="mr-2 blue-text" aria-hidden="true"></mdb-icon>Código<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="agrupaciones" sortBy="acpDescripcion" scope="col">Descripción<mdb-icon fas icon="sort"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol *ngFor="let agrupacion of agrupaciones; let i = index" (click)="find(agrupacion.acpGrupo, agrupacion.acpNiv, agrupacion.acpCod)">
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><mdb-icon fas icon="trash-alt" (click)="delete(agrupacion.acpGrupo, agrupacion.acpNiv, agrupacion.acpCod)"></mdb-icon></td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ agrupacion.acpCod }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ agrupacion.acpDescripcion }}</td>
+          </tr>
+        </tbody>
+        <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="4">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="agrupaciones"></mdb-table-pagination>
+            </td>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+  <!-- Grid End-->
+</div>

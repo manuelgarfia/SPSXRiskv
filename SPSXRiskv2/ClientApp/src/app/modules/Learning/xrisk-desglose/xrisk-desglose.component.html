@@ -1,0 +1,230 @@
+
+  <div class="container-fluid">
+
+    <div class="mb-4">
+      <mdb-breadcrumb class="mt-4 mb-4">
+        <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+        <mdb-breadcrumb-item class="blue-text" [routerLink]="['/xrskmovimientofisico']">Movimientos Físicos</mdb-breadcrumb-item>
+        <mdb-breadcrumb-item class="active">Desglose</mdb-breadcrumb-item>
+      </mdb-breadcrumb>
+    </div>
+
+    <div class="container-grid">
+      <div class="table-responsive mb-3">
+        <table mdbTable class="table pointer" small="true" hover="true" *ngIf="movimiento">
+          <thead>
+            <tr>
+              <th scope="col">Contrato</th>
+              <th scope="col">Divisa</th>
+              <th scope="col">Operación</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Fecha Operación</th>
+              <th scope="col">Fecha Valor</th>
+              <th scope="col">Signo</th>
+              <th scope="col">Importe neto</th>
+              <th scope="col">Importe Neto Operación</th>
+              <th scope="col">Divisa Operación</th>
+              <th scope="col">Grado Certeza</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="cursor" (click)="onDesgloseGrid(item)">
+              <td>{{movimiento.mvfCodCTA}}</td>
+              <td>{{movimiento.mvfCodDIV}}</td>
+              <td>{{movimiento.mvfCodOPE}}</td>
+              <td>{{movimiento.mvfDescripcion}}</td>
+              <td>{{movimiento.mvfFechOperac | date:'dd/MM/yyyy'}}</td>
+              <td>{{movimiento.mvfFechValor | date:'dd/MM/yyyy'}}</td>
+              <td class="text-right">{{movimiento.MVFSigImpNet}}</td>
+              <td class="text-right">{{movimiento.mvfImNetDiv}}</td>
+              <td class="text-right">{{movimiento.mvfImBrPtas}}</td>
+              <td>{{movimiento.mvfCodCPTDIV}}</td>
+              <td>{{movimiento.mvfGradCert}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-3 mb-3">
+      <hr />
+    </div>
+
+    <mdb-card class="mt-3">
+      <mdb-card-body>
+        <mdb-card-text>
+          <div class="central-container">
+            <div class="row" style="margin-left:20px">
+              <div>
+                <mat-form-field class="input-custom">
+                  <mat-label>Empresa:</mat-label>
+                  <input matInput placeholder="" [(ngModel)]="desgloseRow.DCPCodCIA" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+              </div>
+              <div class="ml-4">
+                <mat-form-field class="input-custom">
+                  <mat-label>Ref. Xrisk:</mat-label>
+                  <input matInput placeholder="" [(ngModel)]="desgloseRow.DCPRefXrisk" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+              </div>
+              <div class="ml-4">
+                <mat-form-field class="input-custom">
+                  <mat-label>Contador:</mat-label>
+                  <input matInput placeholder="" [(ngModel)]="desgloseRow.DCPContador" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+
+
+    <mdb-card class="mt-3">
+      <mdb-card-body>
+        <mdb-card-text>
+
+          <div class="row ml-4">
+
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Contrapartida:</mat-label>
+                <input matInput placeholder="" [(ngModel)]="desgloseRow.DCPCodCPT" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="input-custom">
+                <mat-label>Descripción:</mat-label>
+                <input matInput placeholder="" [(ngModel)]="desgloseRow.DCPDescripcionCPT" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md"></div>
+            <div class="col-md"></div>
+          </div>
+
+          <div class="row ml-4">
+
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Importe Contrapartida:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPImporteCpt" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Divisa Operación:</mat-label>
+                <input matInput placeholder="" [(ngModel)]="desgloseRow.DCPDivisaCpt" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="input-custom">
+                <mat-label>Cambio Mon. Oper-Grupo:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPCambioDivCptMn" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="input-custom">
+                <mat-label>Importe Moneda Grupo:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPImporteCptMn" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row ml-4">
+
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Importe Contrato:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPImporte" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Divisa:</mat-label>
+                <input matInput placeholder="" [(ngModel)]="desgloseRow.DCPDivisa" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Cambio Operación:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPCambioDivisaCpt" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Base Imponible:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPBaseImponible" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Signo (D/H):</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPSignoCPT" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Cuenta Contable:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.DCPCuentaContableCPT" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-custom">
+                <mat-label>Cliente:</mat-label>
+                <input class="text-right" matInput placeholder="" [(ngModel)]="desgloseRow.refanalitica" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="col-md"></div>
+          </div>
+
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+
+
+    <!-- Grid -->
+    <div class="mt-3 mb-3">
+      <hr />
+    </div>
+
+    <div class="table-responsive mt-3">
+      <table mdbTable class="table pointer" small="true" hover="true" *ngIf="desglose">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Contrapartida</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Divisa</th>
+            <th scope="col">Importe</th>
+            <th scope="col">Operación</th>
+            <th scope="col">Imp. Operación</th>
+            <th scope="col">Imp. Moneda Grupo</th>
+            <th scope="col">Cuenta Contable</th>
+            <th scope="col">Analítica</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cursor" *ngFor="let item of desglose" (click)="onDesgloseGrid(item)">
+            <td>{{item.DCPContador}}</td>
+            <td>{{item.DCPCodCPT}}</td>
+            <td>{{item.DCPDescripcionCPT}}</td>
+            <td>{{item.DCPDivisa}}</td>
+            <td class="text-right">{{item.importe}}</td>
+            <td>{{item.DCPDivisaCpt}}</td>
+            <td class="text-right">{{item.importeOperacion}}</td>
+            <td class="text-right">{{item.importeMonGrupo}}</td>
+            <td class="text-right">{{item.DCPCuentaContableCPT}}</td>
+            <td>{{item.analitica}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- End Grid -->
+
+
+
+  </div>
+

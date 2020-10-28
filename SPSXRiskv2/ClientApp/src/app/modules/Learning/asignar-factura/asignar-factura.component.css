@@ -1,0 +1,11 @@
+.selectedRow {
+    background-color: aquamarine !important;
+}
+
+.descripcion-input {
+  width: 450px;
+}
+
+.prevision-input {
+    visibility: hidden;
+}

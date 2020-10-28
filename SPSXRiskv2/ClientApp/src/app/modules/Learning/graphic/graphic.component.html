@@ -1,0 +1,221 @@
+<div class="container-fluid">
+
+  <div class="mt-4 mb-4">
+    <mdb-breadcrumb class="mt-4 mb-4">
+      <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="active">Movimientos Físicos Simplificados</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
+  </div>
+
+
+  <!--<div class="btn-group mr-2 filter-style" role="group" aria-label="Basic example">
+     <button mdbBtn type="button" color="red" size="md" mdbWavesEffect ><mdb-icon fas icon="filter"></mdb-icon> Filtro</button>
+   </div>-->
+  <!-- Alert Message Start-->
+  <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{errorText}}</strong>
+  </div>
+  <!-- Alert Message End-->
+  <!-- Progress Bar Start-->
+  <mat-progress-bar class="example-margin"
+                    [color]="color"
+                    [mode]="mode"
+                    [value]="value"
+                    [bufferValue]="bufferValue" *ngIf="isCompleted">
+  </mat-progress-bar>
+  <!-- Progress Bar End-->
+
+
+  <div class="container right">
+    <div class="mb-3 bottomStyles">
+      <button type="button" class="btn customButton" size="sm" [mdbTooltip]="PreferencesOn" *ngIf="tooltipPreferences" (click)="filterClick()" mdbBtn>Filtrar<i class="fas fa-filter cyan-text pl-1 ml-1"></i></button>
+      <ng-template #PreferencesOn>
+        <p> Filtrando por:</p>
+        <div *ngFor="let detail of tooltipPreferences">
+          <p>- {{detail.entity}}: {{detail.values}}</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="container-fluid w-100">
+    <div class="row">
+      <!--START REGION LINES-->
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <mdb-card>
+
+              <mdb-card-header class="text-white mb-3 bg-info">
+                FORMATO LINE
+                <span class="float-right">
+                  <i style="margin: 10px" class="fas fa-window-maximize" (click)="basicModal2.show()"></i>
+
+                  <a (click)="showDateSelection = !showDateSelection" data-toggle="tooltip" data-placement="top" title="Alert">
+                    <i class="fa ml-6" [ngClass]="showDateSelection? 'fa-plus': 'fa-minus'" aria-hidden="true" (click)="line.toggle()"></i>
+                  </a>
+                </span>
+              </mdb-card-header>
+              <div mdbCollapse [isCollapsed]="false" #line="bs-collapse">
+                <mdb-card-body>
+                  <mdb-card-title>
+                  </mdb-card-title>
+                  <div class="container">
+                    <div class="row">
+                      <!--<div class="col-sm-2">
+                        <mdb-card-img class="img-fluid" src="assets/images/home-01.png" alt="Card image cap"></mdb-card-img>
+                      </div>-->
+                      <br />
+                      <div class="col-md-9">
+                        <div class="col-lg-12" style="min-width:400px">
+                          <canvas mdbChart
+                                  [chartType]="chartTypeLine"
+                                  [datasets]="chartDatasetsLine"
+                                  [labels]="chartLabelsLine"
+                                  [colors]="chartColorsLine"
+                                  [options]="chartOptionsLine"
+                                  [legend]="true"
+                                  (chartHover)="chartHovered($event)"
+                                  (chartClick)="chartClicked($event)">
+                          </canvas>
+                        </div> <!--termina el primer Chart-->
+                      </div>
+                    </div>
+                    <div>
+
+                    </div>
+
+                  </div>
+
+
+                </mdb-card-body>
+              </div>
+            </mdb-card>
+          </div>
+        </div>
+        <br />
+        <div mdbModal #basicModal2="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+          <div class="modal-dialog-full-width modal-dialog modal-fluid" role="document">
+            <div class="modal-content-full-width modal-content ">
+              <div class=" modal-header-full-width   modal-header text-center">
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close" (click)="basicModal2.hide()">
+                  <span style="font-size: 1.3em;" aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="col-lg-12" style="min-width:400px">
+                  <canvas mdbChart
+                          [chartType]="chartTypeLine"
+                          [datasets]="chartDatasetsLine"
+                          [labels]="chartLabelsLine"
+                          [colors]="chartColorsLine"
+                          [options]="chartOptionsLine"
+                          [legend]="true"
+                          (chartHover)="chartHovered($event)"
+                          (chartClick)="chartClicked($event)">
+                  </canvas>
+                </div> <!--termina el primer Chart-->
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <br />
+      </div>
+      <!--END REGION LINES-->
+      <!--START REGION BARS-->
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <mdb-card>
+              <mdb-card-header class="text-white mb-3 bg-info">
+                FORMATO BARS
+                <span class="float-right">
+                  <i style="margin: 10px" class="fas fa-window-maximize" (click)="basicModal.show()"></i>
+
+                  <a (click)="showDateSelection2 = !showDateSelection2" data-toggle="tooltip" data-placement="top" title="Share">
+                    <i class="fa ml-6" [ngClass]="showDateSelection2? 'fa-plus': 'fa-minus'" aria-hidden="true" (click)="bars.toggle()"></i>
+                  </a>
+                </span>
+              </mdb-card-header>
+              <div mdbCollapse [isCollapsed]="false" #bars="bs-collapse">
+                <mdb-card-body>
+                  <mdb-card-title>
+                  </mdb-card-title>
+                  <div class="container">
+                    <div class="row">
+                      <!--<div class="col-md-1">
+                        <mdb-card-img class="img-fluid" src="assets/images/home-01.png" alt="Card image cap"></mdb-card-img>
+                      </div>-->
+                      <br />
+                      <div class="col-md-9">
+                        <div class="col-lg-12" style="min-width:400px">
+                          <canvas mdbChart
+                                  [chartType]="chartTypeBar"
+                                  [datasets]="chartDatasetsBar"
+                                  [labels]="chartLabelsBar"
+                                  [colors]="chartColorsBars"
+                                  [options]="chartOptionsBar"
+                                  [legend]="true"
+                                  (chartHover)="chartHovered($event)"
+                                  (chartClick)="chartClicked($event)">
+                          </canvas>
+                        </div> <!--termina el primer Chart Bar-->
+
+                      </div>
+                    </div>
+                    <div>
+
+                    </div>
+
+                  </div>
+
+
+                </mdb-card-body>
+              </div>
+            </mdb-card>
+          </div>
+        </div>
+        <!-- Modal BARS -->
+        <div mdbModal #basicModal="mdbModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+          <div class="modal-dialog-full-width modal-dialog modal-fluid" role="document">
+            <div class="modal-content-full-width modal-content ">
+              <div class=" modal-header-full-width   modal-header text-center">
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close" (click)="basicModal.hide()">
+                  <span style="font-size: 1.3em;" aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="col-lg-12" style="min-width:400px">
+                  <canvas mdbChart
+                          [chartType]="chartTypeBar"
+                          [datasets]="chartDatasetsBar"
+                          [labels]="chartLabelsBar"
+                          [colors]="chartColorsBars"
+                          [options]="chartOptionsBar"
+                          [legend]="true"
+                          (chartHover)="chartHovered($event)"
+                          (chartClick)="chartClicked($event)">
+                  </canvas>
+                </div> <!--termina el primer Chart Bar-->
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <br />
+        <!-- Modal Lines -->
+
+        <br />
+      </div>
+      <!--END REGION BARS-->
+    </div>
+  </div>
+
+</div>
+

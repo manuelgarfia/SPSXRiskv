@@ -1,0 +1,38 @@
+<div class="modal-content">
+
+  <div *ngIf="savePreferences == false; else SavePreference">
+    <div class="modal-header peach-gradient">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="cancelar()">
+        <span aria-hidden="true">×</span>
+      </button>
+      <p class="titleStylesWarning">{{ heading }}</p>
+    </div>
+
+    <div class="modal-body">
+      <h5>{{ content.heading }}</h5>
+      <p>{{ content.description }}</p>
+    </div>
+  </div>
+
+  <ng-template #SavePreference>
+    <div class="modal-header winter-neva-gradient">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="cancelar()">
+        <span aria-hidden="true">×</span>
+      </button>
+      <p class="titleStyles text-center">{{ heading }}</p>
+    </div>
+    <div class="modal-body">
+      <p> Introducir nombre del filtro:</p>
+      <mat-form-field class="example-form">
+        <mat-label>Nombre del filtro</mat-label>
+        <!--<input matInput placeholder="" [(ngModel)]="condiciones_bancarias.conImpMin" [ngModelOptions]="{standalone: true}">-->
+        <input matInput placeholder="">
+      </mat-form-field>
+    </div>
+  </ng-template>
+
+  <div class="modal-footer">
+    <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="cancelar()" mdbWavesEffect *ngIf="negative">{{ negative }}</button>
+    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="aceptar()" mdbWavesEffect>{{ afirmative }}</button>
+  </div>
+</div>

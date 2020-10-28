@@ -1,0 +1,281 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="1.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\modules\Learning\xrskagrupacion - Copia\**" />
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\modules\Learning\xrskagrupacion - Copia\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\modules\Learning\xrskagrupacion - Copia\**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\src\app\modules\Learning\xrskagrupacion - Copia\**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\app-routing.module.ts" />
+    <None Remove="ClientApp\src\app\core\models\xrskmenuItem.model.ts" />
+    <None Remove="ClientApp\src\app\core\models\xrskmenuPanel.model.ts" />
+    <None Remove="ClientApp\src\app\core\models\xrskuser.model.ts" />
+    <None Remove="ClientApp\src\app\core\models\xrskuser.registration.model.ts" />
+    <None Remove="ClientApp\src\app\core\modules\authorization\auth.guard.ts" />
+    <None Remove="ClientApp\src\app\core\modules\authorization\authorization.module.ts" />
+    <None Remove="ClientApp\src\app\core\modules\authorization\authorization.routing.module.ts" />
+    <None Remove="ClientApp\src\app\core\modules\authorization\components\xrsklogin.component.ts" />
+    <None Remove="ClientApp\src\app\core\modules\authorization\components\xrskregister\xrskregister.component.ts" />
+    <None Remove="ClientApp\src\app\core\modules\authorization\error.interceptor.ts" />
+    <None Remove="ClientApp\src\app\core\modules\authorization\jwt.interceptor.ts" />
+    <None Remove="ClientApp\src\app\core\services\authentication.service.ts" />
+    <None Remove="ClientApp\src\app\core\services\excel.service.ts" />
+    <None Remove="ClientApp\src\app\core\services\panel.service.ts" />
+    <None Remove="ClientApp\src\app\modules\Examples\snack-bar\snack-bar-component.ts" />
+    <None Remove="ClientApp\src\app\modules\Learning\graphic\graphic.component.ts" />
+    <None Remove="ClientApp\src\app\modules\Learning\xrskmvfsimplificado\xsrkmvfsimplificado.component.css" />
+    <None Remove="ClientApp\src\app\modules\Learning\xrskmvfsimplificado\xsrkmvfsimplificado.component.ts" />
+    <None Remove="ClientApp\src\app\modules\Portal\portal-routing.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Portal\portal.modules.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Portal\xrskPrestamos\xrskPrestamos.component.ts" />
+    <None Remove="ClientApp\src\app\shared\components\modal\modal.component.ts" />
+    <None Remove="ClientApp\src\app\modules\Examples\date-picker\date-picker.component.ts" />
+    <None Remove="ClientApp\src\app\material.module.ts" />
+    <None Remove="ClientApp\src\app\modules\app.modules.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Examples\examples-routing.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Examples\examples.modules.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Examples\progress-bar\progress-bar.component.ts" />
+    <None Remove="ClientApp\src\app\modules\Learning\jesus\jesus.component.ts" />
+    <None Remove="ClientApp\src\app\modules\Examples\search-table\search-table.component.ts" />
+    <None Remove="ClientApp\src\app\modules\Learning\learning-routing.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Learning\learning.modules.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Learning\xrskagrupacion\xrskagrupacion.component.ts" />
+    <None Remove="ClientApp\src\app\core\core.module.ts" />
+    <None Remove="ClientApp\src\app\shared\format\format-datepicker.ts" />
+    <None Remove="ClientApp\src\app\shared\models\agrcondiciones.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\ciamodel.ts" />
+    <None Remove="ClientApp\src\app\shared\models\conciliacion.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\contrapartidas.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\entidadmodel.ts" />
+    <None Remove="ClientApp\src\app\shared\models\filtermodel.ts" />
+    <None Remove="ClientApp\src\app\shared\models\georgina.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\georginaclass.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\stringmodel.ts" />
+    <None Remove="ClientApp\src\app\shared\models\usersmodel.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xriskConComunCSB.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskApunteBancario.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskCertezas.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskCNCSituacion.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskContratos.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskMovimientoFisico.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\XRSKMVFSimplificado.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskxptmcalendario.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskXptmEscenario.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\xrskXptmTipintd.model.ts" />
+    <None Remove="ClientApp\src\app\shared\services\AgrCondiciones.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\cia.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\contrapartidas.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\contratossaldos.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\entidad.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\georgina.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskApunteBancario.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskCertezas.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskClavesPrevisiones.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskCNCSituacion.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskConciliacion.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskConComunCSB.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\XRSKContratos.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskMovimientoFisico.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskXptmCalendario.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskXptmEscenario.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\xrskXptmTipintd.service.ts" />
+    <None Remove="ClientApp\src\app\shared\shared-routing.module.ts" />
+    <None Remove="ClientApp\src\app\shared\shared.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\models\xrskmenuItem.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\models\xrskmenuPanel.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\models\xrskuser.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\models\xrskuser.registration.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\modules\authorization\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\modules\authorization\authorization.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\modules\authorization\authorization.routing.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\modules\authorization\components\xrsklogin\xrsklogin.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\modules\authorization\components\xrskregister\xrskregister.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\modules\authorization\error.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\modules\authorization\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\services\authentication.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\services\excel.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\core\services\panel.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\snack-bar\snack-bar-component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Learning\graphic\graphic.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Portal\portal-routing.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Portal\portal.modules.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Portal\xrskPrestamos\xrskPrestamos.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\modal\modal.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\date-picker\date-picker.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\material.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\app.modules.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\examples-routing.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\examples.modules.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\progress-bar\progress-bar.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\search-table\search-table.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\format\format-datepicker.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\stringmodel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xriskConComunCSB.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskCertezas.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\entidadmodel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\ciamodel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\contrapartidas.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\conciliacion.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\usersmodel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\filtermodel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskCNCSituacion.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\georginaclass.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\jesus.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskContratos.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskApunteBancario.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskMovimientoFisico.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\XRSKMVFSimplificado.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskxptmcalendario.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskXptmEscenario.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskXptmTipintd.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\contratossaldos.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\entidad.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\cia.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\contrapartidas.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskClavesPrevisiones.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskConComunCSB.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\jesus.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Learning\jesus\jesus.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Learning\learning-routing.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Learning\learning.modules.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskConciliacion.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskCertezas.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskContratos.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskApunteBancario.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskMovimientoFisico.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskXptmCalendario.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskCNCSituacion.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskXptmEscenario.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskXptmTipintd.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\shared-routing.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\agrcondiciones.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\georgina.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\xrskagrupacion.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\AgrCondiciones.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\georgina.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\xrskagrupacion.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Learning\xrskagrupacion\xrskagrupacion.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\core.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\shared.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\assets\images\" />
+  </ItemGroup>
+
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties clientapp_4angular_1json__JsonSchema="" clientapp_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

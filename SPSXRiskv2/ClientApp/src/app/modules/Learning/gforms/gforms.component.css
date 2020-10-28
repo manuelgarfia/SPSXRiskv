@@ -1,0 +1,24 @@
+.title {
+  font-size: 25px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.marges {
+  margin-left: 250px;
+  margin-right: 75px;
+}
+
+.date-align{
+  text-align:center;
+}
+
+.space-buttons{
+    margin-left: 80px;
+}
+
+.bckground {
+  background-color: #EBF1F1;
+}
+
+

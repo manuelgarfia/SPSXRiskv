@@ -1,0 +1,28 @@
+.table-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.bottomLine {
+  border-bottom: 1px solid #878282
+}
+
+.table-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.facturas-container{
+    margin:auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.grid-container{
+    margin-left: 50px;
+    margin-right: 50px;
+}

@@ -1,0 +1,68 @@
+
+.bg {
+  /* The image used */
+  /*background-image: url(/assets/images/pic2.jpg);*/
+  background-color: #AFBBBF;
+  /* Full height */
+  height: 100%;
+  width: 100%;
+  opacity: 0.60;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.child {
+  width: 600px;
+  height: 220px;
+  background-color: darkgray;
+  background: rgba(204,204,204,0.5);
+  color: black;
+  box-shadow: 10px 10px 58px 0px rgba(0,0,0,0.75);
+}
+
+.title-font{
+    font-size:50px;
+    font-family:'Segoe UI';
+    color:black;
+}
+
+.second-title {
+  font-size: 30px;
+  font-family: 'Segoe UI';
+  color: black;
+}
+
+/*FADE IN TRANSITION*/
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+} 

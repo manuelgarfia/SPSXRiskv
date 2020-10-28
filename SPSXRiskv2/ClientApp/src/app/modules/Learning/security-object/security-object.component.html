@@ -1,0 +1,39 @@
+<div class="container-sm">
+  <p class="mt-3 mb-3 titleStyles">Seguridad Objetos</p>
+
+  <!-- Grid Start-->
+  <div class="row central-text">
+    <div class="col central-text">
+      <table mdbTable #tableEl="mdbTable" class='table table-striped mt-3 text-nowrap'width="100%" small="true" hover="true" aria-labelledby="tableLabel" *ngIf="secObjList">
+        <thead class="black white-text">
+          <tr>
+            <th [mdbTableSort]="secObjList" sortBy="cabid" scope="col" class="text-center">Código<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="secObjList" sortBy="usuari" scope="col" class="text-center">Permitir<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="secObjList" sortBy="usuariZoom" scope="col" class="text-center">Denegar<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+            <th [mdbTableSort]="secObjList" sortBy="nombre" scope="col" class="text-center">Permitidos<mdb-icon fas icon="sort" class="ml-1 central"></mdb-icon></th>
+            <th [mdbTableSort]="secObjList" sortBy="idioma" scope="col" class="text-center">Denegados<mdb-icon fas icon="sort" class="ml-1"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol *ngFor="let item of secObjList; let i = index">
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" class="text-center">{{ item.codigo }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" class="text-center">{{ item.permitir }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" class="text-center">{{ item.denegar }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ item.permitidos }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" class="text-center">{{ item.denegados }}</td>
+          </tr>
+        </tbody>
+        <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="4">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="secObjList"></mdb-table-pagination>
+            </td>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+  <!-- Grid End-->
+
+</div>

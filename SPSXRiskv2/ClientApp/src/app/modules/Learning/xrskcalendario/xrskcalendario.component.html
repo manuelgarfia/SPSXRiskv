@@ -1,0 +1,158 @@
+<p></p>
+<p *ngIf="!calendario_list"><em>Loading...</em></p>
+<div class="container-sm">
+  <div class="row">
+    <div class="col">
+      <app-object-toolbar [objectName]="objectName" (add)="openDialog('add')" (reset)="reset()" (save)="openDialog('save')" (filter)="openDialog('filter')" (refresh)="refresh()"></app-object-toolbar>
+    </div>
+  </div>
+  <!-- Alert Message Start-->
+  <div #alert class="alert alert-danger alert-dismissible fade collapse" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{errorText}}</strong>
+  </div>
+  <!-- Alert Message End-->
+  <!-- FormView Start-->
+  <!--
+  <div class="row" *ngIf="calendario$">
+    <div class="col-sm-6">
+      <div class="md-form">
+        <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
+        <input type="email" class="form-control" id="codser" mdbInput [(ngModel)]="calendario$.codser"><label for="codser">Código</label>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="md-form">
+        <input mdbInput id="descripcion" class="form-control" type="text" [(ngModel)]="calendario$.descripcion"><label for="descripcion" class="">Descripción</label>
+      </div>
+    </div>
+  </div>
+  -->
+  <!-- FormView End-->
+  <!-- Search Start-->
+  <div class="row">
+    <div class="col-md-12 mx-auto">
+      <div class="md-form">
+        <input type="text"
+               [(ngModel)]="searchText"
+               class="form-control"
+               id="search"
+               mdbInput />
+        <label for="search">Search</label>
+      </div>
+    </div>
+  </div>
+  <!-- Search End-->
+  <!-- Progress Bar Start-->
+  <div #Progress class="'row">
+
+    <mat-progress-bar class="example-margin"
+                      [color]="color"
+                      [mode]="mode"
+                      [value]="value"
+                      [bufferValue]="bufferValue">
+    </mat-progress-bar>
+    <!--
+    <mat-spinner></mat-spinner>
+      -->
+  </div>
+  <!-- Progress Bar End-->
+  <!-- Grid Start-->
+  <div class="row">
+    <div class="col">
+      <table mdbTable #tableEl="mdbTable" class='table table-striped' small="true" hover="true" aria-labelledby="tableLabel" *ngIf="calendario_list">
+
+
+        <thead class="black white-text">
+          <tr>
+            <th></th>
+            <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="calendario_list" [hidden]="i==0 ? true : false" [sortBy]="headElements[i]"
+                scope="col">
+              {{head | titlecase}} <mdb-icon fas icon="sort"></mdb-icon>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <ng-container *ngFor="let item of calendario_list; let i = index">
+
+            <tr mdbTableCol class="example-element-row" (click)="changeState(item)">
+              <th></th>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" hidden="hidden">{{ item.cabid }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.codser}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.descripcion}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.flunes></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.fmartes></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.fmiercoles></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.fjueves></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.fviernes></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.fsabado></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="true" [(ngModel)]=item.fdomingo></mdb-checkbox>
+              </td>
+              <td>
+              </td>
+            </tr>
+
+            <tr mdbTableCol class="example-element-row" *ngIf="item == calendario$" [@detailExpand]="currentState">
+              <th></th>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" hidden="hidden">{{ item.cabid }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <tr>
+                  <button type="button" size="sm" mdbBtn color="success" mdbWavesEffect>Guardar</button>
+                </tr>
+                <tr>
+                  <button type="button" size="sm" mdbBtn color="danger" mdbWavesEffect>Cancelar</button>
+                </tr>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ item.descripcion}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="false" [(ngModel)]=item.flunes></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="false" [(ngModel)]=item.fmartes></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="false" [(ngModel)]=item.fmiercoles></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="false" [(ngModel)]=item.fjueves></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="false" [(ngModel)]=item.fviernes></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="false" [(ngModel)]=item.fsabado></mdb-checkbox>
+              </td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                <mdb-checkbox [default]="true" [disabled]="false" [(ngModel)]=item.fdomingo></mdb-checkbox>
+              </td>
+            </tr>
+        </ng-container>
+        </tbody>
+        <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="4">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="calendario_list"></mdb-table-pagination>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <!-- Grid End-->
+</div>

@@ -1,0 +1,28 @@
+
+<body class="fadeIn">
+  <div class="bg">
+    <div class="child">
+      <div>
+        <p class="title-font text-center">X - RISK TREASURY</p>
+        <hr class="hr-light wow fadeInLeft" style="width:30%" data-wow-delay="0.3s">
+        <p class="second-title text-center">O&S Consultores</p>
+
+        <div class="container">
+            <div class="row justify-content-center" *ngIf="notLogged; logged">
+              <div class="col-md-4">
+                <button type="submit" mdbBtn color="elegant" size="sm" outline="true" [routerLink]="['/login']" mdbWavesEffect>Iniciar Sessión</button>
+              </div>
+            </div>
+        </div>
+
+        <ng-template #logged>
+          <hr class="hr-light wow fadeInLeft" style="width:30%" data-wow-delay="0.3s">
+        </ng-template>
+
+        </div>
+      </div>
+  </div>
+</body>
+  
+
+

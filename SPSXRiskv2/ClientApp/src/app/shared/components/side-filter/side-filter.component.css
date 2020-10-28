@@ -1,0 +1,15 @@
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+.filterTitle{
+    font-size:20px;
+}
+
+.mat-select-arrow {
+  visibility: hidden;
+}
+
+.cursorOn {
+  cursor: pointer;
+}

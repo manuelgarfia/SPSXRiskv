@@ -1,0 +1,110 @@
+.mat-select-arrow {
+  visibility: hidden;
+}
+
+.cursor:hover{
+    cursor: pointer;
+}
+
+.bottomStyles {
+  border-bottom: 1px solid #878282
+}
+
+.customButton {
+  background-color: rgba(0, 0, 0, 0.00);
+  box-shadow: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/*Table*/
+.table-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+/*End Table*/
+
+/*Edit tabs*/
+.edit-bg {
+  background-color: #BBE2EE;
+}
+
+.tab-border {
+  border: 2px solid #D9DBDE;
+  border-radius: 25px;
+}
+/*End tabs*/
+
+
+/*Edit*/
+.main-container {
+  justify-content: center;
+  align-items: center;
+}
+
+.container-header {
+  border: 2px solid #BBE2EE;
+  border-radius: 5px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabs-container {
+  width:90%;
+}
+
+.input-custom{
+    width: 250px;
+    height: 25px;
+}
+
+.label-input{
+    font-size:13px;
+}
+
+.bg {
+  background-color:azure;
+}
+
+.mat-tab-labels {
+  background-color: #8ED2E0 !important;
+}
+
+.descripcion-input{
+    width:400px;
+}
+/*End Edit*/
+
+
+/*Table Row Selected*/
+.selectedRow {
+  background-color: #B9EFE2 !important;
+}
+/*Table Row Selected*/
+
+/*Desglose*/
+.desglose-title {
+  font-size: 25px;
+  border-bottom: 1px solid #36EB5B
+}
+
+.pointer tr{
+    cursor: pointer;
+}
+/*End Desglose*/
+
+
+/*Disabled Inputs*/
+.dis-input{
+    color: black !important;
+    opacity: 1 !important;
+}
+
+/*Link to Cuentas de Credito*/
+.linkPolizas:hover{
+    color:deepskyblue;
+    cursor:pointer;
+}

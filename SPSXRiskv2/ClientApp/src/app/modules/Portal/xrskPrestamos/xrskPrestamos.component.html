@@ -1,0 +1,257 @@
+<!--Loader-->
+<div [hidden]="loaded">
+  <app-loading-modal *ngIf="!loaded" class="section-position loader-position"></app-loading-modal>
+</div>
+
+<!--End Loader-->
+
+<div id="mainContent" class="container-fluid bg section-position" [hidden]="!loaded">
+  <form>
+
+    <mdb-breadcrumb customClass="info-color-dark white-text">
+      <mdb-breadcrumb-item>Deuda</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="white-text">Préstamos</mdb-breadcrumb-item>
+      <div class="ml-auto mr-4 mb-0">
+        <p class="mb-0 customTittlePrestamos">PORTAL PRÉSTAMOS</p>
+      </div>
+      <div class="ml-auto mr-4 mb-0">
+        <div><p class="mb-0">{{todaysDate}}</p></div>
+      </div>
+    </mdb-breadcrumb>
+
+    <div class="row justify-content-end">
+      <div class="col-md-2">
+        <button type="button" class="buttonCustomized" mdbBtn size="sm" outline="true" (click)="filterClick()" mdbWavesEffect>
+          Filtrar
+          <i class="fas fa-filter white-text pl-1 ml-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="container-cajitas">
+      <div class="row justify-content-center">
+
+        <div class="col-md-3">
+          <mdb-card class="mt-3 first-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+                <p class="cajita-font-custom text-center">Num. Ptos. Activos</p>
+                <div>
+                  <p class="numero-custom text-center">{{numPrestamosActivos}}</p>
+                </div>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+
+        </div>
+
+        <div class="col-md-3">
+          <mdb-card class="mt-3 first-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+                <p class="cajita-font-custom text-center">Total Deuda Viva</p>
+                <div>
+                  <p class="numero-custom text-center">{{totalDeudaViva | number: '1.2-2' }}</p>
+                </div>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+        <div class="col-md-3">
+          <mdb-card class="mt-3 first-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+                <p class="cajita-font-custom text-center">Num. Empresas</p>
+                <p class="numero-custom text-center">{{numEmpresas}}</p>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+        <div class="col-md-3">
+          <mdb-card class="mt-3 first-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+                <p class="cajita-font-custom text-center">Num. Bancos</p>
+                <p class="numero-custom text-center">{{numBancos}}</p>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!--2º Container-->
+    <div class="container-cajitas mt-3">
+      <div class="row justify-content-center">
+
+        <div class="col-md-9">
+          <mdb-card class="mt-3 second-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+                <div class="row justify-content-between">
+                  <div class="col-md-4">
+                    <p class="titleTable ml-2">Préstamos</p>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="button-container"></div>
+                    <button type="button" class="buttonCustomized m-0" mdbBtn size="sm" outline="true" mdbWavesEffect>Finalizados</button>
+                    <button type="button" class="buttonCustomized ml-1" mdbBtn size="sm" outline="true" mdbWavesEffect>Pendientes</button>
+                  </div>
+                </div>
+
+                <table mdbTable #tableEl="mdbTable" scrollX ="true" striped="true" small="true" class="table-responsive-md text-nowrap mt-2" *ngIf="prestamos">
+                  <thead>
+                    <tr>
+                      <!--<th>Código Préstamo</th>-->
+                      <th><div class="tableHeaders m-0 text-center">Código Préstamos</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Descripción</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Fecha Alta</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Fecha Vto.</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Nominal</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Capital Pendiente</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Estado</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Empresa</div></th>
+                      <th><div class="tableHeaders m-0 text-center">Banco</div></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr mdbTableCol *ngFor="let prestamo of prestamos; let i = index" class="">
+                      <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row" class="prestamo-pointer codigoPrestamo" (click)="onPrestamoClick(prestamo.codser)">{{prestamo.codser}}</th>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{prestamo.descripcion}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{prestamo.fecha1cuota | date:'dd/MM/yyyy'}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{prestamo.fechavto | date:'dd/MM/yyyy'}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{prestamo.nominal | number: '1.2-2'}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{prestamo.calculoCP | number: '1.2-2'}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-center"><mdb-badge success="true">{{prestamo.estado}}</mdb-badge></td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{prestamo.empresa}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{prestamo.entidad}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="w-100">
+                    <tr>
+                      <td colspan="4">
+                        <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="prestamos"></mdb-table-pagination>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+        <div class="col-md-3">
+          <mdb-card class="mt-3 second-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+
+                <div class="row">
+                  <div class="col-md">
+                    <p class="titleTable ml-2">Reporting</p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md">
+                    <p class="ml-3 titulosReporting"><mdb-icon fas icon="circle" class="ml-2 amber-text mr-2"></mdb-icon>Líneas Financieras</p>
+                    <div class="ml-5 mb-3">
+                      <h1><mdb-badge pill="true" color="amber" class="badgecursor" (click)="onPowerBI()">PowerBI</mdb-badge></h1>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md">
+                    <p class="ml-3 titulosReporting"><mdb-icon fas icon="circle" class="ml-2 stylish-color-text mr-2"></mdb-icon>Informe Préstamos</p>
+                    <div class="ml-5 mb-3">
+                      <h1><mdb-badge pill="true" color="stylish-color" class="badgecursor" (click)="onReporting()">Reporting</mdb-badge></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+      </div>
+    </div>
+
+    <!--3r Container-->
+    <div class="container-cajitas mt-3">
+      <div class="row justify-content-center">
+
+        <div class="col-md-6">
+          <mdb-card class="mt-3 third-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="titleTable ml-2">Reparto deuda viva por empresa</p>
+                  </div>
+                </div>
+
+                <div>
+                  <canvas mdbChart
+                          [chartType]="chartType"
+                          [datasets]="chartDatasets"
+                          [labels]="chartLabels"
+                          [colors]="chartColors"
+                          [options]="chartOptions"
+                          [legend]="true"
+                          (chartHover)="chartHovered($event)"
+                          (chartClick)="chartClicked($event)"
+                          height="140">
+                  </canvas>
+                </div>
+
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+
+        <div class="col-md-6">
+          <mdb-card class="mt-3 third-cards-size">
+            <mdb-card-body>
+              <mdb-card-text>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="titleTable ml-2">Reparto deuda viva por entidad</p>
+                  </div>
+                </div>
+
+                <div style="display: block">
+                  <canvas mdbChart
+                          [chartType]="chartType2"
+                          [datasets]="chartDatasets2"
+                          [labels]="chartLabels2"
+                          [colors]="chartColors2"
+                          [options]="chartOptions2"
+                          [legend]="true"
+                          (chartHover)="chartHovered2($event)"
+                          (chartClick)="chartClicked2($event)"
+                          height="120">
+                  </canvas>
+                </div>
+
+              </mdb-card-text>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>
+
+
+<div class="col-md">
+
+</div>

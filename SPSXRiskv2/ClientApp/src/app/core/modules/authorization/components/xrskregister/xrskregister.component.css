@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0px;
+}
+
+.register-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+.alert-danger {
+  background-color: #f44336; /* Red */
+}
+
+.alert {
+  color: white;
+  margin-bottom: 15px;
+  text-align: center;
+}

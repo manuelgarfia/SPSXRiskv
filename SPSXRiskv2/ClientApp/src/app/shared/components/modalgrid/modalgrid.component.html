@@ -1,0 +1,64 @@
+
+  <div class="container">
+    <div class="modal-header p-2 winter-neva-gradient">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">×</span>
+      </button>
+        <p class="modal-title w-100 mt-2 text-center titleStyles"> · {{ heading }} ·</p>
+    </div>
+
+    <div class="modal-body" >
+      <div *ngIf="ZoomTemplate; else Preferences">
+         <!--Grid-->
+
+         <!--Search Start-->
+              <div class="md-form" style="width:150px">
+                <input type="text" [(ngModel)]="searchText" class="form-control" id="search" mdbInput />
+                <label for="search">Buscar</label>
+              </div>
+         <!--End Search-->
+
+        <table mdbTable #table_ent="mdbTable" mdbTableScroll scrollY="true" maxHeight="300" hover="true" class='table table-striped' small="true" *ngIf="items">
+          <thead>
+            <tr>
+              <th> </th>
+              <th class="text-center font-weight-bold" *ngFor="let property of properties" scope="col">{{property.label}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr mdbTableCol *ngFor="let item of items">
+              <ng-container>
+                <td scope="row"><mdb-checkbox [default]="true" class="p-0" (change)="ShowAndHide(item, $event)"></mdb-checkbox></td>
+                <td class="text-center " scope="row" *ngFor="let property of properties" (click)="onClickRow(item)">
+                  {{ item[property.name] }}
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+        <ng-template #Preferences>
+          <table mdbTable #tableEl="mdbTable" mdbTableScroll scrollY="true" maxHeight="300" hover="true" class='table table-striped' small="true">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="text-left font-weight-bold" scope="col">PREFERENCIAS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr mdbTableCol>
+                <td scope="row"><mdb-checkbox [default]="true" class="p-0" (change)="ShowAndHide(item, $event)"></mdb-checkbox></td>
+                <td class="text-left" scope="row">En proceso</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+      </div>
+    <div class="modal-footer">
+      <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Cerrar</button>
+      <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="onConfirm()">Ok!</button>
+    </div>
+  </div>
+
+

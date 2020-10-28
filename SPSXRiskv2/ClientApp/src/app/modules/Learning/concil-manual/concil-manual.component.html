@@ -1,0 +1,158 @@
+<div class="container-fluid" style="position: sticky; top: 0;">
+  <div>
+    <p></p>
+    <span class="d-block p-2 bg-primary text-white">{{title}} (Cia {{selectedCIA[0]}}, cto {{selectedCTA[0]}})</span>
+    <p></p>
+  </div>
+
+  <!-- Inici botonera -->
+  <div class="flex-row mb-3">
+    <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-auto mb-3 mb-md-0" role="group" aria-label="First group">
+        <div class="ml-2">
+          <button mat-mini-fab color="primary" [mdbTooltip]="ttOperacion" (click)="ConciliarCertificar()" [disabled]="!showBtnConciliar">
+            <mdb-icon fas icon="certificate"></mdb-icon>
+          </button>
+        </div>
+        <div class="ml-2">
+          <button mat-mini-fab color="primary" mdbTooltip="Relacionar" (click)="Relacionar()" [disabled]="!showBtnRelacionar">
+            <mdb-icon fas icon="archive"></mdb-icon>
+          </button>
+        </div>
+        <div class="ml-2">
+          <button mat-mini-fab color="primary" mdbTooltip="Compensar" (click)="Compensar()" [disabled]="!showBtnCompensar">
+            <mdb-icon fas icon="balance-scale"></mdb-icon>
+          </button>
+        </div>
+        <div class="ml-2">
+          <button mat-mini-fab color="primary" mdbTooltip="Incorporar" (click)="Incorporar()" [disabled]="!showBtnIncorporar">
+            <mdb-icon fas icon="tasks"></mdb-icon>
+          </button>
+        </div>
+      </div>
+      <div class="btn-group mb-3 my-0" role="group" aria-label="Second group">
+        <div class="ml-2">
+          <button mat-mini-fab color="info" mdbTooltip="Situación de conciliación" (click)="GoBack()">
+            <mdb-icon fas icon="layer-group"></mdb-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fi botonera -->
+  <!-- Inici grids -->
+  <div class="row">
+    <!-- Inici secció de provisoris -->
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-8">
+          Provisorios pendientes ({{provisorisSelectedAmount | number: '1.2-2'}}€, {{provisorisSelected.size}}/{{provisoris.length}})
+        </div>
+        <div class="col-sm-4">Diferencia: {{provisoriAmountDiff | number: '1.2-2'}}€</div>
+      </div>
+      <!-- Botó de filtre -->
+      <div class="mb-3 bottomStyles">
+        <button type="button" class="btn customButton" size="sm" [mdbTooltip]="PreferencesPOn" *ngIf="tooltipPreferencesP" (click)="onFilterPClick()" mdbBtn>Filtrar<i class="fas fa-filter cyan-text pl-1 ml-1"></i></button>
+        <ng-template #PreferencesOn>
+          <p> Filtrando por:</p>
+          <div *ngFor="let detail of tooltipPreferencesP">
+            <p>- {{detail.entity}}: {{detail.values}}</p>
+          </div>
+        </ng-template>
+      </div>
+      <div class="md-form">
+        <input type="text" [(ngModel)]="searchTextProvisoris" class="form-control" id="searchTextProvisoris" mdbInput />
+        <label for="search">Search</label>
+      </div>
+      <div #ProgressProv class="row">
+        <mat-progress-bar class="example-margin"
+                          [color]="color"
+                          [mode]="mode"
+                          [value]="value"
+                          [bufferValue]="bufferValue">
+        </mat-progress-bar>
+      </div>
+      <table mdbTable mdbTableScroll scrollY="true" maxHeight="500" stickyHeader="true" stickyHeaderBgColor="black"
+             stickyHeaderTextColor="white" #tableEl="mdbTable" class="table table-striped" small="true" hover="true"
+             aria-labelledby="tableLabel" *ngIf="provisoris">
+        <thead class="sticky-top">
+          <tr>
+            <!--<th></th>-->
+            <th [mdbTableSort]="provisoris" sortBy="mvfRefXRisk" scope="col">Ref.<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="provisoris" sortBy="mvfCodOPE" scope="col">Operación<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="provisoris" sortBy="mvfFechOperac" scope="col">F. oper.<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="provisoris" sortBy="mvfFechValor" scope="col">F. valor<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="provisoris" sortBy="mvfImNetDiv" scope="col">Importe<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="provisoris" sortBy="mvfDescripcion" scope="col">Descripción<mdb-icon fas icon="sort"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol [class.selectedRow]="ProvisoriIsSelected(provisori)" (click)="ProvisoriRowClick(provisori)" *ngFor="let provisori of provisoris; let i=index">
+            <!--<td><mdb-checkbox [default]="true" class="p-0" (change)="ProvisorisRowClick(provisori, $event)"></mdb-checkbox></td>-->
+            <td contenteditable="false" data- scope="row"><a [routerLink]="['/movFisico/',provisori.mvfRefXRisk,selectedCIA[0],selectedCTA[0]]">{{provisori.mvfRefXRisk}}</a></td>
+            <td contenteditable="false" data- scope="row">{{provisori.mvfCodOPE}}</td>
+            <td contenteditable="false" data- scope="row">{{provisori.mvfFechOperac | date:'dd/MM/yyyy'}}</td>
+            <td contenteditable="false" data- scope="row">{{provisori.mvfFechValor | date:'dd/MM/yyyy'}}</td>
+            <td contenteditable="false" data- scope="row" *ngIf="provisori.mvfSigImpNet == 1" align="right">{{provisori.mvfImNetDiv | number: '1.2-2'}}</td>
+            <td contenteditable="false" data- scope="row" *ngIf="provisori.mvfSigImpNet != 1" align="right">{{-provisori.mvfImNetDiv | number: '1.2-2'}}</td>
+            <td contenteditable="false" data- scope="row">{{provisori.mvfDescripcion}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Fi secció de provisoris -->
+    <!-- Inici secció de bancaris -->
+    <div class="col-sm-6">
+      Bancarios pendientes ({{apuntsSelectedAmount | number: '1.2-2'}}€, {{apuntsSelected.size}}/{{apunts.length}})
+      <div class="mb-3 bottomStyles">
+        <button type="button" class="btn customButton" size="sm" [mdbTooltip]="PreferencesAOn" *ngIf="tooltipPreferencesA" (click)="onFilterAClick()" mdbBtn>Filtrar<i class="fas fa-filter cyan-text pl-1 ml-1"></i></button>
+        <ng-template #PreferencesOn>
+          <p> Filtrando por:</p>
+          <div *ngFor="let detail of tooltipPreferencesA">
+            <p>- {{detail.entity}}: {{detail.values}}</p>
+          </div>
+        </ng-template>
+      </div>
+      <div class="md-form">
+        <input type="text" [(ngModel)]="searchTextApunts" class="form-control" id="searchTextApunts" mdbInput />
+        <label for="search">Search</label>
+      </div>
+      <div #ProgressBanc class="row">
+        <mat-progress-bar class="example-margin"
+                          [color]="color"
+                          [mode]="mode"
+                          [value]="value"
+                          [bufferValue]="bufferValue">
+        </mat-progress-bar>
+      </div>
+      <table mdbTable mdbTableScroll scrollY="true" maxHeight="500" stickyHeader="true" stickyHeaderBgColor="black"
+             stickyHeaderTextColor="white" #tableE2="mdbTable" class="table table-striped" small="true" hover="true"
+             aria-labelledby="tableLabel" *ngIf="apunts">
+        <thead class="sticky-top">
+          <tr>
+            <!--<th></th>-->
+            <th [mdbTableSort]="apunts" sortBy="abcNumerador" scope="col">Ref.<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="apunts" sortBy="abcConCom,abcConPro" scope="col">Documento<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="apunts" sortBy="abcFechOper" scope="col">F. oper.<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="apunts" sortBy="abcFechVal" scope="col">F. oper.<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="apunts" sortBy="absSigno,abcImporte" scope="col">Importe<mdb-icon fas icon="sort"></mdb-icon></th>
+            <th [mdbTableSort]="apunts" sortBy="abcComple1" scope="col">Descripción<mdb-icon fas icon="sort"></mdb-icon></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol [class.selectedRow]="ApuntIsSelected(apunt)" (click)="ApuntRowClick(apunt)" *ngFor="let apunt of apunts; let i=index">
+            <!--<td><mdb-checkbox [default]="true" class="p-0" (change)="ApuntsRowClick(apunt, $event)"></mdb-checkbox></td>-->
+            <td contenteditable="false" data- scope="row"><a [routerLink]="['/apunBanc/',selectedCIA[0],apunt.abcNumerador]">{{apunt.abcNumerador}}</a></td>
+            <td contenteditable="false" data- scope="row">{{apunt.abcConCom}}/{{apunt.abcConPro}}</td>
+            <td contenteditable="false" data- scope="row">{{apunt.abcFechOper | date:'dd/MM/yyyy'}}</td>
+            <td contenteditable="false" data- scope="row">{{apunt.abcFechVal | date:'dd/MM/yyyy'}}</td>
+            <td contenteditable="false" data- scope="row" *ngIf="apunt.abcSigno == 1" align="right">{{-apunt.abcImporte | number: '1.2-2'}}</td>
+            <td contenteditable="false" data- scope="row" *ngIf="apunt.abcSigno != 1" align="right">{{apunt.abcImporte | number: '1.2-2'}}</td>
+            <td contenteditable="false" data- scope="row">{{apunt.abcComple1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Fi secció de bancaris -->
+  </div>
+  <!-- Fi grids -->

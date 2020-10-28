@@ -1,0 +1,114 @@
+<p></p>
+<div class="container-fluid">
+
+  <div class="mt-4 mb-4">
+    <mdb-breadcrumb class="mt-4 mb-4">
+      <mdb-breadcrumb-item class="blue-text">Tesorería</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="active">Cartera de Efectos</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
+  </div>
+
+
+
+
+  <div>
+    <p class="efectos-title mt-3 mb-2 ml-3">Efectos Resumen</p>
+  </div>
+
+  
+
+  <div class="table-container">
+    <div class="row">
+      <div class="col">
+        <table mdbTable #tableEl="mdbTable" mbdTableScroll scrollX="true" small="true" hover="true" aria-label="tablelabel" *ngIf="efectosResumen">
+          <thead class="black white-text">
+            <tr>
+              <th [mdbTableSort]="efectosResumen" sortBy="codigocliente" scope="col">Codigo Cliente<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="efectosResumen" sortBy="nombrecliente" scope="col">Nombre Cliente<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="efectosResumen" sortBy="Num" scope="col">Nº Facturas<mdb-icon fas icon="sort"></mdb-icon></th>
+              <th [mdbTableSort]="efectosResumen" sortBy="importe" scope="col">Importe Total<mdb-icon fas icon="sort"></mdb-icon></th>
+            </tr> 
+          </thead>
+          <tbody>
+            <tr mdbTableCol *ngFor="let resumen of efectosResumen; let i = index" (click)="edit(resumen)">
+              <td *ngIf="i+1>= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-center">{{ resumen.codigocliente }}</td>
+              <td *ngIf="i+1>= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">{{ resumen.nombrecliente }}</td>
+              <td *ngIf="i+1>= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ resumen.num }}</td>
+              <td *ngIf="i+1>= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{ resumen.importe }}</td>
+            </tr>
+          </tbody>
+          <tfoot class="grey lighten-5 w-100">
+            <tr>
+              <td colspan="4">
+                <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="efectosResumen" class="mb-0"></mdb-table-pagination>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+     <div>
+       <p class="efectos-title mt-3 mb-2 ml-3">Vista de Efectos</p>
+     </div>
+
+     <div class="table-container">
+       <div class="row">
+         <div class="col">
+           <table mdbTable #tableEl2="mdbTable" mdbTableScroll scrollX="true" small="true" hover="true" aria-labelledby="tableLabel" *ngIf="efectosDetalle">
+             <thead class="black white-text">
+               <tr>
+
+                 <th [mdbTableSort]="efectosDetalle" sortBy="empresa" scope="col">Empresa<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="asiento" scope="col">Asiento<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="estadoEfecto" scope="col">Estado Efecto<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="tipoEfecto" scope="col">Tipo Efecto<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="asientoContable" scope="col">Asiento Contable<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="factura" scope="col">Factura<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="CodigoCliente" scope="col">Código Tercero<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="nombreCliente" scope="col">Nombre Tercero<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="fechaFactura" scope="col">Fecha Efecto<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="fechaVto" scope="col">Fecha Vto<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="importe" scope="col">Importe<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="importeDivisa" scope="col">Importe Divisa<mdb-icon fas icon="sort"></mdb-icon></th>
+                 <th [mdbTableSort]="efectosDetalle" sortBy="moneda" scope="col">Moneda<mdb-icon fas icon="sort"></mdb-icon></th>
+               </tr>
+             </thead>
+             <tbody>
+                 <tr mdbTableCol *ngFor="let detalle of efectosDetalle; let i = index" >
+                  <!--<td *ngIf="i+1>= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"><mdb-icon fas icon="pencil-alt" class="indigo-text mr-2 cursor"></mdb-icon></td>-->
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" class="text-center">{{ detalle.empresa }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.Asiento }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.EstadoEfecto }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.ClaseEfecto }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.AsientoContable }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.Factura }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.CodigoCliente }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.NombreCliente }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.FechaFactura | date:'dd/MM/yyyy' }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" scope="row">{{ detalle.FechaVto | date:'dd/MM/yyyy'  }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" class="text-right">{{ detalle.Importe |number:'1.2-2' }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" class="text-right">{{ detalle.ImporteDivisa |number:'1.2-2' }}</td>
+                  <td *ngIf="i+1>= mdbTablePagination2.firstItemIndex && i < mdbTablePagination2.lastItemIndex" class="text-center">{{ detalle.Moneda }}</td>
+                 </tr>
+             </tbody>
+            <tfoot class="grey lighten-5 w-100">
+             <tr>
+               <td colspan="4">
+                  <mdb-table-pagination  #mdbTablePagination2 [tableEl]="tableEl2" [searchDataSource]="efectosDetalle" class="mb-0"></mdb-table-pagination>
+                </td>
+              </tr>
+            </tfoot>
+
+            </table>
+
+          </div>
+       </div>
+     </div>
+
+</div>

@@ -1,0 +1,17 @@
+<mdb-navbar SideClass="navbar navbar-expand-sm navbar-dark unique-color" [containerInside]="false">
+  <mdb-navbar-brand><a class="navbar-brand" href="" disabled>{{objectName}}</a></mdb-navbar-brand>
+  <!-- Collapsible content -->
+  <links>
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item"><a class="nav-link" mdbWavesEffect (click)="_add()"><mdb-icon fas icon="plus-square"></mdb-icon></a></li>
+      <li class="nav-item"><a class="nav-link" mdbWavesEffect (click)="_reset()"><mdb-icon fas icon="file">Info</mdb-icon></a></li>
+      <li class="nav-item"><a class="nav-link" mdbWavesEffect (click)="_save()"><mdb-icon fas icon="save">Info</mdb-icon></a></li>
+    </ul>
+
+
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item"><a class="nav-link" mdbWavesEffect (click)="_filter()"><mdb-icon fas icon="filter"></mdb-icon></a></li>
+      <li class="nav-item"><a class="nav-link" mdbWavesEffect (click)="_refresh()"><mdb-icon fas icon="info">Info</mdb-icon></a></li>
+    </ul>
+  </links>
+</mdb-navbar>
