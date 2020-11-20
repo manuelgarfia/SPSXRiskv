@@ -71,6 +71,8 @@ namespace SPSXRiskv2.Models
         public virtual DbSet<xptm_movimientos> xptm_movimientos { get; set; }
 
         public virtual DbSet<cfg_obj_cataleg_obj> obj_cataleg_obj { get; set; }
+        public virtual DbSet<xptm_leasings> xptm_leasings { get; set; }
+
         #region Menús
         public virtual DbSet<cfg_menu_tipus> cfg_menu_tipus { get; set; }
         public virtual DbSet<cfg_menu_grups> cfg_menu_grups { get; set; }
@@ -195,6 +197,7 @@ namespace SPSXRiskv2.Models
             modelBuilder.Entity<xptm_prestamos_mvtos>().HasKey(pm => new { pm.cabid });
             modelBuilder.Entity<xptm_movimientos>().HasKey(mv => new { mv.serid });
             modelBuilder.Entity<cfg_obj_cataleg_obj>().HasKey(co => new { co.objecte });
+            modelBuilder.Entity<xptm_leasings>().HasKey(le => new { le.cabid });
 
             #region Menús
             modelBuilder.Entity<cfg_menu_tipus>().HasKey(mt => new { mt.tipusmenu, mt.usuari });

@@ -127,12 +127,10 @@ namespace SPSXRiskv2.Models.Entities
         public double DCPRefXrisk { get; set; }
         [JsonProperty("DCPContador")]
         public int DCPContador { get; set; }
-
         public string analitica { get; set; }
         public double? importe { get; set; }
         public double? importeOperacion { get; set; }
-        public double? importeMonGrupo{get; set;}
-
+        public double? importeMonGrupo { get; set; }
         public string refanalitica { get; set; }
 
         #endregion
@@ -366,11 +364,18 @@ namespace SPSXRiskv2.Models.Entities
         {
             XRSKDataContext db = new XRSKDataContext();
 
-            /// You have to create DesgloseContr entry at SPSXRiskv2\Models\XRSKDataContext.cs
-            List<DesgloseContr> items = db.DesgloseContr.
-                Where(x => x.DCPCodCIA =="290" && x.DCPRefXrisk == 2156).
-                // Include(x => x.Companyia).
-                ToList();
+            var query = from x in db.DesgloseContr select x;
+
+            // Afegim condicions de Filtre de Seguretat
+            query = aplicarSeguridad(query);
+
+            ///// You have to create DesgloseContr entry at SPSXRiskv2\Models\XRSKDataContext.cs
+            //List< DesgloseContr > items = db.DesgloseContr.
+            //    Where(x => x.DCPCodCIA == "290" && x.DCPRefXrisk == 2156).
+            //    // Include(x => x.Companyia).
+            //    ToList();
+
+            List<DesgloseContr> items = query.ToList();
 
             return TOXRSKDesgloseContr(items);
         }
@@ -382,25 +387,31 @@ namespace SPSXRiskv2.Models.Entities
 
             int reference = Convert.ToInt32(referencia);
 
-            /// You have to create DesgloseContr entry at SPSXRiskv2\Models\XRSKDataContext.cs
-            List<DesgloseContr> items = db.DesgloseContr.
-                Where(x => x.DCPCodCIA == company && x.DCPRefXrisk == reference).
-                ToList();
+            var query = from x in db.DesgloseContr.
+                        Where(x => x.DCPCodCIA == company && x.DCPRefXrisk == reference)
+                        select x;
 
-           desgloseList = DesgloseContrTrim(items);
+            // Afegim condicions de Filtre de Seguretat
+            query = aplicarSeguridad(query);
+
+            /// You have to create DesgloseContr entry at SPSXRiskv2\Models\XRSKDataContext.cs
+            //List<DesgloseContr> items = db.DesgloseContr.
+            //    Where(x => x.DCPCodCIA == company && x.DCPRefXrisk == reference).
+            //    ToList();
+            List<DesgloseContr> items = query.ToList();
+
+            desgloseList = DesgloseContrTrim(items);
 
             return desgloseList;
         }
-
-
 
         public List<XRSKDesgloseContr> DesgloseContrTrim(List<DesgloseContr> list)
         {
             List<XRSKDesgloseContr> desgloseList = new List<XRSKDesgloseContr>();
 
-            foreach(var item in list)
+            foreach (var item in list)
             {
-                if(item.DCPRefAnalitica1 != null )
+                if (item.DCPRefAnalitica1 != null)
                     item.DCPRefAnalitica1.Trim();
 
                 if (item.DCPRefAnalitica2 != null)
@@ -419,7 +430,6 @@ namespace SPSXRiskv2.Models.Entities
                     item.DCPRefAnalitica6.Trim();
 
                 desgloseList.Add(new XRSKDesgloseContr(item));
-
             }
 
             return desgloseList;

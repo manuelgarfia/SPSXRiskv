@@ -1,14 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SPSXRiskv2.Models.Database;
+using SPSXRiskv2.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using SPSXRiskv2.Models.Database;
-using SPSXRiskv2.ViewModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.AspNetCore.Routing;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace SPSXRiskv2.Models.Entities
@@ -25,7 +20,6 @@ namespace SPSXRiskv2.Models.Entities
         #endregion
 
         #region Constructores
-
         public XRSKContratosSaldos()
         {
         }// Constructor sin parámetros
@@ -45,15 +39,12 @@ namespace SPSXRiskv2.Models.Entities
 
         public XRSKContratosSaldos(ContratosSaldos item)
         {
-           TOXRSKContratosSaldos(item);
+            TOXRSKContratosSaldos(item);
         }// end Constructor EM
-
-
 
         public XRSKContratosSaldos(ContratosSaldos item, XRSKDataContext db)
         {
             TOXRSKContratosSaldos(item, db);
-
         }// end Constructor EM
 
         private void TOXRSKContratosSaldos(ContratosSaldos item)
@@ -61,13 +52,11 @@ namespace SPSXRiskv2.Models.Entities
             XRSKDataContext db = new XRSKDataContext();
             TOXRSKContratosSaldos(item, db);
         }
-
         #endregion
 
         #region Metodos Privados    
         private List<XRSKContratosSaldos> TOXRSKContratosSaldos(List<ContratosSaldos> items)
         {
-         
             List<XRSKContratosSaldos> contratos = new List<XRSKContratosSaldos>();
             foreach (ContratosSaldos item in items)
             {
@@ -76,6 +65,7 @@ namespace SPSXRiskv2.Models.Entities
 
             return contratos;
         }
+
         private void TOXRSKContratosSaldos(ContratosSaldos item, XRSKDataContext db)
         {
             CTATipoFecha = item.CTATipoFecha;
@@ -83,9 +73,25 @@ namespace SPSXRiskv2.Models.Entities
             CTACod = item.CTACod;
             Fecha = item.Fecha;
             Saldo = item.Saldo;
-
         }
 
+        private IQueryable<ContratosSaldos> aplicarSeguridad(IQueryable<ContratosSaldos> query)
+        {
+            if (Usuario.Grupos != null)
+            {
+                foreach (XRSKFocUsuariosGrupos grupo in Usuario.Grupos)
+                {
+                    if (grupo.BasesDatos != null)
+                    {
+                        foreach (XSRKBasesDatosGrupo bd in grupo.BasesDatos)
+                        {
+                            query = query.Where(x => bd.companies.Contains(x.CTACodCIA));
+                        }
+                    }
+                }
+            }
+            return query;
+        }
         #endregion
 
         #region Metodos publicos
@@ -94,16 +100,18 @@ namespace SPSXRiskv2.Models.Entities
             XRSKDataContext db = new XRSKDataContext();
             List<XRSKContratosSaldos> spsItems = new List<XRSKContratosSaldos>();
 
-            List<ContratosSaldos> items = db.ContratosSaldos.ToList();
-            foreach (ContratosSaldos item in items)
+            //List<ContratosSaldos> items = db.ContratosSaldos.ToList();
+            var query = from x in db.ContratosSaldos select x;
+
+            query = aplicarSeguridad(query);
+
+            foreach (ContratosSaldos item in query.ToList())
             {
                 spsItems.Add(new XRSKContratosSaldos(item));
             }
 
             return spsItems;
         }
-
-      
 
         public List<XRSKContratosSaldos> GetFilteredList_2()
         {
@@ -113,12 +121,15 @@ namespace SPSXRiskv2.Models.Entities
             DateTime fechaCorte1 = new DateTime(2015, 10, 1);
             DateTime fechaCorte2 = new DateTime(2015, 10, 10);
 
-            List<ContratosSaldos> items = db.ContratosSaldos.Where(x => x.Fecha >= fechaCorte1 && x.Fecha <= fechaCorte2 && x.CTATipoFecha =="RO")
+            var query = from x in db.ContratosSaldos.Where(x => x.Fecha >= fechaCorte1 && x.Fecha <= fechaCorte2 && x.CTATipoFecha == "RO")
                                         .GroupBy(x => x.Fecha)
-                                        .OrderBy(x => x.Key)                                                                                                         
-                                        .Select(g => new ContratosSaldos { Fecha = g.Key, Saldo = g.Sum(x => x.Saldo) }).ToList();
+                                        .OrderBy(x => x.Key)
+                                        .Select(g => new ContratosSaldos { Fecha = g.Key, Saldo = g.Sum(x => x.Saldo) })
+                        select x;
 
-            foreach (ContratosSaldos item in items)
+            query = aplicarSeguridad(query);
+
+            foreach (ContratosSaldos item in query.ToList())
             {
                 spsItems.Add(new XRSKContratosSaldos(item));
             }
@@ -135,15 +146,15 @@ namespace SPSXRiskv2.Models.Entities
             DateTime fechaCorte2 = hasta;
 
             List<ContratosSaldos> items = db.ContratosSaldos.Where(x => x.Fecha >= fechaCorte1 && x.Fecha <= fechaCorte2 && x.CTACodCIA == cia && contratos.Contains(x.CTACod))
-                .GroupBy(x => new {Fecha=x.Fecha,CTACod=x.CTACod })
+                .GroupBy(x => new { Fecha = x.Fecha, CTACod = x.CTACod })
                 .Select(g => new ContratosSaldos
-               {
-                  Fecha=  g.Key.Fecha,
-                  CTACod= g.Key.CTACod,
-                  Saldo= g.Sum(x=>x.Saldo)
-               }).ToList();
+                {
+                    Fecha = g.Key.Fecha,
+                    CTACod = g.Key.CTACod,
+                    Saldo = g.Sum(x => x.Saldo)
+                }).ToList();
 
-            
+
 
             foreach (ContratosSaldos item in items)
             {
@@ -152,10 +163,11 @@ namespace SPSXRiskv2.Models.Entities
 
             return spsItems;
         }
+
         public List<XRSKContratosSaldos> GetFiltered(FilterModel filter)
         {
             XRSKDataContext db = new XRSKDataContext();
-            List<XRSKContratosSaldos> spsItems= new List<XRSKContratosSaldos>();
+            List<XRSKContratosSaldos> spsItems = new List<XRSKContratosSaldos>();
 
             //var query = from x in db.ContratosSaldos
             //            group x by new { x.Fecha, x.CTACod } into y
@@ -168,9 +180,11 @@ namespace SPSXRiskv2.Models.Entities
             var query = from x in db.ContratosSaldos
                         select x;
 
+            query = aplicarSeguridad(query);
+
             foreach (FilterDetailModel detail in filter.detail)
             {
-                
+
                 if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_DATE))
                 {
                     switch (detail.subtype)
@@ -183,25 +197,25 @@ namespace SPSXRiskv2.Models.Entities
                             break;
                     }
                 }
-                
+
                 if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_ITEMS) && detail.values != null && detail.values.Length != 0)
                 {
                     if (detail.entity.Equals("MVFCodCIA"))
                     {
                         query = query.Where(x => detail.values.Contains(x.CTACodCIA));
                     }
-                 
+
                     if (detail.entity.Equals("ctaCod"))
                     {
                         query = query.Where(x => detail.values.Contains(x.CTACod));
                     }
-                 
+
                 }
 
             }
 
             query = (IQueryable<ContratosSaldos>)query.GroupBy(x => new { x.CTACod, x.Fecha })
-                          
+
                           .Select(grp => new ContratosSaldos
                           {
                               Fecha = grp.Key.Fecha,
@@ -209,11 +223,9 @@ namespace SPSXRiskv2.Models.Entities
                               Saldo = grp.Sum(x => x.Saldo)
                           });
 
-
-
             List<ContratosSaldos> items = query.ToList();
-              spsItems= TOXRSKContratosSaldos(items);
-               return spsItems;
+            spsItems = TOXRSKContratosSaldos(items);
+            return spsItems;
         }
 
         public List<XRSKContratosSaldos> GetFilteredCia(FilterModel filter)
@@ -221,9 +233,10 @@ namespace SPSXRiskv2.Models.Entities
             XRSKDataContext db = new XRSKDataContext();
             List<XRSKContratosSaldos> sendItems = new List<XRSKContratosSaldos>();
 
-
             var query = from x in db.ContratosSaldos
                         select x;
+
+            query = aplicarSeguridad(query);
             /*
                         group x by new { x.CTACodCIA, x.Fecha, x.CTATipoFecha } into y
                         where y.Sum(p => p.Saldo) != 0 && y.Key.CTATipoFecha == "RV"
@@ -239,7 +252,6 @@ namespace SPSXRiskv2.Models.Entities
 
             foreach (FilterDetailModel detail in filter.detail)
             {
-                
                 if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_DATE))
                 {
                     switch (detail.subtype)
@@ -252,7 +264,7 @@ namespace SPSXRiskv2.Models.Entities
                             break;
                     }
                 }
-                
+
                 if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_ITEMS) && detail.values != null && detail.values.Length != 0)
                 {
                     if (detail.entity.Equals("MVFCodCIA"))
@@ -267,7 +279,6 @@ namespace SPSXRiskv2.Models.Entities
             }
 
             // Agregar directivas de Group By y retorno.
-
             query = (IQueryable<ContratosSaldos>)query.GroupBy(x => new { x.CTACod, x.Fecha, x.CTATipoFecha, x.Saldo })
                             .Where(y => y.Sum(p => p.Saldo) != 0 && y.Key.CTATipoFecha == "RV")
                             .Select(grp => new ContratosSaldos
@@ -277,15 +288,11 @@ namespace SPSXRiskv2.Models.Entities
                                 Saldo = grp.Key.Saldo
                             });
 
-
-            
-
             List<ContratosSaldos> items = query.ToList();
-           sendItems= TOXRSKContratosSaldos(items);
-            
+            sendItems = TOXRSKContratosSaldos(items);
+
             return sendItems;
         }
-
 
         public List<XRSKContratosSaldos> getContratosList(string company, string contrato)
         {
@@ -294,11 +301,13 @@ namespace SPSXRiskv2.Models.Entities
 
             DateTime fechaSaldos = new DateTime(2015, 10, 1);
 
-            var query =  db.ContratosSaldos
+            var query = from x in db.ContratosSaldos
                         .Where(x => x.CTACodCIA.Equals(company) && x.CTACod.Equals(contrato) && x.Fecha.Month == 10 && x.CTATipoFecha == "RO")
-                        .ToList();
+                        select x;
 
-            sendItems = query;
+            query = aplicarSeguridad(query);
+
+            sendItems = query.ToList();
 
             return TOXRSKContratosSaldos(sendItems);
         }
@@ -311,11 +320,13 @@ namespace SPSXRiskv2.Models.Entities
             DateTime fechadesde = Convert.ToDateTime(dateDesde);
             DateTime fechahasta = Convert.ToDateTime(dateHasta);
 
-            var query = db.ContratosSaldos
-                        .Where(x => x.CTACodCIA.Equals(company) && x.CTACod.Equals(contrato) && x.Fecha >= fechadesde && x.Fecha <= fechahasta && x.CTATipoFecha == "RO" )
-                        .ToList();
+            var query = from x in db.ContratosSaldos
+                        .Where(x => x.CTACodCIA.Equals(company) && x.CTACod.Equals(contrato) && x.Fecha >= fechadesde && x.Fecha <= fechahasta && x.CTATipoFecha == "RO")
+                        select x;
 
-            sendItems = query;
+            query = aplicarSeguridad(query);
+
+            sendItems = query.ToList();
 
             return TOXRSKContratosSaldos(sendItems);
         }
@@ -327,21 +338,17 @@ namespace SPSXRiskv2.Models.Entities
 
             List<double> contratos = new List<double>();
 
-
             var query = db.ContratosSaldos
                             .Where(x => x.CTACodCIA.Equals(company) && x.CTACod.Equals(contrato))
                             .ToList();
 
-
-            foreach(var con in contratosItems)
+            foreach (var con in contratosItems)
             {
                 contratos.Add(con.Saldo);
             }
 
-
             return contratos;
         }
-
         #endregion
     }
 }

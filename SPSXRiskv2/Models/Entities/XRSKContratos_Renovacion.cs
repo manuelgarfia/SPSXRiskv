@@ -318,87 +318,90 @@ namespace SPSXRiskv2.Models.Entities
 
         private IQueryable<Contratos_Renovacion> aplicarFiltro(IQueryable<Contratos_Renovacion> query, FilterModel filter)
         {
-            foreach (FilterDetailModel detail in filter.detail)
+            if (filter.detail != null)
             {
-                // Filtering sample, uncomment and change it at your own if your consider
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_DATE))
-                // {
-                // switch (detail.subtype)
-                // {
-                // case XRSKConstantes.FILTER_SUBTYPE_RANGE:
-                // if (detail.entity.Equals("MVFFechOperac"))
-                // {
-                // query = query.Where(x => x.MVFFechOperac >= detail.from && x.MVFFechOperac <= detail.to);
-                // }
-                // break;
-                // }
-                // }
+                foreach (FilterDetailModel detail in filter.detail)
+                {
+                    // Filtering sample, uncomment and change it at your own if your consider
+                    // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_DATE))
+                    // {
+                    // switch (detail.subtype)
+                    // {
+                    // case XRSKConstantes.FILTER_SUBTYPE_RANGE:
+                    // if (detail.entity.Equals("MVFFechOperac"))
+                    // {
+                    // query = query.Where(x => x.MVFFechOperac >= detail.from && x.MVFFechOperac <= detail.to);
+                    // }
+                    // break;
+                    // }
+                    // }
 
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_NUMBER))
-                // {
-                // switch (detail.subtype)
-                // {
-                // case XRSKConstantes.FILTER_SUBTYPE_GREATER_EQUAL:
-                // if (detail.entity.Equals("MVFImBrDivisa"))
-                // {
-                // query = query.Where(x => x.MVFImBrDivisa >= (Double)detail.decValue);
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_LESS_EQUAL:
-                // if (detail.entity.Equals("MVFImBrDivisa"))
-                // {
-                // query = query.Where(x => x.MVFImBrDivisa <= (Double)detail.decValue);
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_RANGE:
-                // if (detail.entity.Equals("MVFImBrDivisa"))
-                // {
-                // query = query.Where(x => x.MVFImBrDivisa >= (Double)detail.decValue && x.MVFImBrDivisa <= (Double)detail.importMax);
-                // }
-                // break;
-                // }
-                // }
+                    // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_NUMBER))
+                    // {
+                    // switch (detail.subtype)
+                    // {
+                    // case XRSKConstantes.FILTER_SUBTYPE_GREATER_EQUAL:
+                    // if (detail.entity.Equals("MVFImBrDivisa"))
+                    // {
+                    // query = query.Where(x => x.MVFImBrDivisa >= (Double)detail.decValue);
+                    // }
+                    // break;
+                    // case XRSKConstantes.FILTER_SUBTYPE_LESS_EQUAL:
+                    // if (detail.entity.Equals("MVFImBrDivisa"))
+                    // {
+                    // query = query.Where(x => x.MVFImBrDivisa <= (Double)detail.decValue);
+                    // }
+                    // break;
+                    // case XRSKConstantes.FILTER_SUBTYPE_RANGE:
+                    // if (detail.entity.Equals("MVFImBrDivisa"))
+                    // {
+                    // query = query.Where(x => x.MVFImBrDivisa >= (Double)detail.decValue && x.MVFImBrDivisa <= (Double)detail.importMax);
+                    // }
+                    // break;
+                    // }
+                    // }
 
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_STRING) && detail.charValue != XRSKConstantes.FILTER_VALUE_EMPTY)
-                // {
-                // switch (detail.subtype)
-                // {
-                // case XRSKConstantes.FILTER_SUBTYPE_CONTAINS:
-                // if (detail.entity.Equals("MVFRefXRisk"))
-                // {
-                // query = query.Where(x => x.MVFRefXRisk.ToString().Contains(detail.charValue));
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_STARTS:
-                // if (detail.entity.Equals("MVFRefXRisk"))
-                // {
-                // query = query.Where(x => x.MVFRefXRisk.ToString().StartsWith("P"));
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_ENDS:
-                // if (detail.entity.Equals("MVFRefXRisk"))
-                // {
-                // query = query.Where(x => x.MVFRefXRisk.ToString().Contains(detail.charValue));
-                // }
-                // break;
-                // }
-                // }
+                    // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_STRING) && detail.charValue != XRSKConstantes.FILTER_VALUE_EMPTY)
+                    // {
+                    // switch (detail.subtype)
+                    // {
+                    // case XRSKConstantes.FILTER_SUBTYPE_CONTAINS:
+                    // if (detail.entity.Equals("MVFRefXRisk"))
+                    // {
+                    // query = query.Where(x => x.MVFRefXRisk.ToString().Contains(detail.charValue));
+                    // }
+                    // break;
+                    // case XRSKConstantes.FILTER_SUBTYPE_STARTS:
+                    // if (detail.entity.Equals("MVFRefXRisk"))
+                    // {
+                    // query = query.Where(x => x.MVFRefXRisk.ToString().StartsWith("P"));
+                    // }
+                    // break;
+                    // case XRSKConstantes.FILTER_SUBTYPE_ENDS:
+                    // if (detail.entity.Equals("MVFRefXRisk"))
+                    // {
+                    // query = query.Where(x => x.MVFRefXRisk.ToString().Contains(detail.charValue));
+                    // }
+                    // break;
+                    // }
+                    // }
 
-                // Elementos
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_ITEMS) && detail.values != null && detail.values.Length != 0)
-                // {
-                // if (detail.entity.Equals("MVFCodCIA"))
-                // {
-                // if (detail.values.Length.Equals(1))
-                // {
-                // query = query.Where(x => x.MVFCodCIA.Equals(detail.values[0]));
-                // }
-                // else
-                // {
-                // query = query.Where(x => detail.values.Contains(x.MVFCodCIA));
-                // }
-                // }
-                // }
+                    // Elementos
+                    // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_ITEMS) && detail.values != null && detail.values.Length != 0)
+                    // {
+                    // if (detail.entity.Equals("MVFCodCIA"))
+                    // {
+                    // if (detail.values.Length.Equals(1))
+                    // {
+                    // query = query.Where(x => x.MVFCodCIA.Equals(detail.values[0]));
+                    // }
+                    // else
+                    // {
+                    // query = query.Where(x => detail.values.Contains(x.MVFCodCIA));
+                    // }
+                    // }
+                    // }
+                }
             }
 
             return query;
@@ -408,13 +411,14 @@ namespace SPSXRiskv2.Models.Entities
         #region Public Methods
         public List<XRSKContratos_Renovacion> GetList()
         {
-            XRSKDataContext db = new XRSKDataContext();
+            return GetFiltered(new FilterModel());
+            //XRSKDataContext db = new XRSKDataContext();
 
-            /// You have to create Contratos_Renovacion entry at SPSXRiskv2\Models\XRSKDataContext.cs
-            List<Contratos_Renovacion> items = db.Contratos_Renovacion.
-                // Include(x => x.Companyia).
-                ToList();
-            return TOXRSKContratos_Renovacion(items);
+            ///// You have to create Contratos_Renovacion entry at SPSXRiskv2\Models\XRSKDataContext.cs
+            //List<Contratos_Renovacion> items = db.Contratos_Renovacion.
+            //    // Include(x => x.Companyia).
+            //    ToList();
+            //return TOXRSKContratos_Renovacion(items);
         }
 
         public List<XRSKContratos_Renovacion> GetFiltered(FilterModel filter)

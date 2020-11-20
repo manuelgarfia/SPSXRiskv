@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 using SPSXRiskv2.Common;
 using SPSXRiskv2.Models.Entities;
-using SPSXRiskv2.Models.Database;
 using SPSXRiskv2.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SPSXRiskv2.Controllers.MasterData
 {
     [ApiController]
+    [Authorize(Policy = "ValidUser")]
     [Route("api/[controller]")]
     public class XRSKCNCSituacionController : Controller
     {
@@ -22,7 +20,8 @@ namespace SPSXRiskv2.Controllers.MasterData
         [HttpGet]
         public List<XRSKCNCSituacion> Get()
         {
-            XRSKCNCSituacion cnc = new XRSKCNCSituacion();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKCNCSituacion cnc = new XRSKCNCSituacion(user);
             List<XRSKCNCSituacion> cncList = new List<XRSKCNCSituacion>();
 
             try

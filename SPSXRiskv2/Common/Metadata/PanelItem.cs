@@ -32,7 +32,7 @@ namespace SPSXRiskv2.Common.Metadata
         {
             Name = _Name;
             Icon = _Icon;
-            menu = _menu.ConvertAll(x=> new ThirdMenuItem(x.Name,x.Route,x.Icon,x.menuItem));
+            menu = _menu.ConvertAll(x=> new ThirdMenuItem(x.Name,x.Route,x.Icon, x.hasRouting ,x.menuItem));
         }
 
         #endregion
@@ -120,7 +120,7 @@ namespace SPSXRiskv2.Common.Metadata
                                 }
 
                                 //Pertany al segon menu
-                                secondMenu.Add(new ThirdMenuItem(stringSecondLevel.descripcioNivell2, "", "angle-double-right", thirdMenu));
+                                secondMenu.Add(new ThirdMenuItem(stringSecondLevel.descripcioNivell2, "", "angle-double-right", false, thirdMenu));
                                 thirdMenu.Clear();
                             }
 
@@ -139,8 +139,8 @@ namespace SPSXRiskv2.Common.Metadata
 
                         //Incluimos Segundo Nivel Deuda
                         List<ThirdMenuItem> globalMenu = new List<ThirdMenuItem>();
-                        globalMenu.Add(new ThirdMenuItem("Portal Préstamos", "prestamos", "angle-double-right", emptyMenu));
-                        globalMenu.Add(new ThirdMenuItem("Portal Leasings", "", "angle-double-right", emptyMenu));
+                        globalMenu.Add(new ThirdMenuItem("Portales Procesos", "procesos", "angle-double-right", true, emptyMenu));
+                        globalMenu.Add(new ThirdMenuItem("Portales Deuda", "prestamos", "angle-double-right",true, emptyMenu));
                         paneles.Add(new PanelItem("Global", "angle-double-right", globalMenu));
 
                         break;
@@ -149,43 +149,43 @@ namespace SPSXRiskv2.Common.Metadata
 
                         //Incluimos la parte de Tesoreria
                         List<ThirdMenuItem> tesoreriaMenu = new List<ThirdMenuItem>();
-                        tesoreriaMenu.Add(new ThirdMenuItem("Movimiento Físico", "xrskmovimientofisico", "angle-double-right", emptyMenu));
-                        tesoreriaMenu.Add(new ThirdMenuItem("Movimiento Simplificado", "xrskmvfsimplificado", "angle-double-right", emptyMenu));
-                        tesoreriaMenu.Add(new ThirdMenuItem("Apuntes Bancarios", "ApuntesBancarios", "angle-double-right", emptyMenu));
-                        tesoreriaMenu.Add(new ThirdMenuItem("Situación de conciliación", "cncsituacion", "angle-double-right", emptyMenu));
-                        tesoreriaMenu.Add(new ThirdMenuItem("Cartera Efectos", "carteraEfectos", "angle-double-right", emptyMenu));
-                        tesoreriaMenu.Add(new ThirdMenuItem("Cuéntas de Crédito", "polizas", "angle-double-right", emptyMenu));
-                        tesoreriaMenu.Add(new ThirdMenuItem("Escenarios", "jesus", "angle-double-right", emptyMenu));
-                        tesoreriaMenu.Add(new ThirdMenuItem("Escenarios navegables", "jesus-navega", "angle-double-right", emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Movimiento Físico", "xrskmovimientofisico", "angle-double-right", true, emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Movimiento Simplificado", "xrskmvfsimplificado", "angle-double-right", true, emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Apuntes Bancarios", "ApuntesBancarios", "angle-double-right", true, emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Situación de conciliación", "cncsituacion", "angle-double-right", true, emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Cartera Efectos", "carteraEfectos", "angle-double-right", true, emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Cuéntas de Crédito", "polizas", "angle-double-right", true, emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Escenarios", "jesus", "angle-double-right", true, emptyMenu));
+                        tesoreriaMenu.Add(new ThirdMenuItem("Escenarios navegables", "jesus-navega", "angle-double-right", true, emptyMenu));
 
                         paneles.Add(new PanelItem("Tesoreria", "tools", tesoreriaMenu));
 
                         // Incluimos la parte de Reporting
                         List<ThirdMenuItem> reportingMenu = new List<ThirdMenuItem>();
-                        reportingMenu.Add(new ThirdMenuItem("Reporting", "reporting", "angle-double-right", emptyMenu));
+                        reportingMenu.Add(new ThirdMenuItem("Reporting", "reporting", "angle-double-right", true, emptyMenu));
 
                         paneles.Add(new PanelItem("Reporting", "tools", reportingMenu));
 
                         // Incluimos la parte de Maestros
                         List<ThirdMenuItem> maestrosMenu = new List<ThirdMenuItem>();
-                        maestrosMenu.Add(new ThirdMenuItem("Agrupación Contrapartida", "xrskagrupacion", "file-alt", emptyMenu));
-                        maestrosMenu.Add(new ThirdMenuItem("Condiciones Bancarias", "georgina", "file-alt", emptyMenu));
-                        maestrosMenu.Add(new ThirdMenuItem("Calendario Festivos", "xrskcalendario", "file-alt", emptyMenu));
-                        maestrosMenu.Add(new ThirdMenuItem("Contratos Saldos Charts", "graphic", "file-alt", emptyMenu));
+                        maestrosMenu.Add(new ThirdMenuItem("Agrupación Contrapartida", "xrskagrupacion", "file-alt", true, emptyMenu));
+                        maestrosMenu.Add(new ThirdMenuItem("Condiciones Bancarias", "georgina", "file-alt", true, emptyMenu));
+                        maestrosMenu.Add(new ThirdMenuItem("Calendario Festivos", "xrskcalendario", "file-alt", true, emptyMenu));
+                        maestrosMenu.Add(new ThirdMenuItem("Contratos Saldos Charts", "graphic", "file-alt", true, emptyMenu));
 
                         paneles.Add(new PanelItem("Maestros", "globe", maestrosMenu));
 
                         // Incluimos la parte de Resumen Actividad
                         List<ThirdMenuItem> resumenActividad = new List<ThirdMenuItem>();
-                        resumenActividad.Add(new ThirdMenuItem("Resumen", "ActivitySummary", "file-alt", emptyMenu));
+                        resumenActividad.Add(new ThirdMenuItem("Resumen", "ActivitySummary", "file-alt", true, emptyMenu));
 
                         paneles.Add(new PanelItem("Resumen", "globe", resumenActividad));
 
                         // Incluimos la parte de Seguridad
                         List<ThirdMenuItem> seguridadMenu = new List<ThirdMenuItem>();
-                        seguridadMenu.Add(new ThirdMenuItem("Usuarios", "users", "file-alt", emptyMenu));
-                        seguridadMenu.Add(new ThirdMenuItem("Grupos de Usuarios", "usersGroups", "file-alt", emptyMenu));
-                        seguridadMenu.Add(new ThirdMenuItem("Seguridad Objetos", "securityObjects", "file-alt", emptyMenu));
+                        seguridadMenu.Add(new ThirdMenuItem("Usuarios", "users", "file-alt", true, emptyMenu));
+                        seguridadMenu.Add(new ThirdMenuItem("Grupos de Usuarios", "usersGroups", "file-alt", true, emptyMenu));
+                        seguridadMenu.Add(new ThirdMenuItem("Seguridad Objetos", "securityObjects", "file-alt", true, emptyMenu));
 
                         paneles.Add(new PanelItem("Seguridad", "lock", seguridadMenu));
 

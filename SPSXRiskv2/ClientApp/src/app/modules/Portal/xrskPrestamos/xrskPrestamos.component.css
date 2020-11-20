@@ -87,6 +87,21 @@
     color:white;
   }
 
+.test {
+  border-radius: 10px;
+}
+.buttonSmallSize {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: #71CBE4 !important;
+}
+
+  .buttonSmallSize:hover {
+    background-color: #559FB4 !important;
+    color: white;
+  }
 
   /*PRESTAMOS CLICK*/
 
@@ -135,4 +150,32 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 20px;
   font-weight: bold;
+}
+
+/*Seleccion de linea*/
+
+.divsPosition{
+    position:absolute;
+}
+
+.selectLine {
+  height: auto;
+  width: 355px;
+  color: white;
+  background-color: #424242;
+  position: relative;
+  border: black 2px;
+  z-index: 10001;
+  border-radius: 10px;
+}
+
+/*HEADER BUTTON*/
+.headerButton {
+  border: none;
+  box-shadow: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: #6B7FCB;
 }

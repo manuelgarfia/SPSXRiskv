@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SPSXRiskv2.Models.Database;
+using SPSXRiskv2.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Threading.Tasks;
-using SPSXRiskv2.Models.Database;
-using SPSXRiskv2.ViewModels;
-using System.Linq.Expressions;
-using System.IO;
 using System.Security.Claims;
 
 namespace SPSXRiskv2.Models.Entities
@@ -55,13 +52,9 @@ namespace SPSXRiskv2.Models.Entities
         public string ABCLibreTexto1 { get; set; }
         public string ABCLibreTexto2 { get; set; }
         public string ABCLibreTexto3 { get; set; }
-
         public string numcuenta { get; set; }
         public string complementos { get; set; }
-
         public string operacion { get; set; }
-
-
         #endregion
 
         #region Propiedades Entidades Relacionadas
@@ -301,10 +294,14 @@ namespace SPSXRiskv2.Models.Entities
 
             DateTime fechaApunte = new DateTime(2016, 1, 12);
 
-            List<ApunteBancario> items = db.ApunteBancario
+            var query = from x in db.ApunteBancario
                 .Include(ab => ab.Companyia)
-                .Where(ab => ab.ABCCodCIA.Equals("550") && ab.ABCFechOper.Equals(fechaApunte))
-                .ToList();
+                .Where(ab => ab.ABCFechOper.Equals(fechaApunte))
+                select x;
+
+            query = aplicarSeguridad(query);
+
+            List<ApunteBancario> items = query.ToList();
 
             return TOXRSKApunteBancario(items);
         }
@@ -350,6 +347,8 @@ namespace SPSXRiskv2.Models.Entities
                             .Where(ab => !ab.ABCIncorporado.Equals(true))
                             select ab;
 
+                query = aplicarSeguridad(query);
+
                 query = aplicarFiltro(query, filter);
 
                 items = query.ToList();
@@ -362,10 +361,11 @@ namespace SPSXRiskv2.Models.Entities
         {
             XRSKDataContext db = new XRSKDataContext();
 
-
             var query = from ab in db.ApunteBancario
                             .Where(ab => ab.ABCCodCIA.Equals(cia) && ab.ABCRefConcil.Equals(referencia))
                         select ab;
+
+            query = aplicarSeguridad(query);
 
             return TOXRSKApunteBancario(query.ToList());
         }
@@ -374,8 +374,6 @@ namespace SPSXRiskv2.Models.Entities
         {
             int numEmpresas;
             int numApuntes;
-            DateTime horaInicio;
-            DateTime horaFin;
 
             XRSKDataContext db = new XRSKDataContext();
             List<ApunteBancario> apuntBanc = new List<ApunteBancario>();
@@ -386,6 +384,8 @@ namespace SPSXRiskv2.Models.Entities
 
             var query = from x in db.ApunteBancario
                         select x;
+
+            query = aplicarSeguridad(query);
 
             //Obtenció de número d'apunts segons la FechaIntro
             query = query.Where(x => x.ABCFechIntro == fechIntro);

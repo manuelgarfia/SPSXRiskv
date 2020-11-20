@@ -1,22 +1,26 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-
 import { XRSKxptm_prestamosService } from 'src/app/shared/services/xrskxptm_prestamos.service';
 import { XRSKxptm_prestamos } from 'src/app/shared/models/xrskxptm_prestamos.model';
 import { Router } from '@angular/router';
 import { MdbTablePaginationComponent, MdbTableDirective, MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
 import { DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { XRSKCIAService } from '../../../shared/services/cia.service';
+import { XRSKEntidadService } from 'src/app/shared/services/entidad.service';
 import { XRSKContratosService } from 'src/app/shared/services/xrskContratos.service';
 import { contratossaldosservice } from '../../../shared/services/contratossaldos.service';
 import { XRSKUtilsService } from '../../../shared/services/xrskUtils.service';
-import { Observable } from 'rxjs';
+
 import { XRSKUser } from '../../../core/models/xrskuser.model';
-import { SideFilterComponent } from 'src/app/shared/components/side-filter/side-filter.component';
-import { LoadingModalComponent } from '../../../shared/components/loading-modal/loading-modal.component'
-import { filtermodelArray, FilterHeader, FilterDetail, filtermodel } from '../../../shared/models/filtermodel';
 import { stringmodel } from '../../../shared/models/stringmodel';
+import { SideFilterComponent } from 'src/app/shared/components/side-filter/side-filter.component';
+import { LoadingModalComponent } from '../../../shared/components/loading-modal/loading-modal.component';
+
+import { filtermodelArray, FilterHeader, FilterDetail, filtermodel } from '../../../shared/models/filtermodel';
+import { AlertsComponent } from '../../../shared/components/Alerts/AlertModal.component';
+
 
 @Component({
   selector: 'app-xrsk-prestamos',
@@ -30,7 +34,8 @@ export class XrskPrestamosComponent implements OnInit {
 
   constructor(private prestamosService: XRSKxptm_prestamosService, private authService: AuthenticationService,
     private cdRef: ChangeDetectorRef, private datePipe: DatePipe, private modalService: MDBModalService,
-    private ciaService: XRSKCIAService, private contService: XRSKContratosService, private utilsService: XRSKUtilsService
+    private ciaService: XRSKCIAService, private contService: XRSKContratosService, private utilsService: XRSKUtilsService,
+    private entService: XRSKEntidadService, private ruta: Router
   ) { }
 
   //private utilsService: XRSKUtilsService
@@ -76,19 +81,59 @@ export class XrskPrestamosComponent implements OnInit {
   public selectedFilter: FilterHeader = new FilterHeader();
 
   public modalOptions: any;
+  public waringModalOptions: any;
   modalRef: MDBModalRef;
+
+  //Seleccion de línea
+
+  public lineas: any[] = [
+    {
+      linea: 'Préstamos',
+      id: 'prestamos',
+    },
+    {
+      linea: 'Leasings',
+      id: 'id2',
+    }
+  ]
   
   ngOnInit(): void {
     this.formatDate();
     this.getPreferences();
-    //this.getSelectorCompañias();
+    this.getSelectorCompañias();
+    this.getSelectorEntidades();
     this.getPrestamos();
+  }
+
+  showAlerts() {
+
+    this.waringModalOptions = {
+      backdrop: false,
+      keyboard: true,
+      focus: true,
+      show: true,
+      ignoreBackdropClick: false,
+      class: 'modal-dialog-scrollable modal-warning',
+      animated: true,
+    }
+
+    this.modalRef = this.modalService.show(AlertsComponent, this.waringModalOptions);
   }
 
   formatDate() {
     var d = Date();
     this.todaysDate = this.datePipe.transform(d, 'dd/MM/yyyy');
 
+  }
+
+  selectLine(item) {
+    if (item == 'Préstamos') {
+      this.ruta.navigate(['/prestamos']);
+    }
+
+    if (item == 'Leasings') {
+      this.ruta.navigate(['/leasings']);
+    }
   }
 
   getPrestamos() {
@@ -99,6 +144,7 @@ export class XrskPrestamosComponent implements OnInit {
         this.mdbTable.setDataSource(this.prestamosList);
         this.getSpecificInformation();
         this.loaded = true;
+        this.showAlerts();
       },
       err => {
         console.log(err)
@@ -202,23 +248,23 @@ export class XrskPrestamosComponent implements OnInit {
   onPrestamoClick(prestamo) {
     //this.currentUserl$ = this.authService.currentUserObs;
     this.prestamoSeleccionado = prestamo
-    this.userString = "for";
-    //window.open("http://" + "xriskdev2018.cloudapp.net/xrisktreasuryDEV/Desktop2016.aspx?user=" + this.userString + "&pwd=oys&dbms=DEV&targetObj=xptm_prestamos&cond=codser=" + this.prestamoSeleccionado);
+    this.userString = "portal";
+    window.open("http://" + "xriskdev2018.cloudapp.net/xrisktreasuryDEV/Desktop2016.aspx?user=" + this.userString + "&pwd=oys&dbms=DEV&targetObj=xptm_prestamos&cond=codser=" + this.prestamoSeleccionado);
 
-    var qsOpen = "user=" + this.userString + "&pwd=oys&dbms=DEV&targetObj=xptm_prestamos&cond=codser=" + this.prestamoSeleccionado;
-    var qsEncrypted: stringmodel;
+    //var qsOpen = "user=" + this.userString + "&pwd=oys&dbms=DEV&targetObj=xptm_prestamos&cond=codser=" + this.prestamoSeleccionado;
+    //var qsEncrypted: stringmodel;
 
-    this.utilsService.encrypt(qsOpen).subscribe(
-      encrypted => {
-        qsEncrypted = encrypted as stringmodel;
-        //window.alert(qsEncrypted.cadena);
-        //window.open("http://xriskdev2018.cloudapp.net/xrisktreasuryDEV/Desktop2016.aspx?enc=2mZ6SOuCLn0nS0zLX3Mx8vcGkFtKpsZsYM1LfPtHSiiJ9G0JRW0UDwmCWysaIOtaS1D4yxWQPlX+Ahmgmo0Rij//k+tsSEhAqiFWViA69HKGILy4lsRkdGRm77KGAHQwvdFN/S0MT5VsiaSbURD81+SrnaFmCkM0bk7/DCSlo4Yi2UfbcL2wEcZI+QsUioGoR2b+1ne1faphUOE5HWiQTg==");
-        window.open("http://xriskdev2018.cloudapp.net/xrisktreasuryDEV/Desktop2016.aspx?" + qsEncrypted.cadena);
-      },
-      err => {
-        console.log(err)
-      }
-    )
+    //this.utilsService.encrypt(qsOpen).subscribe(
+    //  encrypted => {
+    //    qsEncrypted = encrypted as stringmodel;
+    //    //window.alert(qsEncrypted.cadena);
+    //    //window.open("http://xriskdev2018.cloudapp.net/xrisktreasuryDEV/Desktop2016.aspx?enc=2mZ6SOuCLn0nS0zLX3Mx8vcGkFtKpsZsYM1LfPtHSiiJ9G0JRW0UDwmCWysaIOtaS1D4yxWQPlX+Ahmgmo0Rij//k+tsSEhAqiFWViA69HKGILy4lsRkdGRm77KGAHQwvdFN/S0MT5VsiaSbURD81+SrnaFmCkM0bk7/DCSlo4Yi2UfbcL2wEcZI+QsUioGoR2b+1ne1faphUOE5HWiQTg==");
+    //    window.open("http://xriskdev2018.cloudapp.net/xrisktreasuryDEV/Desktop2016.aspx?" + qsEncrypted.cadena);
+    //  },
+    //  err => {
+    //    console.log(err)
+    //  }
+    //)
   }
 
   public chartType: string = 'bar';
@@ -328,7 +374,7 @@ export class XrskPrestamosComponent implements OnInit {
   }
 
   getPreferences() {
-    this.preferences = JSON.parse(localStorage.getItem('PolizasPreferences'));
+    this.preferences = JSON.parse(localStorage.getItem('PrestamosPreferences'));
     if (this.preferences != null) {
       //this.preferencesOn = true;
       //this.setTooltip();
@@ -350,6 +396,7 @@ export class XrskPrestamosComponent implements OnInit {
 
   public setDefaultFilter() {
     this.selectedFilter.add(new FilterDetail("Compañías", "empresa", "items", null, null, null, null, null, null, null, null, null));
+    this.selectedFilter.add(new FilterDetail("Entidad", "entidad", "items", null, null, null, null, null, null, null, null, null));   
     this.selectedFilter.add(new FilterDetail("Fecha Inicio", "fecha1cuota", "date", "range", null, null, null, null, null, this.FechaDesde, this.FechaHasta, null));
   }
 
@@ -398,9 +445,22 @@ export class XrskPrestamosComponent implements OnInit {
 
   fetchSelection() {
     // Actualizar los datos
-   // this.getXRSKCuentasCredito(this.selectedFilter);
+    this.getXRSKFilteredPrestamos(this.selectedFilter);
     // Save Preferences
     this.savePreferences();
+  }
+
+  getXRSKFilteredPrestamos(filter: FilterHeader): void {
+
+    this.prestamosService.getXRSKxptm_prestamosFilter(filter).subscribe(
+      prestamos => {
+        this.prestamos = prestamos as XRSKxptm_prestamos[];
+        this.mdbTable.setDataSource(this.prestamosList);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   savePreferences() {
@@ -418,6 +478,24 @@ export class XrskPrestamosComponent implements OnInit {
           this.selectorCompanyias.markChecked(this.selectedItems);
         }
         this.selectedFilter.detail.find(x => x.entity == "empresa").content = this.selectorCompanyias.detail;
+
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  getSelectorEntidades(): void {
+    this.entService.get_entidades_filter().subscribe(
+      ent_list => {
+
+        this.selectorEntidades.detail = ent_list as filtermodel[];
+        this.selectedItems = this.selectedFilter.detail.find(x => x.entity == "entidad").values;
+        if (this.selectedItems != null) {
+          this.selectorEntidades.markChecked(this.selectedItems);
+        }
+        this.selectedFilter.detail.find(x => x.entity == "entidad").content = this.selectorEntidades.detail;
 
       },
       err => {

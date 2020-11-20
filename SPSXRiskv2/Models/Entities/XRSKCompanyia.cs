@@ -193,6 +193,20 @@ namespace SPSXRiskv2.Models.Entities
             companyitems = query.ToList();
             return TOXRSKCompanyia(companyitems);
         }
+
+        public string GetDescripcionEmpresa(string empresa)
+        {
+            Companyia empresaItem = new Companyia();
+            XRSKDataContext db = new XRSKDataContext();
+            string empresaDesc;
+
+            empresaItem = db.context_companyia.Where(x => x.CIACod == empresa).FirstOrDefault();
+            empresaDesc = empresaItem.CIADescripcion;
+
+            //companyitems = query.ToList();
+            return empresaDesc;
+        }
+
         #endregion
 
         #region User Functions 

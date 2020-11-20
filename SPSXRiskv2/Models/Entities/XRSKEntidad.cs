@@ -71,6 +71,19 @@ namespace SPSXRiskv2.Models.Entities
             return list_entidad;
         }
 
+        public string GetDescripcionEntidad(string entidad)
+        {
+            Entidades empresaItem = new Entidades();
+            XRSKDataContext db = new XRSKDataContext();
+            string entidadDesc;
+
+            empresaItem = db.context_entidades.Where(x => x.ENTCod == entidad).FirstOrDefault();
+            entidadDesc = empresaItem.ENTDescripcion;
+
+            //companyitems = query.ToList();
+            return entidadDesc;
+        }
+
         public List<XRSKEntidad> GetFilteredEntidades(string[] itemSelected)
         {
 

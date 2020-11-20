@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using SPSXRiskv2.Models.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.CSharp.RuntimeBinder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
-using SPSXRiskv2.Models.Database;
 
 
 namespace SPSXRiskv2.Models.Entities
@@ -44,13 +41,12 @@ namespace SPSXRiskv2.Models.Entities
         #endregion
 
         #region Private Methods
-
-
-        private  void TOXRSKContratos(Contratos item)
+        private void TOXRSKContratos(Contratos item)
         {
             XRSKDataContext db = new XRSKDataContext();
             TOXRSKContratos(item, db);
         }
+
         private void TOXRSKContratos(Contratos item, XRSKDataContext db)
         {
             ctacodcia = item.ctacodcia;
@@ -61,6 +57,7 @@ namespace SPSXRiskv2.Models.Entities
             ctafechavalidez = item.ctafechavalidez;
 
         }
+
         private List<XRSKContratos> TOXRSKContratos(List<Contratos> items)
         {
             List<XRSKContratos> contratos = new List<XRSKContratos>();
@@ -72,7 +69,20 @@ namespace SPSXRiskv2.Models.Entities
             return contratos;
         }
 
-
+        private IQueryable<Contratos> aplicarSeguridad(IQueryable<Contratos> query)
+        {
+            foreach (var grupo in Usuario.Grupos)
+            {
+                if (grupo.BasesDatos != null)
+                {
+                    foreach (XSRKBasesDatosGrupo bd in grupo.BasesDatos)
+                    {
+                        query = query.Where(x => bd.companies.Contains(x.ctacodcia));
+                    }
+                }
+            }
+            return query;
+        }
         #endregion
 
         #region Public Methods
@@ -81,8 +91,12 @@ namespace SPSXRiskv2.Models.Entities
             List<XRSKContratos> contratos = new List<XRSKContratos>();
             XRSKDataContext db = new XRSKDataContext();
 
-            List<Contratos> items = db.Contratos.ToList();
-            foreach (Contratos item in items)
+            var query = from x in db.Contratos select x;
+
+            //List < Contratos > items = db.Contratos.ToList();
+            query = aplicarSeguridad(query);
+
+            foreach (Contratos item in query.ToList())
             {
                 contratos.Add(new XRSKContratos(item));
             }
@@ -92,33 +106,22 @@ namespace SPSXRiskv2.Models.Entities
 
         public List<XRSKContratos> GetContratosCia(XRSKContratos contract)
         {
-           
             XRSKDataContext db = new XRSKDataContext();
-            List<Contratos> contratosList = new List<Contratos>();          
+            List<Contratos> contratosList = new List<Contratos>();
 
-            var query = from x in 
+            var query = from x in
                        db.Contratos
-                       select x ;
+                        select x;
 
             query = query.Where(x => x.ctafechavalidez == "99999999");
             //query = query.Where(x => x.ctacod == "AVBBK100");
 
-            foreach(var grupo in contract.Usuario.Grupos)
-            {
-                if(grupo.BasesDatos != null)
-                {
-                    foreach (XSRKBasesDatosGrupo bd in grupo.BasesDatos)
-                    {
-                        query = query.Where(x => bd.companies.Contains(x.ctacodcia));
-                    }
-                }
-            }
+            query = aplicarSeguridad(query);
+
             contratosList = query.ToList();
 
             return TOXRSKContratos(contratosList);
         }
-
-
 
         public List<XRSKContratos> GetContratosCias(XRSKContratos contract, string cia)
         {
@@ -141,7 +144,7 @@ namespace SPSXRiskv2.Models.Entities
                     {
                         query = query.Where(x => bd.companies.Contains(cia));
                         query = query.Where(x => x.ctacodcia.Contains(cia));
-                    
+
                     }
                 }
             }
@@ -203,12 +206,5 @@ namespace SPSXRiskv2.Models.Entities
         }
 
         #endregion
-
-
-
-
-
-
-
     }
 }

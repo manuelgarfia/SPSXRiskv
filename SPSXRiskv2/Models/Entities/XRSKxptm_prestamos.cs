@@ -139,6 +139,8 @@ namespace SPSXRiskv2.Models.Entities
         public int cabid { get; set; }
 
         public decimal calculoCP { get; set; }
+        public string descripcionEmpresa { get; set; }
+        public string descripcionEntidad { get; set; }
 
         #endregion
 
@@ -237,6 +239,12 @@ namespace SPSXRiskv2.Models.Entities
 
             XRSKxptm_movimientos movs = new XRSKxptm_movimientos();
             calculoCP = movs.getSumImporte(docser);
+
+            XRSKCompanyia empresas = new XRSKCompanyia();
+            descripcionEmpresa = empresas.GetDescripcionEmpresa(empresa);
+
+            XRSKEntidad entidades = new XRSKEntidad();
+            descripcionEntidad = entidades.GetDescripcionEntidad(entidad);
             
 
         }
@@ -263,7 +271,7 @@ namespace SPSXRiskv2.Models.Entities
                         foreach (XSRKBasesDatosGrupo bd in grupo.BasesDatos)
                         {
                             // Security sample, uncomment and change it at your own if your consider
-                            //query = query.Where(x => bd.companies.Contains(x.MVFCodCIA));
+                            query = query.Where(x => bd.companies.Contains(x.empresa));
                         }
                     }
                 }
@@ -276,84 +284,46 @@ namespace SPSXRiskv2.Models.Entities
             foreach (FilterDetailModel detail in filter.detail)
             {
                 // Filtering sample, uncomment and change it at your own if your consider
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_DATE))
-                // {
-                // switch (detail.subtype)
-                // {
-                // case XRSKConstantes.FILTER_SUBTYPE_RANGE:
-                // if (detail.entity.Equals("MVFFechOperac"))
-                // {
-                // query = query.Where(x => x.MVFFechOperac >= detail.from && x.MVFFechOperac <= detail.to);
-                // }
-                // break;
-                // }
-                // }
-
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_NUMBER))
-                // {
-                // switch (detail.subtype)
-                // {
-                // case XRSKConstantes.FILTER_SUBTYPE_GREATER_EQUAL:
-                // if (detail.entity.Equals("MVFImBrDivisa"))
-                // {
-                // query = query.Where(x => x.MVFImBrDivisa >= (Double)detail.decValue);
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_LESS_EQUAL:
-                // if (detail.entity.Equals("MVFImBrDivisa"))
-                // {
-                // query = query.Where(x => x.MVFImBrDivisa <= (Double)detail.decValue);
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_RANGE:
-                // if (detail.entity.Equals("MVFImBrDivisa"))
-                // {
-                // query = query.Where(x => x.MVFImBrDivisa >= (Double)detail.decValue && x.MVFImBrDivisa <= (Double)detail.importMax);
-                // }
-                // break;
-                // }
-                // }
-
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_STRING) && detail.charValue != XRSKConstantes.FILTER_VALUE_EMPTY)
-                // {
-                // switch (detail.subtype)
-                // {
-                // case XRSKConstantes.FILTER_SUBTYPE_CONTAINS:
-                // if (detail.entity.Equals("MVFRefXRisk"))
-                // {
-                // query = query.Where(x => x.MVFRefXRisk.ToString().Contains(detail.charValue));
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_STARTS:
-                // if (detail.entity.Equals("MVFRefXRisk"))
-                // {
-                // query = query.Where(x => x.MVFRefXRisk.ToString().StartsWith("P"));
-                // }
-                // break;
-                // case XRSKConstantes.FILTER_SUBTYPE_ENDS:
-                // if (detail.entity.Equals("MVFRefXRisk"))
-                // {
-                // query = query.Where(x => x.MVFRefXRisk.ToString().Contains(detail.charValue));
-                // }
-                // break;
-                // }
-                // }
+                if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_DATE))
+                {
+                    switch (detail.subtype)
+                    {
+                        case "range":
+                            if (detail.entity.Equals("fecha1cuota"))
+                            {
+                                query = query.Where(x => x.fecha1cuota >= detail.from && x.fecha1cuota <= detail.to);
+                            }
+                            break;
+                    }
+                }
 
                 // Elementos
-                // if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_ITEMS) && detail.values != null && detail.values.Length != 0)
-                // {
-                // if (detail.entity.Equals("MVFCodCIA"))
-                // {
-                // if (detail.values.Length.Equals(1))
-                // {
-                // query = query.Where(x => x.MVFCodCIA.Equals(detail.values[0]));
-                // }
-                // else
-                // {
-                // query = query.Where(x => detail.values.Contains(x.MVFCodCIA));
-                // }
-                // }
-                // }
+                if (detail.type.Equals(XRSKConstantes.FILTER_TYPE_ITEMS) && detail.values != null && detail.values.Length != 0)
+                {
+                    if (detail.entity.Equals("empresa"))
+                    {
+                        if (detail.values.Length.Equals(1))
+                        {
+                            query = query.Where(x => x.empresa.Equals(detail.values[0]));
+                        }
+                        else
+                        {
+                            query = query.Where(x => detail.values.Contains(x.empresa));
+                        }
+                    }
+
+                    if (detail.entity.Equals("entidad"))
+                    {
+                        if (detail.values.Length.Equals(1))
+                        {
+                            query = query.Where(x => x.empresa.Equals(detail.values[0]));
+                        }
+                        else
+                        {
+                            query = query.Where(x => detail.values.Contains(x.empresa));
+                        }
+                    }
+                }
             }
 
             return query;
@@ -361,26 +331,33 @@ namespace SPSXRiskv2.Models.Entities
         #endregion
 
         #region Public Methods
-        public List<XRSKxptm_prestamos> GetList()
+        public List<XRSKxptm_prestamos> GetList(ClaimsPrincipal user)
         {
             XRSKDataContext db = new XRSKDataContext();
-            XRSKxptm_movimientos xptmMovimientos = new XRSKxptm_movimientos();
+            List<XRSKxptm_prestamos> prestamosList = new List<XRSKxptm_prestamos>();
 
-            /// You have to create xptm_prestamos entry at SPSXRiskv2\Models\XRSKDataContext.cs
-            List<xptm_prestamos> items = db.xptm_prestamos.
-                Where(x => x.estado == "P" && (x.empresa =="250" || x.empresa == "300" || x.empresa == "550")).
-                ToList();
+            if (Usuario.Grupos != null)
+            {
+                foreach (XRSKFocUsuariosGrupos grupo in Usuario.Grupos)
+                {
+                    if (grupo.BasesDatos != null)
+                    {
+                        foreach (XSRKBasesDatosGrupo bd in grupo.BasesDatos)
+                        {
+                            var query = from x in db.xptm_prestamos
+                                        select x;
 
-            //foreach(xptm_prestamos prestamo in items)
-            //{
-            //    calcularImporte(prestamo);
-            //}
-            return TOXRSKxptm_prestamos(items);
-        }
+                            query = query.Where(x => bd.companies.Contains(x.empresa) && x.estado == "P");
 
-        public double calcularImporte(xptm_prestamos prestamo)
-        {
-            return 0;
+                            query.ToList();
+
+                            prestamosList = TOXRSKxptm_prestamos(query.ToList());
+                        }
+                    }
+                }
+            }
+
+            return prestamosList;
         }
 
         public List<XRSKxptm_prestamos> GetFiltered(FilterModel filter)

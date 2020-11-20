@@ -1,18 +1,14 @@
-﻿using SPSXRiskv2.Models.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace SPSXRiskv2.Models.Entities
 {
-    public class XRSKClavesPrevisiones: XRSKEntity
+    public class XRSKClavesPrevisiones : XRSKEntity
     {
-
-
         #region Propiedades
         public string GRCGrupo { get; set; }
-
         public string GRCNiv { get; set; }
         public string GRCCodGRT { get; set; }
         public string GRCCodCIA { get; set; }
@@ -25,14 +21,18 @@ namespace SPSXRiskv2.Models.Entities
         public bool? PRVRemanente { get; set; }
         #endregion
 
-        #region Construnctors
+        #region Constructors
         public XRSKClavesPrevisiones()
         {
-
         }// Constructor sin parámetros
-        public XRSKClavesPrevisiones(string _GRCGrupo, string _GRCNiv, string _GRCCodGRT, string _GRCCodCIA, 
-                                     string _PRVGrupoTes, string _PRVClave, string _PRVCodOPE, string _PRVCodCPT, 
-                                     int _PRVSigno,  bool? _PRVEnlaceERP, bool? _PRVRemanente)
+
+        public XRSKClavesPrevisiones(ClaimsPrincipal _Usuario): base(_Usuario)
+        {
+        }
+
+        public XRSKClavesPrevisiones(string _GRCGrupo, string _GRCNiv, string _GRCCodGRT, string _GRCCodCIA,
+                                     string _PRVGrupoTes, string _PRVClave, string _PRVCodOPE, string _PRVCodCPT,
+                                     int _PRVSigno, bool? _PRVEnlaceERP, bool? _PRVRemanente)
         {
             GRCGrupo = _GRCGrupo;
             GRCNiv = _GRCNiv;
@@ -45,26 +45,15 @@ namespace SPSXRiskv2.Models.Entities
             PRVSigno = _PRVSigno;
             PRVEnlaceERP = _PRVEnlaceERP;
             PRVRemanente = _PRVRemanente;
-
-
-
         }
 
-        public  XRSKClavesPrevisiones(XRSKClavesPrevisiones item)
+        public XRSKClavesPrevisiones(XRSKClavesPrevisiones item)
         {
             TOXRSKClavesPrevisiones(item);
-
-
         }
-
-        
-
         #endregion
 
         #region Private Methods
-
-
-
         private void TOXRSKClavesPrevisiones(XRSKClavesPrevisiones item)
         {
             XRSKDataContext db = new XRSKDataContext();
@@ -85,10 +74,29 @@ namespace SPSXRiskv2.Models.Entities
             PRVEnlaceERP = item.PRVEnlaceERP;
             PRVRemanente = item.PRVRemanente;
         }
-        #endregion 
+
+        private IQueryable<XRSKClavesPrevisiones> aplicarSeguridad(IQueryable<XRSKClavesPrevisiones> query)
+        {
+            if (Usuario.Grupos != null)
+            {
+                foreach (XRSKFocUsuariosGrupos grupo in Usuario.Grupos)
+                {
+                    if (grupo.BasesDatos != null)
+                    {
+                        foreach (XSRKBasesDatosGrupo bd in grupo.BasesDatos)
+                        {
+                            query = query.Where(x => bd.companies.Contains(x.GRCCodCIA));
+                        }
+                    }
+                }
+            }
+            return query;
+        }
+
+        #endregion
 
         #region Public Methods
-            public List<XRSKClavesPrevisiones> GetList(string cia)
+        public List<XRSKClavesPrevisiones> GetList(string cia)
         {
             List<XRSKClavesPrevisiones> items = new List<XRSKClavesPrevisiones>();
             XRSKDataContext db = new XRSKDataContext();
@@ -99,14 +107,15 @@ namespace SPSXRiskv2.Models.Entities
                          select new XRSKClavesPrevisiones
                          {
                              PRVClave = claves.PRVClave
-                         }).ToList();
+                         });
+
+            query = aplicarSeguridad(query);
+
             //var query = from x in db.GrupoCompanya
             //            select new XRSKClavesPrevisiones {PRVClave= x.GRCCodCIA} ;
             //items = query.ToList();
 
-
-            return query;
-
+            return query.ToList();
         }
         #endregion
     }

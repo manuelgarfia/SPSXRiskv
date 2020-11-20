@@ -12,13 +12,14 @@ using SPSXRiskv2.ViewModels;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SPSXRiskv2.Controllers.MasterData
 {
     [ApiController]
-    //[Authorize]
+    [Authorize(Policy = "ValidUser")]
     [Route("api/[controller]")]
     public class XRSKCBVController : Controller
     {
@@ -27,14 +28,8 @@ namespace SPSXRiskv2.Controllers.MasterData
         [HttpGet]
         public List<XRSKCBVigentes> Get()
         {
-            var currentUser = HttpContext.User;
-
-            if (currentUser.HasClaim(c => c.Value == "xrisk"))
-            {
-                DateTime date = DateTime.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == "DateOfJoing").Value);
-            }
-
-            XRSKCBVigentes cb_vigentes = new XRSKCBVigentes();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKCBVigentes cb_vigentes = new XRSKCBVigentes(user);
             List<XRSKCBVigentes> cbv_List = new List<XRSKCBVigentes>();
 
             try
@@ -83,12 +78,13 @@ namespace SPSXRiskv2.Controllers.MasterData
             return cond_banc;
         }
 
-        [Authorize(Policy = "ValidUser")]
+
         // POST api/<controller>
         [HttpPost("filter")]
         public ActionResult<List<XRSKCBVigentes>> GetFiltered(FilterModel filter)
         {
-            XRSKCBVigentes condicionesBancarias = new XRSKCBVigentes();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKCBVigentes condicionesBancarias = new XRSKCBVigentes(user);
             List<XRSKCBVigentes> filtered_list = new List<XRSKCBVigentes>();
             var currentUser = HttpContext.User;
 

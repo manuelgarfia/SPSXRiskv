@@ -4,6 +4,7 @@ using SPSXRiskv2.Models.Entities;
 using SPSXRiskv2.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace SPSXRiskv2.Controllers.Tesoreria
 {
@@ -100,7 +101,8 @@ namespace SPSXRiskv2.Controllers.Tesoreria
         [HttpPost("provconcil")]
         public ActionResult<List<XRSKApunteBancario>> GetProvisorisConcilFiltered(FilterModel filter)
         {
-            XRSKApunteBancario apuntes = new XRSKApunteBancario();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKApunteBancario apuntes = new XRSKApunteBancario(user);
             List<XRSKApunteBancario> apuntesList = new List<XRSKApunteBancario>();
 
             try

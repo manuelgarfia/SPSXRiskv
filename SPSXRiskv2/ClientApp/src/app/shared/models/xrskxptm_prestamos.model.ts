@@ -63,4 +63,6 @@ export class XRSKxptm_prestamos {
   user_updated: string;
   cabid: number;
   calculoCP: number;
+  descripcionEmpresa: string;
+  descripcionEntidad: string;
 }

@@ -15,6 +15,8 @@ import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { SideFilterComponent } from './components/side-filter/side-filter.component';
 import { LoadingModalComponent } from './components/loading-modal/loading-modal.component';
 import { ProgressInformationComponent } from './components/progress-information/progress-information.component';
+import { AlertsComponent } from './components/Alerts/AlertModal.component';
+import { popUpComponent } from './components/ProcesosPopUp/procesosPopUp.component'
 
 @NgModule({
   imports: [
@@ -35,6 +37,8 @@ import { ProgressInformationComponent } from './components/progress-information/
     SideFilterComponent,
     LoadingModalComponent,
     ProgressInformationComponent,
+    AlertsComponent,
+    popUpComponent
   ],
   entryComponents: [
     ModalComponent,
@@ -47,6 +51,8 @@ import { ProgressInformationComponent } from './components/progress-information/
     SideFilterComponent,
     LoadingModalComponent,
     ProgressInformationComponent,
+    AlertsComponent,
+    popUpComponent
   ],    
   exports: [
     CommonModule,
@@ -59,6 +65,8 @@ import { ProgressInformationComponent } from './components/progress-information/
     SideFilterComponent,
     LoadingModalComponent,
     ProgressInformationComponent,
+    AlertsComponent,
+    popUpComponent
   ]
 })
 

@@ -19,7 +19,9 @@ import { XRSKMvfSimplificadoService } from 'src/app/shared/services/xrskMvfSimpl
 import { XRSKUtilsService } from 'src/app/shared/services/xrskUtils.service';
 import { ExcelService } from 'src/app/core/services/excel.service';
 
-import { XrskPrestamosComponent} from 'src/app/modules/Portal/xrskPrestamos/xrskPrestamos.component'
+import { XrskPrestamosComponent } from 'src/app/modules/Portal/xrskPrestamos/xrskPrestamos.component';
+import { XrskLeasingsComponent } from 'src/app/modules/Portal/xrskLeasings/xrskLeasings.component';
+import { XrskPortalProcesos } from 'src/app/modules/Portal/xrskPortalProcesos/xrskPortalProcesos.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { XrskPrestamosComponent} from 'src/app/modules/Portal/xrskPrestamos/xrsk
     MDBBootstrapModule.forRoot()
   ],
   declarations: [
-    XrskPrestamosComponent
+    XrskPrestamosComponent,
+    XrskLeasingsComponent,
+    XrskPortalProcesos
   ],
   exports: [
     CommonModule,

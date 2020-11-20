@@ -20,8 +20,21 @@
     </mdb-breadcrumb>
 
     <div class="row justify-content-end">
-      <div class="col-md-2">
-        <button type="button" class="buttonCustomized" mdbBtn size="sm" outline="true" (click)="filterClick()" mdbWavesEffect>
+
+      <div class="col-md-3">
+        <button mdbBtn type="button" color="mdb-color" class="test" size="sm" [mdbPopover]="PreferencesOn" placement="bottom" mdbWavesEffect>Seleccionar Línea</button>
+        <ng-template #PreferencesOn>
+          <!-- (change)="ShowAndHide(item, $event)" -->
+          <div class="custom-control custom-radio" *ngFor="let item of lineas">
+            <div>
+              <input type="radio" class="custom-control-input" id={{item.id}} name="defaultExampleRadios" (change)="selectLine(item.linea)" mdbInput>
+              <label class="custom-control-label" for={{item.id}}>{{item.linea}}</label>
+            </div>
+
+          </div>
+        </ng-template>
+
+        <button mdbBtn type="button" color="cyan" class="test" size="sm" (click)="filterClick()" mdbWavesEffect>
           Filtrar
           <i class="fas fa-filter white-text pl-1 ml-1"></i>
         </button>
@@ -96,14 +109,13 @@
                   <div class="col-md-4">
                     <p class="titleTable ml-2">Préstamos</p>
                   </div>
-                  <div class="col-md-3">
-                    <div class="button-container"></div>
-                    <button type="button" class="buttonCustomized m-0" mdbBtn size="sm" outline="true" mdbWavesEffect>Finalizados</button>
-                    <button type="button" class="buttonCustomized ml-1" mdbBtn size="sm" outline="true" mdbWavesEffect>Pendientes</button>
+                  <div class="col-md-4">
+                    <button mdbBtn type="button" color="mdb-color" class="test" size="sm" mdbWavesEffect>Finalizados</button>
+                    <button mdbBtn type="button" color="mdb-color" class="test" size="sm" mdbWavesEffect>Pendientes</button>
                   </div>
                 </div>
 
-                <table mdbTable #tableEl="mdbTable" scrollX ="true" striped="true" small="true" class="table-responsive-md text-nowrap mt-2" *ngIf="prestamos">
+                <table mdbTable #tableEl="mdbTable" scrollX="true" striped="true" small="true" class="table-responsive-md text-nowrap mt-2" *ngIf="prestamos">
                   <thead>
                     <tr>
                       <!--<th>Código Préstamo</th>-->
@@ -127,8 +139,8 @@
                       <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{prestamo.nominal | number: '1.2-2'}}</td>
                       <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-right">{{prestamo.calculoCP | number: '1.2-2'}}</td>
                       <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="text-center"><mdb-badge success="true">{{prestamo.estado}}</mdb-badge></td>
-                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{prestamo.empresa}}</td>
-                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{prestamo.entidad}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" mdbTooltip={{prestamo.descripcionEmpresa}} placement="bottom">{{prestamo.empresa}}</td>
+                      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" mdbTooltip={{prestamo.descripcionEntidad}} placement="right">{{prestamo.entidad}}</td>
                     </tr>
                   </tbody>
                   <tfoot class="w-100">

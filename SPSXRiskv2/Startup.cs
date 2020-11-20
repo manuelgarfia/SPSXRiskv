@@ -48,7 +48,7 @@ namespace SPSXRiskv2
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ValidUser", pol => pol.RequireClaim("username", new string[] { "xrisk" }));
+                options.AddPolicy("ValidUser", pol => pol.RequireClaim("username", new string[] { "xrisk","portal" }));
             });
 
             // Configuración Services para Autenticación JWT

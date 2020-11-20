@@ -6,6 +6,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using SPSXRiskv2.ViewModels;
 using System.Web;
+using System.Security.Claims;
 
 namespace SPSXRiskv2.Models.Entities
 {
@@ -54,6 +55,10 @@ namespace SPSXRiskv2.Models.Entities
         {
 
         }// Constructor sin parámetros
+
+        public XRSKCBVigentes(ClaimsPrincipal _Usuario) : base(_Usuario)
+        {
+        }
 
         public XRSKCBVigentes(CBVigentes item)
         {

@@ -1,0 +1,25 @@
+.titleModal{
+    font-size: 25px;
+}
+
+.bg {
+  color: white;
+  font-size: 20px;
+  background-color: #D8665B;
+}
+
+.bgHeader {
+  color: white;
+  font-size: 20px;
+  background-color: #D8665B;
+}
+
+.bgBottom {
+  color: white;
+  font-size: 20px;
+  background-color: #D8665B;
+}
+
+.buttonHeader{
+    color:white !important;
+}

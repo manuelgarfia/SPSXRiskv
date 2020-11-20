@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
+using SPSXRiskv2.Models.Database;
+using SPSXRiskv2.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using SPSXRiskv2.Models.Database;
-using SPSXRiskv2.ViewModels;
+using System.Security.Claims;
 
 namespace SPSXRiskv2.Models.Entities
 {
@@ -41,6 +41,11 @@ namespace SPSXRiskv2.Models.Entities
 
         }
 
+        public XRSKCNCSituacion(ClaimsPrincipal _Usuario) : base(_Usuario)
+        {
+
+        }
+
         public XRSKCNCSituacion(CNCSituacion item)
         {
             TOXRSKCNCSituacion(item);
@@ -59,17 +64,7 @@ namespace SPSXRiskv2.Models.Entities
         /// <returns></returns>
         public List<XRSKCNCSituacion> GetList()
         {
-            List<XRSKCNCSituacion> cncs = new List<XRSKCNCSituacion>();
-            XRSKDataContext db = new XRSKDataContext();
-
-            List<CNCSituacion> items = db.CNCSituacion.ToList();
-
-            foreach (CNCSituacion item in items)
-            {
-                cncs.Add(new XRSKCNCSituacion(item));
-            }
-
-            return cncs;
+            return GetFilteredList(new FilterModel());
         }
 
         /// <summary>
@@ -85,12 +80,18 @@ namespace SPSXRiskv2.Models.Entities
                         db.CNCSituacion
                         select x;
 
-            foreach (FilterDetailModel detail in filter.detail)
+            // Afegim condicions de Filtre de Seguretat
+            query = aplicarSeguridad(query);
+
+            if (filter.detail != null)
             {
-                if (detail.entity.Equals("Compañias") && detail.values.Length > 0)
-                    query = query.Where(x => detail.values.Contains(x.CNCCodCIA));
-                if (detail.entity.Equals("Contratos") && detail.values.Length > 0)
-                    query = query.Where(x => detail.values.Contains(x.CNCCodCTA));
+                foreach (FilterDetailModel detail in filter.detail)
+                {
+                    if (detail.entity.Equals("Compañias") && detail.values.Length > 0)
+                        query = query.Where(x => detail.values.Contains(x.CNCCodCIA));
+                    if (detail.entity.Equals("Contratos") && detail.values.Length > 0)
+                        query = query.Where(x => detail.values.Contains(x.CNCCodCTA));
+                }
             }
 
             List<CNCSituacion> items = query.ToList();
@@ -100,6 +101,29 @@ namespace SPSXRiskv2.Models.Entities
         #endregion
 
         #region Support methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        private IQueryable<CNCSituacion> aplicarSeguridad(IQueryable<CNCSituacion> query)
+        {
+            if (Usuario.Grupos != null)
+            {
+                foreach (XRSKFocUsuariosGrupos grupo in Usuario.Grupos)
+                {
+                    if (grupo.BasesDatos != null)
+                    {
+                        foreach (XSRKBasesDatosGrupo bd in grupo.BasesDatos)
+                        {
+                            query = query.Where(x => bd.companies.Contains(x.CNCCodCIA));
+                        }
+                    }
+                }
+            }
+            return query;
+        }
+
         /// <summary>
         /// 
         /// </summary>

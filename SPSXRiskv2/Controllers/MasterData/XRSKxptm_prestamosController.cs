@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 /// <summary>
@@ -17,6 +19,7 @@ using System;
 namespace SPSXRiskv2.Controllers.MasterData
 {
     [ApiController]
+    [Authorize(Policy = "ValidUser")]
     [Route("api/[controller]")]
     public class XRSKxptm_prestamosController : Controller
     {
@@ -24,12 +27,13 @@ namespace SPSXRiskv2.Controllers.MasterData
         [HttpGet]
         public List<XRSKxptm_prestamos> Get()
         {
-            XRSKxptm_prestamos elem = new XRSKxptm_prestamos();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKxptm_prestamos elem = new XRSKxptm_prestamos(user);
             List<XRSKxptm_prestamos> elemsList = new List<XRSKxptm_prestamos>();
 
             try
             {
-                elemsList = elem.GetList();
+                elemsList = elem.GetList(user);
             }
             catch (Exception e)
             {
@@ -60,8 +64,8 @@ namespace SPSXRiskv2.Controllers.MasterData
         [HttpPost("filter")]
         public ActionResult<List<XRSKxptm_prestamos>> GetFiltered(FilterModel filter)
         {
-            //ClaimsPrincipal user = HttpContext.User;
-            XRSKxptm_prestamos entity = new XRSKxptm_prestamos();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKxptm_prestamos entity = new XRSKxptm_prestamos(user);
             List<XRSKxptm_prestamos> elemsList = new List<XRSKxptm_prestamos>();
 
             try

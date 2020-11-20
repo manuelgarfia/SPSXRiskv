@@ -50,6 +50,5 @@ namespace SPSXRiskv2.Models.Entities
             };
             return (TEntity)getOriginal(db.Entry(updatedEntity).OriginalValues, typeof(TEntity));
         }// end GetOriginal common method
-
     }
 }

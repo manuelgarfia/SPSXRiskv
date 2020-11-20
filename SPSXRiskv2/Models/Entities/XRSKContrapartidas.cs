@@ -16,7 +16,6 @@ namespace SPSXRiskv2.Models.Entities
         #endregion
 
         #region Constructores
-
         public XRSKContrapartidas()
         {
 
@@ -32,36 +31,31 @@ namespace SPSXRiskv2.Models.Entities
 
         public XRSKContrapartidas(Contrapartidas item)
         {
-            TOXRSK_Companyia(item);
+            TOXRSKContrapartidas(item);
         }
 
-
-        private void TOXRSK_Companyia(Contrapartidas item)
+        private void TOXRSKContrapartidas(Contrapartidas item)
         {
             XRSKDataContext db = new XRSKDataContext();
-            TOXRSK_Companyia(item, db);
+            TOXRSKContrapartidas(item, db);
         }
 
         public XRSKContrapartidas(Contrapartidas item, XRSKDataContext db)
         {
-            TOXRSK_Companyia(item, db);
+            TOXRSKContrapartidas(item, db);
         }
 
-        private void TOXRSK_Companyia(Contrapartidas item, XRSKDataContext db)
+        private void TOXRSKContrapartidas(Contrapartidas item, XRSKDataContext db)
         {
             CPTGrupo = item.
             CPTCod = item.CPTCod;
             CPTDescripcion = item.CPTDescripcion;
         }
-
         #endregion
 
-
         #region Funciones
-
         public List<XRSKContrapartidas> GetList()
         {
-
             List<XRSKContrapartidas> list_entidad = new List<XRSKContrapartidas>();
             XRSKDataContext db = new XRSKDataContext();
 
@@ -76,7 +70,6 @@ namespace SPSXRiskv2.Models.Entities
 
             return list_entidad;
         }
-
 
         public List<Contrapartidas> GetDistinctContrapartidas(List<Contrapartidas> item)
         {

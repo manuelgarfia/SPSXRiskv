@@ -1,13 +1,14 @@
 
 .bg {
   /* The image used */
-  /*background-image: url(/assets/images/pic2.jpg);*/
-  background-color: #AFBBBF;
+  background-image: url(/assets/images/bussiness.jpg);
+  /*background-color: #AFBBBF;*/
   /* Full height */
   height: 100%;
   width: 100%;
   opacity: 0.60;
   /* Center and scale the image nicely */
+  background-size:100%;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;

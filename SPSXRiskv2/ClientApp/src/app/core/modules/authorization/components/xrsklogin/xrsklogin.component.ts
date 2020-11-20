@@ -5,6 +5,7 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { first } from 'rxjs/operators';
 import { Output, EventEmitter } from '@angular/core';
+//import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-login',
@@ -30,19 +31,25 @@ export class LoginComponent implements OnInit {
   value = 50;
   bufferValue = 75;
 
+  public loginValues: any[] = [];
+
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+
   ) { }
 
   ngOnInit() {
+
     this.loaded = false;
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+
 
     // reset login status
     this.authenticationService.logout();
@@ -62,6 +69,8 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    //this.authenticationService.toLoginService(this.f.username.value, this.f.password.value);
+
     this.showSpinner = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
@@ -79,6 +88,10 @@ export class LoginComponent implements OnInit {
 
   onLoginClick() {
     this.loaded = true;
+  }
+
+  toServiceLoginForm() {
+    
   }
 
 }

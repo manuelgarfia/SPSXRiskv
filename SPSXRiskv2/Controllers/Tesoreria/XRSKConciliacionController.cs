@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SPSXRiskv2.Models.Entities;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SPSXRiskv2.Common;
-using SPSXRiskv2.ViewModels;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+using SPSXRiskv2.Models.Entities;
 using SPSXRiskv2.Models.Procesos;
-using SPSXRiskv2.Models;
-using Microsoft.EntityFrameworkCore;
+using SPSXRiskv2.ViewModels;
+using System;
+using System.Collections.Generic;
 
 namespace SPSXRiskv2.Controllers.Tesoreria
 {

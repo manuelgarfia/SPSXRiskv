@@ -120,7 +120,7 @@ mat-sidenav {
 
 .menuBox {
   height: auto;
-  width: 350px;
+  width: 355px;
   color: white;
   background-color: #424242;
   position: absolute;
@@ -132,7 +132,7 @@ mat-sidenav {
 .menuBox2 {
   height: auto;
   width: auto;
-  margin-left: 350px;
+  margin-left: 355px;
   color: white;
   background-color: #616161;
   position: absolute;
@@ -156,13 +156,18 @@ mat-sidenav {
   .secondMenus:hover {
     background-color: #E5E7EF !important;
     color: black;
-    width: 90%;
+    width: 95%;
     border-radius: 5px;
   }
 
 
 .contentPosition{
     z-index: 1;
+}
+
+/*LOADER*/
+.loadingSideNav{
+    color:white;
 }
 
 

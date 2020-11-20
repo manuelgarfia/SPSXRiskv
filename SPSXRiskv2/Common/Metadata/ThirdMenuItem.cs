@@ -13,6 +13,7 @@ namespace SPSXRiskv2.Common.Metadata
         public String Name { get; set; }
         public String Route { get; set; }
         public String Icon { get; set; }
+        public Boolean hasRouting { get; set; }
         public List<MenuItem> menuItem { get; set; }
 
         #endregion
@@ -25,11 +26,12 @@ namespace SPSXRiskv2.Common.Metadata
 
         }// Constructor vacío
 
-        public ThirdMenuItem(String _Name, String _Route, String _Icon, List<MenuItem> _menu)
+        public ThirdMenuItem(String _Name, String _Route, String _Icon, Boolean _hasRouting, List<MenuItem> _menu)
         {
             Name = _Name;
             Route = _Route;
             Icon = _Icon;
+            hasRouting = _hasRouting;
             menuItem = _menu.ConvertAll(x => new MenuItem(x.Name, x.Route, x.Icon));
 
         }

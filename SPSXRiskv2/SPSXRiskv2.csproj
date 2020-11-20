@@ -61,7 +61,10 @@
     <None Remove="ClientApp\src\app\modules\Learning\xrskmvfsimplificado\xsrkmvfsimplificado.component.ts" />
     <None Remove="ClientApp\src\app\modules\Portal\portal-routing.module.ts" />
     <None Remove="ClientApp\src\app\modules\Portal\portal.modules.module.ts" />
+    <None Remove="ClientApp\src\app\modules\Portal\xrskLeasings\xrskLeasings.component.ts" />
+    <None Remove="ClientApp\src\app\modules\Portal\xrskPortalProcesos\xrskPortalProcesos.component.ts" />
     <None Remove="ClientApp\src\app\modules\Portal\xrskPrestamos\xrskPrestamos.component.ts" />
+    <None Remove="ClientApp\src\app\shared\components\Alerts\AlertModal.component.ts" />
     <None Remove="ClientApp\src\app\shared\components\modal\modal.component.ts" />
     <None Remove="ClientApp\src\app\modules\Examples\date-picker\date-picker.component.ts" />
     <None Remove="ClientApp\src\app\material.module.ts" />
@@ -75,6 +78,7 @@
     <None Remove="ClientApp\src\app\modules\Learning\learning.modules.module.ts" />
     <None Remove="ClientApp\src\app\modules\Learning\xrskagrupacion\xrskagrupacion.component.ts" />
     <None Remove="ClientApp\src\app\core\core.module.ts" />
+    <None Remove="ClientApp\src\app\shared\components\ProcesosPopUp\procesosPopUp.component.ts" />
     <None Remove="ClientApp\src\app\shared\format\format-datepicker.ts" />
     <None Remove="ClientApp\src\app\shared\models\agrcondiciones.model.ts" />
     <None Remove="ClientApp\src\app\shared\models\ciamodel.ts" />
@@ -145,7 +149,10 @@
     <TypeScriptCompile Include="ClientApp\src\app\modules\Portal\portal.modules.module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Portal\xrskLeasings\xrskLeasings.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\modules\Portal\xrskPortalProcesos\xrskPortalProcesos.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\modules\Portal\xrskPrestamos\xrskPrestamos.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\Alerts\AlertModal.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\modal\modal.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\date-picker\date-picker.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\material.module.ts" />
@@ -158,6 +165,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\progress-bar\progress-bar.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\modules\Examples\search-table\search-table.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\ProcesosPopUp\procesosPopUp.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\format\format-datepicker.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\stringmodel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\xriskConComunCSB.model.ts" />

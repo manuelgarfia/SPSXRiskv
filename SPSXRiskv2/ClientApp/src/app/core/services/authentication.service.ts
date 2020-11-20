@@ -7,6 +7,7 @@ import { XRSKPanelService } from 'src/app/core/services/panel.service';
 
 import { usersmodel, usersgroupmodel, securityObjectModel} from 'src/app/shared/models/usersmodel'
 import { XRSKpanelItem } from '../models/xrskmenuPanel.model';
+//import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Injectable({
@@ -15,6 +16,7 @@ import { XRSKpanelItem } from '../models/xrskmenuPanel.model';
 export class AuthenticationService {
 
   private loggedIn = new BehaviorSubject<boolean>(false);
+  private menuLoaded = new BehaviorSubject<boolean>(true);
   private currentUserSubject: BehaviorSubject<XRSKUser>;
   public currentUser: Observable<XRSKUser>;
 
@@ -24,7 +26,7 @@ export class AuthenticationService {
   myApiUrl: string;
   url: string;
 
-  constructor(private readonly http: HttpClient, private panelService: XRSKPanelService,  @Inject('BASE_URL') baseUrl: string) {
+  constructor(private readonly http: HttpClient, private panelService: XRSKPanelService, @Inject('BASE_URL') baseUrl: string) {
     this.currentUserSubject = new BehaviorSubject<XRSKUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
 
@@ -41,6 +43,17 @@ export class AuthenticationService {
       this.panelesValue.next(JSON.parse(localStorage.getItem('xrskPaneles')));
     }
 
+    //Obtener el token de las preferencias
+    if (JSON.parse(localStorage.getItem('currentUser')) != null) {
+      this.loggedIn.next(true);
+    }
+
+    //if (this.jwtHelper.isTokenExpired(token)) {
+    //  // token expired 
+    //} else {
+    //  // token valid
+    //}
+
   }
 
   public get currentUserValue(): XRSKUser {
@@ -55,6 +68,16 @@ export class AuthenticationService {
     return this.loggedIn.asObservable();
   }
 
+  public get menuIsLoaded() {
+    return this.menuLoaded.asObservable();
+  }
+
+  //Tornar que ja hi ha un usuari logat
+  public get checkMenuLoaded() {
+    this.menuLoaded.next(false);
+    return this.menuLoaded.asObservable();
+  }
+
   public get currentUserObs() {
     return this.currentUserSubject.asObservable();
   }
@@ -62,6 +85,9 @@ export class AuthenticationService {
   login(username: string, password: string) {
     return this.http.post<any>('/api/auth/login', { username, password })
       .pipe(map(user => {
+
+        //
+        this.toLoginService(username, password);
         // login successful if there's a jwt token in the response
         if (user && user.token) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -78,7 +104,9 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.setItem('currentUser',null);
+    localStorage.setItem('currentUser', null);
+    localStorage.setItem('LoginPreferences', null);
+    this.menuLoaded.next(true);
     this.loggedIn.next(false);
     this.currentUserSubject.next(null);
     this.panelesValue.next(null);
@@ -124,12 +152,25 @@ export class AuthenticationService {
     this.panelService.getAppPaneles().subscribe(
       paneles => {
         this.panelesValue.next(paneles);
+        this.menuLoaded.next(false);
         localStorage.setItem('xrskPaneles', JSON.stringify(paneles));
       },
       err => {
         console.log(err);
       }
     );
+  }
+
+  public loginValues: any[] = [];
+
+
+  toLoginService(username: string, pwd: string) {
+
+    this.loginValues = [{ user: username, password: pwd}];
+  }
+
+  toSideNavLogin() {
+    return this.loginValues;
   }
 
   //Handle Error

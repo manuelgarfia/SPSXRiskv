@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SPSXRiskv2.Common;
 using SPSXRiskv2.Models.Entities;
 using SPSXRiskv2.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 /// <summary>
@@ -17,6 +16,7 @@ using System;
 namespace SPSXRiskv2.Controllers.MasterData
 {
     [ApiController]
+    [Authorize(Policy = "ValidUser")]
     [Route("api/[controller]")]
     public class XRSKContratos_RenovacionController : Controller
     {
@@ -24,7 +24,8 @@ namespace SPSXRiskv2.Controllers.MasterData
         [HttpGet]
         public List<XRSKContratos_Renovacion> Get()
         {
-            XRSKContratos_Renovacion elem = new XRSKContratos_Renovacion();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKContratos_Renovacion elem = new XRSKContratos_Renovacion(user);
             List<XRSKContratos_Renovacion> elemsList = new List<XRSKContratos_Renovacion>();
 
             try
@@ -60,8 +61,8 @@ namespace SPSXRiskv2.Controllers.MasterData
         [HttpPost("filter")]
         public ActionResult<List<XRSKContratos_Renovacion>> GetFiltered(FilterModel filter)
         {
-            //ClaimsPrincipal user = HttpContext.User;
-            XRSKContratos_Renovacion entity = new XRSKContratos_Renovacion();
+            ClaimsPrincipal user = HttpContext.User;
+            XRSKContratos_Renovacion entity = new XRSKContratos_Renovacion(user);
             List<XRSKContratos_Renovacion> elemsList = new List<XRSKContratos_Renovacion>();
 
             try
